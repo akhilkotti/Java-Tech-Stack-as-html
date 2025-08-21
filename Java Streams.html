@@ -839,16 +839,25 @@ System.out.println("flatList:\n"+flatList);
 							<button class="copy-btn">Copy</button>
 						</div>
 <pre><code>	
-String sentence = "this is a stream stream example is this";<br>
-System.out.println("sentence:\n" + sentence + "\n");<br>
+// Use a mutable map to update and print word counts immediately
+Map&lt;String, Integer&gt; wordCount = new HashMap&lt;&gt;();
 
-Map&lt;String, Integer&gt; wordCount = new HashMap&lt;&gt;();<br>
+// Split the sentence by spaces, convert to a stream of words
+Arrays.stream(sentence.split(" ")) 
+	// Convert each word to lowercase for uniformity
+	.map(String::toLowerCase) 
+	// For each word in the stream
+	.forEach(word -> { 
+		// Put the word in the map with count, or increment the existing count
+		wordCount.put(word, wordCount.getOrDefault(word, 0) + 1);
 
-Arrays.stream(sentence.split(" ")).map(String::toLowerCase).forEach(word -> {wordCount.put(word, wordCount.getOrDefault(word, 0) + 1);
-  });<br>
+		// (Just to check)
+		// System.out.println("Word: " + word + " | Count so far: " + wordCount.get(word));
+	});
 
-wordCount.forEach((word, count) ->
-  System.out.println(word + " → " + count)
+// After all words are processed, print the final word counts
+wordCount.forEach((word, count) -> 
+	System.out.println(word + " → " + count) 
 );
 </code></pre>	
 					</div>
@@ -860,12 +869,45 @@ wordCount.forEach((word, count) ->
 							<button class="copy-btn">Copy</button>
 						</div>
 <pre><code>	
-int[] numbersArr = {1,2,3,4,5,6,7,8,9,10};<br>
+int[] numbersArr = {1,2,3,4,5,6,7,8,9,10};
+// Print the numbers array
+System.out.println("numbers:\n"+Arrays.toString(numbersArr)+"\n");
 
-Arrays.stream(numbersArr).boxed().collect(Collectors.partitioningBy(n -> n % 2 == 0)).forEach((isEven, nums) -> {
-	  String label = isEven ? "Even Numbers" : "Odd Numbers";
-	  System.out.println(label + ": " + nums);
-  });
+// APPROACH 1
+// Convert an int[] array to a Stream<Integer> using boxed()
+// Partition the numbers into even and odd using Collectors.partitioningBy()
+Map&lt;Boolean, List&lt;Integer&gt;&gt; partitioned = 
+	// Create a stream from the int array
+	Arrays.stream(numbersArr)
+	// Convert IntStream to Stream<Integer> for collector support
+	.boxed() 
+	// Collect into a Map where the key is true for even numbers and false for odd numbers
+	.collect(Collectors.partitioningBy(n -> n % 2 == 0));
+
+// Retrieve and print even numbers (key: true)
+System.out.println("Even: " + partitioned.get(true));
+
+// Retrieve and print odd numbers (key: false)
+System.out.println("Odd: " + partitioned.get(false));
+
+// APPROACH 2
+// Convert the primitive int array to a Stream&lt;Integer&gt;
+Arrays.stream(numbersArr)
+// Use boxed() to convert IntStream to Stream&lt;Integer&gt;
+.boxed()
+// Collect the numbers into a Map partitioned by even and odd
+// Collectors.partitioningBy() creates a Map&lt;Boolean, List&lt;Integer&gt;&gt;
+// where the key is true for even numbers and false for odd numbers
+.collect(Collectors.partitioningBy(n -> n % 2 == 0)) 
+	
+	// Iterate over each partition using forEach
+	.forEach((isEven, nums) -> {
+		// Determine label based on the key (true = even, false = odd)
+		String label = isEven ? "Even Numbers" : "Odd Numbers";
+
+		// Print the label and the corresponding list of numbers
+		System.out.println(label + ": " + nums);
+	});
 </code></pre>	
 					</div>
 					
@@ -876,7 +918,16 @@ Arrays.stream(numbersArr).boxed().collect(Collectors.partitioningBy(n -> n % 2 =
 							<button class="copy-btn">Copy</button>
 						</div>
 <pre><code>	
-String maxString = foodLst.stream().max((str1, str2) -> Integer.compare(str1.length(), str2.length()))					  .orElse(null);
+// Find the longest string in the list using Java Streams
+String maxString = foodLst.stream()
+	
+// Use max() with a custom comparator comparing string lengths
+.max((str1, str2) -> Integer.compare(str1.length(), str2.length()))
+
+// If no value is found (e.g., empty list), return null
+.orElse(null);
+
+System.out.println("maxString:"+maxString);
 </code></pre>	
 					</div>
 					
@@ -887,8 +938,15 @@ String maxString = foodLst.stream().max((str1, str2) -> Integer.compare(str1.len
 							<button class="copy-btn">Copy</button>
 						</div>
 <pre><code>	
-Optional&lt;String&gt; max = foodLst.stream().max((x, y) -> x.compareTo(y));<br>
+// Use Java Stream to find the lexicographically maximum (alphabetically last) string in the list
+Optional&lt;String&gt; max = 
+// Create a stream from the foodLst list	
+foodLst.stream()
 
+// Use Comparator to compare two strings lexicographically (like dictionary order)
+.max((x, y) -> x.compareTo(y));
+
+// Print the result; if the list is empty, print null instead of throwing an exception
 System.out.println(max.orElse(null));
 </code></pre>	
 					</div>
@@ -900,7 +958,14 @@ System.out.println(max.orElse(null));
 							<button class="copy-btn">Copy</button>
 						</div>
 <pre><code>	
-foodLst.stream().filter(s -> s.length() > 5).forEach(System.out::println);
+// Create a stream from the foodLst list
+foodLst.stream()
+
+// Filter only those strings whose length is greater than 5 characters
+.filter(s -> s.length() > 5)
+
+// Print each of the filtered strings
+.forEach(System.out::println);
 </code></pre>	
 					</div>
 
@@ -911,7 +976,14 @@ foodLst.stream().filter(s -> s.length() > 5).forEach(System.out::println);
 							<button class="copy-btn">Copy</button>
 						</div>
 <pre><code>	
-foodLst.stream().map(str -> str.toUpperCase()).forEach(System.out::println);
+// Create a stream from the list 'foodLst'
+foodLst.stream()
+
+// Convert each string in the list to uppercase using map()
+.map(str -> str.toUpperCase())
+
+// Print each uppercase string to the console
+.forEach(System.out::println);
 </code></pre>	
 					</div>
 
@@ -922,7 +994,14 @@ foodLst.stream().map(str -> str.toUpperCase()).forEach(System.out::println);
 							<button class="copy-btn">Copy</button>
 						</div>
 <pre><code>	
-foodLst.stream().map(str -> str.toLowerCase()).forEach(System.out::println);
+// Create a stream from the 'foodLst' list
+foodLst.stream()
+
+// Convert each string in the list to lowercase
+.map(str -> str.toLowerCase())
+
+// Print each lowercase string to the console
+.forEach(System.out::println);
 </code></pre>
 					</div>
 
@@ -933,9 +1012,32 @@ foodLst.stream().map(str -> str.toLowerCase()).forEach(System.out::println);
 							<button class="copy-btn">Copy</button>
 						</div>
 <pre><code>	
-String inpStr = "";<br>
-Predicate&lt;String&gt; isEmpty = str -> str.isEmpty();<br>
-String s1 = isEmpty.test(inpStr) ? "String is Empty" : "not empty";
+// Initialize a string variable with an empty string
+String str = "";
+
+// Create a stream with the string and check if all elements (only one here) are empty
+// allMatch returns true if all elements match the predicate String::isEmpty
+boolean isEmpty = Stream.of(str).allMatch(String::isEmpty);
+
+// Print the result based on the boolean outcome
+System.out.println(isEmpty ? "String is Empty" : "Not Empty");
+
+// Create a list of strings, including empty, whitespace, and non-empty strings
+List&lt;String&gt; strings = List.of("", " ", "abc");
+
+// Check if all strings in the list are empty using Stream API
+boolean allEmpty = strings.stream()
+		// Returns true only if every string in the list is exactly ""
+		.allMatch(String::isEmpty);  
+
+/*
+Note: 
+- " " (a space) is not considered empty by String::isEmpty, 
+  because isEmpty() only returns true for "" (zero-length string).
+*/
+
+// Print the result based on the boolean outcome
+System.out.println(allEmpty ? "All strings are empty" : "Some strings are not empty");
 </code></pre>
 					</div>
 
@@ -946,9 +1048,23 @@ String s1 = isEmpty.test(inpStr) ? "String is Empty" : "not empty";
 							<button class="copy-btn">Copy</button>
 						</div>
 <pre><code>	
-System.out.println(priceLst.stream().max(Float::compare).get());<br>
+// Find the maximum price from the list using Stream and Float::compare
+System.out.println(
+	priceLst.stream()
+			// Compares Float values to get the maximum
+			.max(Float::compare) 
+			// Extracts the Optional value (be cautious if the list can be empty)
+			.get()            
+);
 
-System.out.println(priceLst.stream().min(Float::compare).get());
+// Find the minimum price from the list using Stream and Float::compare
+System.out.println(
+	priceLst.stream()
+			// Compares Float values to get the minimum
+			.min(Float::compare) 
+			// Extracts the Optional value (be cautious if the list can be empty)
+			.get()              
+);
 </code></pre>
 					</div>
 
@@ -959,7 +1075,12 @@ System.out.println(priceLst.stream().min(Float::compare).get());
 							<button class="copy-btn">Copy</button>
 						</div>
 <pre><code>	
-nmbrLst.stream().filter(s -> s % 2 == 0).forEach(System.out::println);
+// Create a stream from the list of numbers
+nmbrLst.stream()      
+// Filter the stream to include only even numbers (those divisible by 2)
+.filter(s -> s % 2 == 0)
+// Print each even number to the console
+.forEach(System.out::println); 
 </code></pre>
 					</div>
 
@@ -970,7 +1091,12 @@ nmbrLst.stream().filter(s -> s % 2 == 0).forEach(System.out::println);
 							<button class="copy-btn">Copy</button>
 						</div>
 <pre><code>	
-nmbrLst.stream().filter(s -> s % 2 != 0).forEach(System.out::println);
+// Create a stream from the list of numbers
+nmbrLst.stream()                
+// Filter the stream to include only odd numbers (those not divisible by 2)
+.filter(s -> s % 2 != 0)       
+// Print each odd number to the console
+.forEach(System.out::println); 
 </code></pre>
 					</div>
 
@@ -981,7 +1107,14 @@ nmbrLst.stream().filter(s -> s % 2 != 0).forEach(System.out::println);
 							<button class="copy-btn">Copy</button>
 						</div>
 <pre><code>	
-System.out.println(nmbrLst.stream().mapToInt(s -> s.intValue()).sum() / nmbrLst.size());
+System.out.println(
+		// Convert the list (e.g., List<Integer>) into a Stream for processing
+		nmbrLst.stream()   
+				// Map each Integer object to its int value (unboxing)
+			   .mapToInt(Integer::intValue)  
+			   // Sum all the int values in the stream and Divide the total sum by the size of the list to get the average
+			   .sum() / nmbrLst.size()
+	);
 </code></pre>
 					</div>
 
@@ -992,7 +1125,12 @@ System.out.println(nmbrLst.stream().mapToInt(s -> s.intValue()).sum() / nmbrLst.
 							<button class="copy-btn">Copy</button>
 						</div>
 <pre><code>	
-nmbrLst.stream().distinct().forEach(System.out::println);
+// Create a stream from the list of integers
+nmbrLst.stream()  
+// Use distinct() to filter out duplicate elements in the stream
+.distinct()           
+// Print each unique element to the console
+.forEach(System.out::println); 
 </code></pre>
 					</div>
 
@@ -1003,9 +1141,16 @@ nmbrLst.stream().distinct().forEach(System.out::println);
 							<button class="copy-btn">Copy</button>
 						</div>
 <pre><code>	
-Optional&lt;Integer&gt; largest_even = nmbrLst.stream().filter(n -> n % 2 == 0).max(Integer::compareTo);
+Optional&lt;Integer&gt; largest_even = 
+		// Convert list to stream
+		nmbrLst.stream()
+		// Filter only even numbers
+		.filter(n -> n % 2 == 0)    
+		// Use max() to find the largest even number
+		.max(Integer::compareTo);           
 
-System.out.println("\nlargest_even:" + largest_even.orElse(null));
+// Print the largest even number, or null if no even numbers are found
+System.out.println("\nlargest_even: " + largest_even.orElse(null)); 
 </code></pre>
 					</div>
 
@@ -1016,13 +1161,26 @@ System.out.println("\nlargest_even:" + largest_even.orElse(null));
 							<button class="copy-btn">Copy</button>
 						</div>
 <pre><code>	
-Map&lt;String, Map&lt;String, List&lt;Employee&gt;&gt;&gt; groupedByDeptAndAgeRange = empList.stream().collect(Collectors.groupingBy(Employee::getDepartment,
-Collectors.groupingBy(e -> {
-	if (e.getAge() <= 30) return "&lt;=30";
-	else if (e.getAge() <= 40) return "31-40";
-	else return "&gt;40";
-})
-));
+// Group employees by department and then by age range
+// We'll define age ranges: &lt;=30, 31-40, &gt;40	
+Map&lt;String, Map&lt;String, List&lt;Employee&gt;&gt;&gt; groupedByDeptAndAgeRange = 
+		// Start a stream from the list of Employee objects
+		empList.stream()
+		// Collect the employees into a Map where:
+		.collect(Collectors.groupingBy(
+			// First level grouping: by department name (e.g., "HR", "IT")
+			Employee::getDepartment, 				        
+			// Second level grouping: by age range
+			Collectors.groupingBy(e -> {
+				if (e.getAge() <= 30) return "<=30";        // Employees aged 30 or below
+				else if (e.getAge() <= 40) return "31-40";  // Employees aged between 31 and 40
+				else return ">40";                          // Employees aged above 40
+			})
+		));
+
+System.out.println("Group by department and age range:");
+// Print the resulting Map, which contains departments as keys and another Map of age ranges to lists of employees
+System.out.println(groupedByDeptAndAgeRange);   
 </code></pre>
 					</div>
 
@@ -1033,11 +1191,22 @@ Collectors.groupingBy(e -> {
 							<button class="copy-btn">Copy</button>
 						</div>
 <pre><code>	
-Map&lt;String, Map&lt;String, List&lt;Employee&gt;&gt;&gt; ageBracketGrouping = empList.stream()					  .collect(Collectors.groupingBy(Employee::getDepartment,
-Collectors.groupingBy(e -> 
-  e.getAge() < 30 ? "Junior" : e.getAge() > 40 ? "Senior" : "Mid"
-)
-));
+// Multi-level grouping: Department -> Age Bracket -> Employees
+Map<String, Map<String, List<Employee>>> ageBracketGrouping = empList.stream()
+		.collect(Collectors.groupingBy(
+			// First level grouping: by department name	
+			Employee::getDepartment, 
+			// Second level grouping: by age bracket
+			Collectors.groupingBy(e -> 
+				e.getAge() < 30 ? "Junior"     // Employees younger than 30
+				: e.getAge() > 40 ? "Senior"   // Employees older than 40
+				: "Mid"                        // Employees between 30 and 40 (inclusive)
+			)
+		));
+
+System.out.println("Group by department and age bracket:");
+// Print the resulting Map, which contains departments as keys and another Map of age brackets to lists of employees
+System.out.println(ageBracketGrouping); 
 </code></pre>
 					</div>
 
@@ -1048,17 +1217,34 @@ Collectors.groupingBy(e ->
 							<button class="copy-btn">Copy</button>
 						</div>
 <pre><code>	
-Map&lt;String, Double&gt; weightedAvgAge = empList.stream().collect(Collectors.groupingBy(
-Employee::getDepartment,
-Collectors.collectingAndThen(
-  Collectors.teeing(
-	Collectors.summingDouble(e -> e.getAge() * e.getSalary()),
-	Collectors.summingDouble(Employee::getSalary),
-	(ageSalarySum, totalSalary) -> ageSalarySum / totalSalary
-  ),
-  Function.identity()
-)
-));
+Map&lt;String, Double&gt; weightedAvgAge = empList.stream()
+		.collect(Collectors.groupingBy(
+			Employee::getDepartment, // Grouping by department
+
+			// collectingAndThen is used to finalize the result of teeing collector.
+			// Collectors.teeing(a, b, merger) is a Java 12 feature that lets you:
+				//Run two collectors in parallel (a and b)
+				//And combine their results using the merger				        
+			Collectors.collectingAndThen(
+				Collectors.teeing(
+					// Collector 1: Sum of (age × salary) — numerator for weighted average
+					Collectors.summingDouble(e -> e.getAge() * e.getSalary()),
+
+					// Collector 2: Sum of salary — denominator for weighted average
+					Collectors.summingDouble(Employee::getSalary),
+
+					// Merger: Divide the two to get the weighted average
+					(ageSalarySum, totalSalary) -> ageSalarySum / totalSalary
+				),
+
+				// Function.identity() just returns the result as-is
+				Function.identity()
+			)
+		));
+
+System.out.println("Weighted average age by department:");
+// Print the resulting Map, which contains departments as keys and their weighted average ages as values
+System.out.println(weightedAvgAge);  
 </code></pre>
 					</div>
 
@@ -1069,10 +1255,19 @@ Collectors.collectingAndThen(
 							<button class="copy-btn">Copy</button>
 						</div>
 <pre><code>	
-Map&lt;String, Double&gt; totalSalaryPerDept = empList.stream().collect(Collectors.groupingBy(
-Employee::getDepartment, 
-Collectors.summingDouble(Employee::getSalary)
-));
+// Group employees by department and calculate total salary per department
+Map&lt;String, Double&gt; totalSalaryPerDept = empList.stream()
+	// Start a stream over the list of employees
+	.collect(Collectors.groupingBy(
+		// Grouping key: department of the employee
+		Employee::getDepartment,                      
+		// Downstream collector: sum salaries in each group
+		Collectors.summingDouble(Employee::getSalary) 
+	));
+
+System.out.println("Total salary per department:");
+
+System.out.println(totalSalaryPerDept);  
 </code></pre>
 					</div>
 
@@ -1083,7 +1278,16 @@ Collectors.summingDouble(Employee::getSalary)
 							<button class="copy-btn">Copy</button>
 						</div>
 <pre><code>	
-Set&lt;String&gt; allSkills = empList.stream().flatMap(e -> e.getSkills().stream())					  .collect(Collectors.toSet());
+// Extract all unique skills from the list of employees
+Set&lt;String&gt; allSkills = empList.stream()
+	// Convert each employee into a stream of their skills (List<String> → Stream<String>)
+	.flatMap(e -> e.getSkills().stream())
+	// Collect all the skills into a Set to remove duplicates
+	.collect(Collectors.toSet());
+
+System.out.println("All skills:");
+// Print the set of all unique skills
+System.out.println(allSkills);	
 </code></pre>
 					</div>
 
@@ -1094,10 +1298,27 @@ Set&lt;String&gt; allSkills = empList.stream().flatMap(e -> e.getSkills().stream
 							<button class="copy-btn">Copy</button>
 						</div>
 <pre><code>	
-Map&lt;String, List&lt;Employee&gt;&gt; employeesBySkill = empList.stream().flatMap(e -> e.getSkills().stream()				.map(skill -> new AbstractMap.SimpleEntry&lt;&gt;(skill, e))).collect(Collectors.groupingBy(
-Map.Entry::getKey, 
-Collectors.mapping(Map.Entry::getValue, Collectors.toList())
-));
+// Group employees by each skill they have
+Map&lt;String, List&lt;Employee&gt;&gt; employeesBySkill = empList.stream()
+	// For each employee, generate (skill, employee) pairs 
+	.flatMap(e -> 
+		// For each employee, get their skills and create a stream
+		e.getSkills().stream()
+		// For each skill of the employee, create a Map.Entry with skill as key and employee as value
+		 .map(skill -> new AbstractMap.SimpleEntry<>(skill, e))
+	)
+	// Collect the pairs into a Map<String, List<Employee>> where:
+	// - key = skill name
+	// - value = list of employees having that skill
+	.collect(Collectors.groupingBy(			    	
+		Map.Entry::getKey, // Grouping key = skill name                               
+		Collectors.mapping(Map.Entry::getValue, // extract the Employee object
+						   Collectors.toList()) // collect employees into a list
+	));
+
+System.out.println("Employees by skill:");
+// Print the resulting Map, which contains skills as keys and lists of employees as values
+System.out.println(employeesBySkill);	
 </code></pre>
 					</div>
 
@@ -1108,12 +1329,22 @@ Collectors.mapping(Map.Entry::getValue, Collectors.toList())
 							<button class="copy-btn">Copy</button>
 						</div>
 <pre><code>	
-Map&lt;Boolean, Map&lt;Boolean, List&lt;Employee&gt;&gt;&gt; partitionByAgeAndSalary = empList.stream()					  .collect(Collectors.partitioningBy(
-e -> e.getAge() > 30,
-Collectors.partitioningBy(
-  e -> e.getSalary() > 70000
-)
-));
+// Partition employees based on two boolean conditions:
+// 1. Age > 30
+// 2. Salary > 70000 (inside each age partition)
+Map&lt;Boolean, Map&lt;Boolean, List&lt;Employee&gt;&gt;&gt; partitionByAgeAndSalary = empList.stream()
+	.collect(
+		Collectors.partitioningBy(
+			e -> e.getAge() > 30, // Outer partition: true if age > 30
+			Collectors.partitioningBy(
+				e -> e.getSalary() > 70000 // Inner partition: true if salary > 70k
+			)
+		)
+	);
+
+System.out.println("Partition by age>30 and salary>70k:");
+// Print the resulting Map, which contains two levels of partitions
+System.out.println(partitionByAgeAndSalary);
 </code></pre>
 					</div>
 
@@ -1124,8 +1355,16 @@ Collectors.partitioningBy(
 							<button class="copy-btn">Copy</button>
 						</div>
 <pre><code>	
-Employee withMostSkills = empList.stream().max(Comparator.comparingInt(e -> e.getSkills().size()))
-.orElse(null);
+// Find the employee with the most number of skills
+Employee withMostSkills = empList.stream()
+	// Use max() to find the employee with the maximum number of skills and Compare based on size of the skills list
+	.max(Comparator.comparingInt(e -> e.getSkills().size())) 
+	// If no employee is found (e.g., empty list), return null
+	.orElse(null);
+
+System.out.println("Employee with most skills:");
+// Print the employee details of the one with the most skills
+System.out.println(withMostSkills); 
 </code></pre>
 					</div>
 
@@ -1136,10 +1375,17 @@ Employee withMostSkills = empList.stream().max(Comparator.comparingInt(e -> e.ge
 							<button class="copy-btn">Copy</button>
 						</div>
 <pre><code>	
-Map&lt;String, Double&gt; avgSalaryByDeptOver30 = empList.stream().filter(e -> e.getAge() > 30).collect(Collectors.groupingBy(
-Employee::getDepartment, 
-Collectors.averagingDouble(Employee::getSalary)
-));
+// Filter employees older than 30 and calculate average salary grouped by department
+Map&lt;String, Double&gt; avgSalaryByDeptOver30 = empList.stream()
+	.filter(e -> e.getAge() > 30) // Only include employees whose age is greater than 30
+	.collect(Collectors.groupingBy(
+		Employee::getDepartment, // Group by department
+		Collectors.averagingDouble(Employee::getSalary) // Compute average salary within each group
+	));
+
+System.out.println("Average salary by dept for employees over 30:");
+// Print the resulting Map, which contains departments as keys and their average salaries as values
+System.out.println(avgSalaryByDeptOver30); 
 </code></pre>
 					</div>
 
@@ -1150,11 +1396,17 @@ Collectors.averagingDouble(Employee::getSalary)
 							<button class="copy-btn">Copy</button>
 						</div>
 <pre><code>	
-Map&lt;String, Employee&gt; itEmployeeMap = empList.stream().filter(e -> "IT".equals(e.getDepartment()))
-.collect(Collectors.toMap(
-Employee::getName, 
-Function.identity()
-));
+// Create a map of IT department employees with employee name as key and employee object as value
+Map&lt;String, Employee&gt; itEmployeeMap = empList.stream()
+	.filter(e -> "IT".equals(e.getDepartment())) // Filter only employees in the IT department
+	.collect(Collectors.toMap(
+		Employee::getName,         // Key: employee's name
+		Function.identity()        // Value: employee object itself
+	));
+
+System.out.println("IT Employee Map:");
+// Print the resulting map, which contains employee names as keys and Employee objects as values
+System.out.println(itEmployeeMap); 
 </code></pre>
 					</div>
 
@@ -1165,12 +1417,19 @@ Function.identity()
 							<button class="copy-btn">Copy</button>
 						</div>
 <pre><code>	
-Map.Entry&lt;String, Long&gt; deptWithMostEmployees = empList.stream().collect(Collectors.groupingBy(
-Employee::getDepartment, 
-Collectors.counting()
-)).entrySet().stream()
-.max(Map.Entry.comparingByValue())
-.orElse(null);
+// Step 1: Group employees by department and count how many employees are in each department
+Map.Entry&lt;String, Long&gt; deptWithMostEmployees = empList.stream()
+	.collect(Collectors.groupingBy(
+		Employee::getDepartment,         // Grouping key: department
+		Collectors.counting()            // Downstream collector: count the number of employees in each group
+	))
+	.entrySet().stream()                 // Convert the map into a stream of Map.Entry
+	.max(Map.Entry.comparingByValue())  // Find the entry with the highest count (most employees)
+	.orElse(null);                       // Return null if no employees found
+
+System.out.println("Department with most employees:");
+// Print the department name and the count of employees in that department
+System.out.println(deptWithMostEmployees); 
 </code></pre>
 					</div>
 
@@ -1181,9 +1440,24 @@ Collectors.counting()
 							<button class="copy-btn">Copy</button>
 						</div>
 <pre><code>	
-List&lt;Employee&gt; sortedByDeptAndSalary = empList.stream().sorted(Comparator.comparing(Employee::getDepartment)
-.thenComparing(Employee::getSalary)
-.reversed()).collect(Collectors.toList());
+// Stream the list of employees to perform sorting
+List&lt;Employee&gt; sortedByDeptAndSalary = empList.stream()
+	
+	// Sort first by department in ascending (default) order
+	.sorted(
+		Comparator.comparing(Employee::getDepartment)
+		
+		// Then sort by salary in descending order using reversed()
+		.thenComparing(Comparator.comparing(Employee::getSalary).reversed())
+	)
+
+	// Collect the sorted results into a new List
+	.collect(Collectors.toList());
+
+System.out.println("Sorted by dept and salary (desc):");
+
+// Print each employee from the sorted list
+sortedByDeptAndSalary.forEach(System.out::println);
 </code></pre>
 					</div>
 
@@ -1194,12 +1468,22 @@ List&lt;Employee&gt; sortedByDeptAndSalary = empList.stream().sorted(Comparator.
 							<button class="copy-btn">Copy</button>
 						</div>
 <pre><code>	
-Map&lt;String, Double&gt; avgAgeByDept = empList.stream().collect(Collectors.groupingBy(
-Employee::getDepartment, 
-Collectors.averagingInt(Employee::getAge)
-));
+// Calculate and print the average age of employees grouped by department
+Map&lt;String, Double&gt; avgAgeByDept = empList.stream()
+
+	// Group the employees by department
+	.collect(Collectors.groupingBy(
+		
+		// Key: Department name
+		Employee::getDepartment,
+
+		// Downstream collector: average the age of employees in each department
+		Collectors.averagingInt(Employee::getAge)
+	));
 
 System.out.println("Average age by department:");
+// Print the resulting Map, which contains departments as keys and their average ages as values
+System.out.println(avgAgeByDept);	
 </code></pre>
 					</div>
 
@@ -1210,13 +1494,29 @@ System.out.println("Average age by department:");
 							<button class="copy-btn">Copy</button>
 						</div>
 <pre><code>	
-Map&lt;String, Employee&gt; highestPaidPerDept = empList.stream().collect(Collectors.groupingBy(
-Employee::getDepartment,
-Collectors.collectingAndThen(
-  Collectors.maxBy(Comparator.comparingDouble(Employee::getSalary)), 
-  Optional::get
-)
-));
+// Create a map of highest paid employee per department
+Map&lt;String, Employee&gt; highestPaidPerDept = empList.stream()
+
+	// Convert the employee list into a stream for processing
+	.collect(Collectors.groupingBy(
+		
+		// Key: Department name (e.g., "IT", "HR", etc.)
+		Employee::getDepartment,
+
+		// Value: Employee with the highest salary in that department
+		Collectors.collectingAndThen(
+
+			// First, find the employee with max salary in each department
+			Collectors.maxBy(Comparator.comparingDouble(Employee::getSalary)),
+
+			// Since maxBy returns an Optional<Employee>, we use Optional::get to extract the actual employee object
+			Optional::get
+		)
+	));
+
+System.out.println("Highest paid per department:");
+// Print the resulting Map, which contains department names as keys and the highest paid employee in that department as values
+System.out.println(highestPaidPerDept);
 </code></pre>
 					</div>
 
@@ -1227,11 +1527,21 @@ Collectors.collectingAndThen(
 							<button class="copy-btn">Copy</button>
 						</div>
 <pre><code>	
+// Calculate the total salary of employees in IT and Finance departments
 double sumITFinance = empList.stream()
-.filter(e -> "IT".equals(e.getDepartment()) || 
-	  "Finance".equals(e.getDepartment()))
-.mapToDouble(Employee::getSalary)
-.sum();
+
+	// Filter only employees who belong to IT or Finance department
+	.filter(e -> "IT".equals(e.getDepartment()) || "Finance".equals(e.getDepartment()))
+
+	// Convert the remaining employee stream to a DoubleStream of their salaries
+	.mapToDouble(Employee::getSalary)
+
+	// Sum the salaries
+	.sum();
+
+System.out.println("Sum of salaries in IT and Finance:");
+// Print the total salary expenditure for IT and Finance departments
+System.out.println(sumITFinance);
 </code></pre>
 					</div>
 
@@ -1242,34 +1552,54 @@ double sumITFinance = empList.stream()
 							<button class="copy-btn">Copy</button>
 						</div>
 <pre><code>	
+// Create a set to hold intermediate results
 Set&lt;String&gt; intermediateResults = new HashSet&lt;&gt;();
 listOfLists.stream().forEach(System.out::println);
 System.out.print("\n");
 
-List&lt;String&gt; result = listOfLists.stream().flatMap(List::stream)
-.map(String::toUpperCase).sorted().filter(s -> s.startsWith("S"))
-.distinct().peek(s -> intermediateResults.add(s)).collect(Collectors.toList());<br>
+// Stream pipeline demonstrating various intermediate operations
+List&lt;String&gt; result = listOfLists.stream().flatMap(List::stream) // Flatten the list of lists into a single stream
+		.map(String::toUpperCase) // Transform each element to uppercase
+		.sorted() // Sort elements
+		.filter(s -> s.startsWith("S")) // Filter elements starting with "S"
+		.distinct() // Remove duplicate elements
+		.peek(s -> intermediateResults.add(s)) // Perform an action (add to set) on each element
+		.collect(Collectors.toList()); // Collect the final result into a list
 
+// Print the intermediate results
 System.out.println("Intermediate Results:");
 System.out.println("Before Sort:");
 intermediateResults.forEach(System.out::println);
 System.out.print("\n");
 
 System.out.println("After Sort:");
-intermediateResults.stream()
-  .sorted()
-  .forEach(System.out::println);
+intermediateResults.stream().sorted().forEach(System.out::println);
 System.out.print("\n");
 
+// Print the final result
 System.out.println("Final Result:");
 result.forEach(System.out::println);
 System.out.print("\n");
 
-listOfLists.stream()
-  .flatMap(List::stream)
-  .distinct()
-  .collect(Collectors.toList())
-  .forEach(System.out::println);
+listOfLists.stream().flatMap(List::stream).distinct().collect(Collectors.toList()).forEach(System.out::println);  
+
+System.out.println("Stream pipeline demonstrating multiple operations:\n");
+
+// Another example
+List&lt;String&gt; topITSkillNames = empList.stream()
+	.filter(e -> e.getDepartment().equals("IT"))                          // 1. Filter only IT employees
+	.filter(e -> e.getSalary() > 10000)                                   // 2. Filter those with salary > 85k
+	.distinct()                                                           // 3. Remove duplicates (if any)
+	.sorted(Comparator.comparing(Employee::getAge))                       // 4. Sort by age ascending
+	.peek(e -> System.out.println("After sorting: " + e.getName()))       // 5. Peek to debug stream content
+	.flatMap(e -> e.getSkills().stream())                                 // 6. Flatten the list of skills
+	.filter(skill -> skill.toLowerCase().contains("java"))                // 7. Filter skills containing "java"
+	.map(String::toUpperCase)                                             // 8. Convert to uppercase
+	.distinct()                                                           // 9. Remove duplicate skill entries
+	.limit(3)                                                             // 10. Limit to top 3 skills
+	.collect(Collectors.toList());                                        // 11. Collect as a List
+
+System.out.println("\nFinal Result (Top Java-related IT skills): " + topITSkillNames);        
 </code></pre>
 					</div>										
                 </div>
@@ -1307,6 +1637,7 @@ listOfLists.stream()
 </body>
 
 </html>
+
 
 
 
