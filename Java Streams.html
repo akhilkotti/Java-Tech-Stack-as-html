@@ -612,15 +612,17 @@ List&lt;List&lt;String&gt;&gt; listOfLists = Arrays.asList(
                             <span class="code-lang">Java</span>
                             <button class="copy-btn">Copy</button>
                         </div>
-						<pre><code>
-						empList.stream()
-					    // Use peek() to apply a side-effect: increase each employee's salary by 10%
-					    .peek(e -> e.salaryIncrement(10.0))					    
-					    // Sort employees by their name in alphabetical order
-					    .sorted(Comparator.comparing(Employee::getName))					    
-					    // Print each employee to the console
-					    .forEach(System.out::println);
-						</code></pre>
+<pre><code>
+empList.stream()
+// Use peek() to apply a side-effect: increase each employee's salary by 10%
+.peek(e -> e.salaryIncrement(10.0))		
+	
+// Sort employees by their name in alphabetical order
+.sorted(Comparator.comparing(Employee::getName))	
+	
+// Print each employee to the console
+.forEach(System.out::println);
+</code></pre>
                     </div>
                     
                     <h3 id="filter-by-id" class="subsection-title">3. After Hike, Print the Stream Where ID > 1</h3>
@@ -1123,5 +1125,6 @@ listOfLists.stream()
 </body>
 
 </html>
+
 
 
