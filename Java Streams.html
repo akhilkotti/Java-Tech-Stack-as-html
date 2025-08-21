@@ -638,7 +638,16 @@ empList.stream()
                             <span class="code-lang">Java</span>
                             <button class="copy-btn">Copy</button>
                         </div>
-                        empList.stream().filter(e -> e.getId() > 1).forEach(System.out::println);
+<pre><code>
+// Convert the list of employees into a Stream for processing	
+empList.stream() 
+
+// Filter the stream to include only employees whose ID is greater than 1	
+.filter(akhil -> akhil.getId() > 1) 
+
+// Print each filtered employee to the console	
+.forEach(System.out::println); 
+</code></pre>	
                     </div>
                     
                     <h3 id="reverse-sort-salary" class="subsection-title">4. Reverse Sorting by Salary</h3>
@@ -647,7 +656,19 @@ empList.stream()
                             <span class="code-lang">Java</span>
                             <button class="copy-btn">Copy</button>
                         </div>
-                        empList.stream().map(Employee::getSalary).sorted(Comparator.reverseOrder()).forEach(System.out::println);
+<pre><code>
+// Convert the list of employees into a Stream for processing
+empList.stream() 
+
+// Extract (map) only the salary from each Employee object
+.map(Employee::getSalary) 
+
+// Sort the salaries in descending order (highest to lowest)
+.sorted(Comparator.reverseOrder())
+
+// Print each sorted salary to the console
+.forEach(System.out::println);
+</code></pre>	
                     </div>
                     
                     <h3 id="reverse-sort-name" class="subsection-title">5. Reverse Sorting by Name</h3>
@@ -656,7 +677,24 @@ empList.stream()
                             <span class="code-lang">Java</span>
                             <button class="copy-btn">Copy</button>
                         </div>
-                        empList.stream().filter(e -> e.getId() > 1).sorted(Comparator.comparing(Employee::getName).reversed().thenComparing(Employee::getId)).forEach(System.out::println);
+<pre><code>						
+// Start a stream from the list of Employee objects
+empList.stream()
+
+ // Filter the stream to include only employees whose ID is greater than 1
+.filter(akhil -> akhil.getId() > 1) 
+.sorted(
+	Comparator
+		// First sort by employee name in ascending order
+		.comparing(Employee::getName) 
+		// Reverse the order of name sorting to get descending name order
+		.reversed() 
+		// If names are the same, then sort by ID in ascending order
+		.thenComparing(Employee::getId) 
+)
+// Print each sorted employee object to the console
+.forEach(System.out::println);
+</code></pre>							
                     </div>
                     
                     <h3 id="second-highest-salary" class="subsection-title">6. Print 2nd Highest Salary</h3>
@@ -1132,6 +1170,7 @@ listOfLists.stream()
 </body>
 
 </html>
+
 
 
 
