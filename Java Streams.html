@@ -591,7 +591,8 @@ List&lt;List&lt;String&gt;&gt; listOfLists = Arrays.asList(
                             <span class="code-lang">Java</span>
                             <button class="copy-btn">Copy</button>
                         </div>
-                        empList.stream().sorted(Comparator.comparing(Employee::getName)).forEach(System.out::println);
+						// Convert the list of employees to a stream
+                        empList.stream().sorted(Comparator.comparing(Employee::getName)).forEach(System.out::println);// Sort employees alphabetically by their name
                     </div>
                     
                     <h3 id="provide-hike" class="subsection-title">2. Provide Hike and Show Salary with Increment</h3>
@@ -1101,4 +1102,5 @@ listOfLists.stream()
         });
     </script>
 </body>
+
 </html>
