@@ -592,7 +592,8 @@ List&lt;List&lt;String&gt;&gt; listOfLists = Arrays.asList(
                             <button class="copy-btn">Copy</button>
                         </div>
 						// Convert the list of employees to a stream
-                        empList.stream().sorted(Comparator.comparing(Employee::getName)).forEach(System.out::println);// Sort employees alphabetically by their name
+                        empList.stream().sorted(Comparator.comparing(Employee::getName))
+						.forEach(System.out::println);// Sort employees alphabetically by their name
                     </div>
                     
                     <h3 id="provide-hike" class="subsection-title">2. Provide Hike and Show Salary with Increment</h3>
@@ -601,7 +602,13 @@ List&lt;List&lt;String&gt;&gt; listOfLists = Arrays.asList(
                             <span class="code-lang">Java</span>
                             <button class="copy-btn">Copy</button>
                         </div>
-                        empList.stream().peek(e -> e.salaryIncrement(10.0)).sorted(Comparator.comparing(Employee::getName))  .forEach(System.out::println);
+						empList.stream()
+					    // Use peek() to apply a side-effect: increase each employee's salary by 10%
+					    .peek(e -> e.salaryIncrement(10.0))					    
+					    // Sort employees by their name in alphabetical order
+					    .sorted(Comparator.comparing(Employee::getName))					    
+					    // Print each employee to the console
+					    .forEach(System.out::println);
                     </div>
                     
                     <h3 id="filter-by-id" class="subsection-title">3. After Hike, Print the Stream Where ID > 1</h3>
@@ -628,7 +635,7 @@ List&lt;List&lt;String&gt;&gt; listOfLists = Arrays.asList(
                             <span class="code-lang">Java</span>
                             <button class="copy-btn">Copy</button>
                         </div>
-                        empList.stream().filter(e -> e.getId() > 1).sorted(Comparator.comparing(Employee::getName).reversed()    .thenComparing(Employee::getId)).forEach(System.out::println);
+                        empList.stream().filter(e -> e.getId() > 1).sorted(Comparator.comparing(Employee::getName).reversed().thenComparing(Employee::getId)).forEach(System.out::println);
                     </div>
                     
                     <h3 id="second-highest-salary" class="subsection-title">6. Print 2nd Highest Salary</h3>
@@ -1104,3 +1111,4 @@ listOfLists.stream()
 </body>
 
 </html>
+
