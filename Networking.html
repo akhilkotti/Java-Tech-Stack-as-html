@@ -416,6 +416,15 @@
         .clickable-header:focus {
             box-shadow: inset 0 0 5px rgba(0,0,0,0.3);
         }		
+
+            .highlight-text {
+                background: #2c3e50;
+                color: #ecf0f1;
+                padding: 2px 6px;
+                border-radius: 4px;
+                font-family: monospace;
+                font-size: 14px;
+            }		
     </style>
 </head>
 <body>
@@ -486,18 +495,14 @@
 				<a href="#network-troubleshooting-section" class="feature-header clickable-header">Network Troubleshooting</a>
 				<div class="feature-content">
 					<ul>
-						<li>OSI Model layers and common issues per layer</li>
-						<li>Practice Packet tracing (ping, traceroute, Wireshark).</li>
-						<li>Learn common tools (ping, traceroute, nslookup, telnet/ssh, tcpdump).</li>
-						<li>Walk through systematic troubleshooting steps
-							<ol>
-							  <li>Identify the problem.</li>
-							  <li>Gather information.</li>
-							  <li>Analyze and isolate the issue.</li>
-							  <li>Implement a fix.</li>
-							  <li>Verify solution and document.</li>
-							</ol>
-						</li>
+						<li><a href="#network-diaognistics" class="clickable-header">Diaognising a network issue</a>
+						<li>Packet Tracing day-to-day issues for each OSI layer						
+						<ul>
+							<li><a href="#pkt-tracing-overview" class="clickable-header">Overview - OSI Layers</a>
+							<li><a href="#pkt-tracing-issues" class="clickable-header">Common day-to-day issues for each OSI layer </a>
+							<li><a href="#realtime-pkt-toubleshoot" class="clickable-header">Real Time - Troubleshooting transcripts</a>
+						</ul>
+						</li>					
 					</ul>
 				</div>	
 			</div>
@@ -506,7 +511,13 @@
 				<a href="#problem-solving-section" class="feature-header clickable-header">Problem Solving</a>
 				<div class="feature-content">
 					<ul>
-						<li>Coming up...</li>
+						<li>How topological changes are handled, STP						
+						<ul>
+							<li><a href="#overview" class="clickable-header">Overview</a>
+							<li><a href="#real-time-troubleshoot" class="clickable-header">Real time troubleshooting</a>
+							<li><a href="#ts-rs" class="clickable-header">Troubleshooting & Resolution</a>
+						</ul>
+						</li>
 					</ul>
 				</div>
 			</div>
@@ -5125,17 +5136,3333 @@
 					</div>
 				</div>
 			</div>			
-		      
             <h2 id="network-troubleshooting-section" class="section-title">3. Network Troubleshootings</h2>
             <a href="#features-overview" class="back-to-top-btn">↑ Back to Features</a>
-            <div class="subsection">
-            </div>
-			<div class="subsection">				
-			</div>            
-            <h2 id="problem-solving-section" class="section-title">4. Problem Solving</h2>
-            <a href="#features-overview" class="back-to-top-btn">↑ Back to Features</a>
-			<div class="subsection">			
-			</div>						
+			<div class="subsection">
+				<h2 id="network-diaognistics" class="section-title">1. Diaognising a network issue from start to finish</h2>
+				<a href="#features-overview" class="back-to-top-btn">↑ Back to Features</a>
+				<div class="subsection1">
+					<h3>Step 1: Identify the Problem</h3>
+					<p><strong>Goal:</strong> Understand the scope and symptoms of the network issue.</p>
+
+					<p><strong>Actions:</strong></p>
+					<ul>
+					  <li><strong>Ask affected users for details:</strong>
+						<ul>
+						  <li>Who, What, When, Where, How</li>
+						  <li>Is it affecting a single device, a subnet, or the entire network?</li>
+						  <li>Is it intermittent or persistent?</li>
+						</ul>
+					  </li>
+					  <li><strong>Check for recent changes:</strong>
+						<ul>
+						  <li>Firmware updates, configuration changes, cabling, or hardware replacements</li>
+						</ul>
+					  </li>
+					</ul>
+
+					<h3>Step 2: Gather Information</h3>
+					<p><strong>Goal:</strong> Collect relevant data before making changes.</p>
+
+					<p><strong>Actions:</strong></p>
+					<ul>
+					  <li><strong>Check device IP configuration:</strong>
+						<ul>
+						  <li>Windows: <span class="highlight-text">ipconfig /all</span></li>
+						  <li>Linux/Mac: <span class="highlight-text">ifconfig</span> or <span class="highlight-text">ip addr</span></li>
+						</ul>
+					  </li>
+					  <li><strong>Verify network topology:</strong>
+						<ul>
+						  <li>Identify routers, switches, firewalls, VLANs, etc.</li>
+						</ul>
+					  </li>
+					  <li><strong>Document observed errors, logs, or alerts.</strong></li>
+					</ul>
+					<h3>Step 3: Layered Troubleshooting Approach (OSI Model)</h3>
+					<p>Use the OSI model (<strong>Physical → Data Link → Network → Transport → Application</strong>) to systematically isolate the problem.</p>
+
+
+					<strong>A. Physical Layer</strong>
+					<ul>
+					  <li>Check cables, connectors, and hardware LEDs.</li>
+					  <li>Replace suspected faulty cables.</li>
+					  <li>Ensure devices are powered on.</li>
+					</ul>
+
+					<strong>B. Data Link Layer</strong>
+					<ul>
+					  <li>Verify switch port status: <span class="highlight-text">show interface status</span></li>
+					  <li>Check VLAN assignment.</li>
+					  <li>Ensure no duplex or speed mismatches.</li>
+					</ul>
+
+
+					<strong>C. Network Layer</strong>
+					<ul>
+					  <li>Test connectivity with <span class="highlight-text">ping</span> to:
+						<ul>
+						  <li>Local host (127.0.0.1) → verifies TCP/IP stack</li>
+						  <li>Default gateway → verifies L2/L3 connectivity</li>
+						  <li>Remote host → verifies routing</li>
+						</ul>
+					  </li>
+					  <li>Use <span class="highlight-text">traceroute</span>/<span class="highlight-text">tracert</span> to identify where the path breaks.</li>
+					  <li>Verify IP addressing and subnet mask.</li>
+					</ul>
+
+					<strong>D. Transport Layer</strong>
+					<ul>
+					  <li>Use <span class="highlight-text">telnet</span> or <span class="highlight-text">nc</span> (netcat) to test specific TCP/UDP ports.</li>
+					  <li>Check for firewall rules blocking traffic.</li>
+					</ul>
+
+					<strong>E. Application Layer</strong>
+					<ul>
+					  <li>Test applications directly (HTTP, FTP, DNS).</li>
+					  <li>Verify service availability and correct server configuration.</li>
+					</ul>
+
+
+					<h3>Step 4: Check Logs and Monitoring</h3>
+					<ul>
+					  <li>Router/switch logs: <span class="highlight-text">show log</span> or <span class="highlight-text">show logging</span></li>
+					  <li>Syslogs on servers or firewalls.</li>
+					  <li>Network monitoring tools (e.g., Nagios, PRTG, SolarWinds) for anomalies.</li>
+					</ul>
+
+					<h3>Step 5: Identify Recent Changes</h3>
+					<p>Correlate network issues with recent:</p>
+					<ul>
+					  <li>Device upgrades</li>
+					  <li>Configuration changes</li>
+					  <li>Security policies or ACL updates</li>
+					  <li>Software/firmware updates</li>
+					</ul>
+
+					<h3>Step 6: Isolate and Test</h3>
+					<p>Segment the network to isolate the problem:</p>
+					<ul>
+					  <li>Test connectivity from multiple points (local device, another subnet).</li>
+					  <li>Swap devices (NIC, switch port, cable) to rule out hardware failure.</li>
+					  <li>Disable suspect firewalls temporarily (if safe).</li>
+					</ul>
+
+					<h3>Step 7: Apply Fix</h3>
+					<p>After isolating root cause:</p>
+					<ul>
+					  <li>Correct misconfigurations (IP, VLAN, ACL, routing).</li>
+					  <li>Replace faulty hardware.</li>
+					  <li>Update firmware/software if needed.</li>
+					</ul>
+
+					<h3>Step 8: Verify</h3>
+					<p>Test end-to-end connectivity:</p>
+					<ul>
+					  <li>Ping, traceroute, application access.</li>
+					  <li>Verify user reports confirm issue is resolved.</li>
+					</ul>
+
+					<h3>Step 9: Document and Prevent</h3>
+					<p>Record:</p>
+					<ul>
+					  <li>Cause of the issue</li>
+					  <li>Actions taken</li>
+					  <li>Lessons learned</li>
+					</ul>
+
+					<p>Implement preventive measures:</p>
+					<ul>
+					  <li>Monitoring</li>
+					  <li>Redundancy</li>
+					  <li>Change control procedures</li>
+					</ul>
+					<h3>Proactive Tips</h3>
+					<ul>
+					  <li>Always start from <strong>Layer 1 (Physical)</strong> and move upward.</li>
+					  <li>Use the <em>“divide and conquer”</em> method: isolate the affected segment.</li>
+					  <li>Maintain baseline configurations and network diagrams.</li>
+					  <li>Monitor trends instead of only reacting to incidents.</li>
+					</ul>						
+				</div>
+
+				<h2 id="pkt-tracing" class="section-title">2. Trace a packet path - Tools - Different layers of OSI model</h2>
+				<a href="#features-overview" class="back-to-top-btn">↑ Back to Features</a>
+				<div class="subsection1">
+					<h2 id="pkt-tracing-overview" class="section-title">a. Overview - OSI Layers</h2>
+					<a href="#features-overview" class="back-to-top-btn">↑ Back to Features</a>				
+					<div class="subsection1">
+						<h3>1. Physical Layer (Layer 1)</h3>
+						<p><strong>Goal:</strong> Verify the actual physical connection and media.</p>
+
+						<p><strong>Symptoms of issues:</strong></p>
+						<ul>
+						  <li>No link light on switch/port</li>
+						  <li>Intermittent connectivity</li>
+						  <li>Slow or failed link negotiation</li>
+						</ul>
+
+						<p><strong>Steps &amp; Tools:</strong></p>
+						<ol>
+						  <li><strong>Check cabling and hardware</strong>
+							<ul>
+							  <li>Inspect cables (Ethernet, fiber, copper) for damage.</li>
+							  <li>Ensure connectors are properly seated.</li>
+							</ul>
+						  </li>
+						  <li><strong>Check link lights on NICs/switch ports</strong>
+							<ul>
+							  <li>LEDs indicate link/activity.</li>
+							</ul>
+						  </li>
+						  <li><strong>Use tools<span class="highlight-text">ethtool</span> (Linux)/NIC diagnostics (Windows)</strong>
+							<ul>
+							  <li>Check interface status, speed, duplex mismatch.</li>
+							</ul>
+						  </li>
+						  <li><strong>Loopback test (optional)</strong>
+							<ul>
+							  <li>Test if the NIC can transmit/receive locally.</li>
+							</ul>
+						  </li>
+						</ol>
+
+						<h3>2. Data Link Layer (Layer 2)</h3>
+						<p><strong>Goal:</strong> Verify that MAC addresses and local switching are correct.</p>
+
+						<p><strong>Symptoms of issues:</strong></p>
+						<ul>
+						  <li>ARP failures</li>
+						  <li>VLAN misconfiguration</li>
+						  <li>Frames not reaching the correct device</li>
+						</ul>
+
+						<p><strong>Steps &amp; Tools:</strong></p>
+						<ol>
+						  <li><strong>Check VLAN configuration</strong>
+							<ul>
+							  <li><span class="highlight-text">show vlan brief</span> on switches</li>
+							</ul>
+						  </li>
+						  <li><strong>Check MAC address table</strong>
+							<ul>
+							  <li><span class="highlight-text">show mac address-table</span></li>
+							</ul>
+						  </li>
+						  <li><strong>Ping test within the same VLAN</strong>
+							<ul>
+							  <li>Confirms Layer 2 reachability.</li>
+							</ul>
+						  </li>
+						  <li><strong>Use Wireshark / tcpdump</strong>
+							<ul>
+							  <li>Capture packets to see if ARP requests/replies are being exchanged.</li>
+							  <li>Verify correct source/destination MAC addresses.</li>
+							</ul>
+						  </li>
+						</ol>
+
+						<h3>3. Network Layer (Layer 3)</h3>
+						<p><strong>Goal:</strong> Ensure correct IP addressing, routing, and packet delivery.</p>
+
+						<p><strong>Symptoms of issues:</strong></p>
+						<ul>
+						  <li>IP misconfiguration</li>
+						  <li>Routing loops or missing routes</li>
+						  <li>TTL exceeded</li>
+						</ul>
+
+						<p><strong>Steps &amp; Tools:</strong></p>
+						<ol>
+						  <li><strong>Check IP configuration</strong>
+							<ul>
+							  <li><span class="highlight-text">ipconfig / ifconfig / ip addr show</span></li>
+							  <li>Verify subnet mask, gateway, and IP.</li>
+							</ul>
+						  </li>
+						  <li><strong>Ping &amp; traceroute</strong>
+							<ul>
+							  <li><span class="highlight-text">tracert</span> (Windows), <span class="highlight-text">traceroute</span> (Linux)</li>
+							  <li>Trace the path a packet takes to the destination and identify where it stops.</li>
+							</ul>
+						  </li>
+						  <li><strong>Check routing tables</strong>
+							<ul>
+							  <li><span class="highlight-text">route print</span> (Windows) / <span class="highlight-text">netstat -rn</span> or <span class="highlight-text">ip route</span> (Linux)</li>
+							  <li>Ensure proper next-hop routes exist.</li>
+							</ul>
+						  </li>
+						  <li><strong>Use Wireshark</strong>
+							<ul>
+							  <li>Check for ICMP “destination unreachable” messages.</li>
+							  <li>Confirm source/destination IPs in packet captures.</li>
+							</ul>
+						  </li>
+						</ol>
+
+						<h3>4. Transport Layer (Layer 4)</h3>
+						<p><strong>Goal:</strong> Ensure correct port delivery (TCP/UDP) and connection establishment.</p>
+
+						<p><strong>Symptoms of issues:</strong></p>
+						<ul>
+						  <li>Connection refused or timeout</li>
+						  <li>Packet loss at port level</li>
+						</ul>
+
+						<p><strong>Steps &amp; Tools:</strong></p>
+						<ol>
+						  <li><strong>Test TCP connectivity</strong>
+							<ul>
+							  <li><span class="highlight-text">telnet &lt;IP&gt; &lt;port&gt;</span></li>
+							  <li><span class="highlight-text">nc</span> (netcat) to check if port is listening</li>
+							</ul>
+						  </li>
+						  <li><strong>Check firewall rules</strong>
+							<ul>
+							  <li>OS-level (<span class="highlight-text">iptables</span>, <span class="highlight-text">ufw</span>, Windows Firewall)</li>
+							  <li>Network ACLs / security groups</li>
+							</ul>
+						  </li>
+						  <li><strong>Wireshark analysis</strong>
+							<ul>
+							  <li>Look for TCP handshake issues (SYN, SYN-ACK, ACK)</li>
+							  <li>Identify retransmissions or RSTs</li>
+							</ul>
+						  </li>
+						</ol>
+
+						<h3>5. Session Layer (Layer 5)</h3>
+						<p><strong>Goal:</strong> Ensure sessions are established and maintained correctly.</p>
+
+						<p><strong>Symptoms of issues:</strong></p>
+						<ul>
+						  <li>Application unable to establish sessions</li>
+						  <li>Authentication failures</li>
+						</ul>
+
+						<p><strong>Steps &amp; Tools:</strong></p>
+						<ol>
+						  <li><strong>Check authentication and session services</strong>
+							<ul>
+							  <li>Kerberos, RDP, SMB sessions, or VPN logs</li>
+							</ul>
+						  </li>
+						  <li><strong>Network capture</strong>
+							<ul>
+							  <li>Confirm session initiation packets are sent and received.</li>
+							</ul>
+						  </li>
+						</ol>
+
+						<h3>6. Presentation Layer (Layer 6)</h3>
+						<p><strong>Goal:</strong> Check data encoding, encryption, or format issues.</p>
+
+						<p><strong>Symptoms of issues:</strong></p>
+						<ul>
+						  <li>Corrupted data</li>
+						  <li>SSL/TLS handshake failures</li>
+						  <li>Encoding issues</li>
+						</ul>
+
+						<p><strong>Steps &amp; Tools:</strong></p>
+						<ol>
+						  <li><strong>SSL/TLS issues</strong>
+							<ul>
+							  <li><span class="highlight-text">openssl s_client -connect &lt;host&gt;:443</span> to verify handshake</li>
+							</ul>
+						  </li>
+						  <li><strong>Check for encoding problems</strong>
+							<ul>
+							  <li>Ensure client/server use the same encoding/compression</li>
+							</ul>
+						  </li>
+						</ol>
+
+						<h3>7. Application Layer (Layer 7)</h3>
+						<p><strong>Goal:</strong> Verify the actual application data and protocols are working.</p>
+
+						<p><strong>Symptoms of issues:</strong></p>
+						<ul>
+						  <li>HTTP 4xx/5xx errors</li>
+						  <li>Database or API failures</li>
+						  <li>Timeout errors</li>
+						</ul>
+
+						<p><strong>Steps &amp; Tools:</strong></p>
+						<ol>
+						  <li><strong>Ping or curl tests</strong>
+							<ul>
+							  <li><span class="highlight-text">curl -v http://&lt;host&gt;</span> to check HTTP response</li>
+							</ul>
+						  </li>
+						  <li><strong>Check application logs</strong>
+							<ul>
+							  <li>Web server, database, or API logs</li>
+							</ul>
+						  </li>
+						  <li><strong>Use Wireshark or Fiddler</strong>
+							<ul>
+							  <li>Inspect application-level traffic for anomalies</li>
+							</ul>
+						  </li>
+						</ol>
+						
+						<h3>Example Packet Trace</h3>
+						<ol>
+						  <li><strong>Ping a server from client</strong>
+							<ul>
+							  <li>Fails → check NIC (Layer 1) → check switch port (Layer 2) → check IP &amp; routing (Layer 3).</li>
+							</ul>
+						  </li>
+						  <li><strong>Traceroute shows drop at router</strong>
+							<ul>
+							  <li>Indicates a Layer 3 routing issue.</li>
+							</ul>
+						  </li>
+						  <li><strong>Ping works, TCP connection fails</strong>
+							<ul>
+							  <li>Indicates a Layer 4 issue (firewall or port closed).</li>
+							</ul>
+						  </li>
+						  <li><strong>HTTPS handshake fails</strong>
+							<ul>
+							  <li>Indicates a Layer 6 problem (TLS certificate, encryption mismatch).</li>
+							</ul>
+						  </li>
+						  <li><strong>Application error after handshake</strong>
+							<ul>
+							  <li>Indicates a Layer 7 problem (application misconfiguration, database down).</li>
+							</ul>
+						  </li>
+						</ol>
+						<div style="overflow-x: auto;">
+						  <table border="1" cellspacing="0" cellpadding="5" overflow="auto">
+							<tr>
+							  <th>Layer</th>
+							  <th>Tools</th>
+							</tr>
+							<tr>
+							  <td>1 (Physical)</td>
+							  <td>LEDs, cable testers, loopback tests, <span class="highlight-text">ethtool</span></td>
+							</tr>
+							<tr>
+							  <td>2 (Data Link)</td>
+							  <td><span class="highlight-text">show mac</span>, Wireshark, VLAN config</td>
+							</tr>
+							<tr>
+							  <td>3 (Network)</td>
+							  <td>Ping, traceroute, <span class="highlight-text">ip route</span>, Wireshark</td>
+							</tr>
+							<tr>
+							  <td>4 (Transport)</td>
+							  <td>Telnet, netcat, firewall rules, Wireshark TCP analysis</td>
+							</tr>
+							<tr>
+							  <td>5 (Session)</td>
+							  <td>Session logs, VPN/RDP/Kerberos logs, Wireshark</td>
+							</tr>
+							<tr>
+							  <td>6 (Presentation)</td>
+							  <td>OpenSSL, encoding check, Wireshark</td>
+							</tr>
+							<tr>
+							  <td>7 (Application)</td>
+							  <td>Curl, browser, Fiddler, application logs</td>
+							</tr>
+						  </table>
+						</div>
+					</div>
+					<h2 id="pkt-tracing-issues" class="section-title">b. Common day-to-day issues for each OSI layer</h2>
+					<a href="#features-overview" class="back-to-top-btn">↑ Back to Features</a>				
+					<div class="subsection1">
+						<h3>Layer 1 — Physical (5 Common Issues)</h3>
+
+						<h4>Issue 1 — Cable unplugged / port down</h4>
+						<div style="margin-left: 2em;">
+						<p><strong>Symptoms:</strong> No link, no traffic, interface shows DOWN, no LEDs.</p>
+						<p><strong>Counter questions:</strong> Has anyone touched the rack? Any recent moves? Was there a power outage?</p>
+
+						<p><strong>Troubleshooting (commands &amp; checks):</strong></p>
+						<ol>
+						  <li><strong>Check NIC / switch port status:</strong>
+							<ul>
+							  <li>Linux: <span class="highlight-text">ip link show eth0</span> → look for <span class="highlight-text">state DOWN</span> or <span class="highlight-text">state UP</span></li>
+							  <li>Windows (PowerShell): <span class="highlight-text">Get-NetAdapter</span> → <span class="highlight-text">Status</span> column</li>
+							  <li>Cisco: <span class="highlight-text">show interfaces GigabitEthernet1/0/1 status</span></li>
+							</ul>
+						  </li>
+						  <li><strong>Check physical:</strong> LEDs on NIC/switch, cable seated, RMM/console photos.</li>
+						  <li><strong>Check <span class="highlight-text">dmesg</span> for link events:</strong>
+							<ul>
+							  <li>Linux: <span class="highlight-text">dmesg | tail -n 50 | grep -i eth0</span></li>
+							</ul>
+						  </li>
+						  <li><strong>If fiber SFP:</strong> inspect SFP seated and transceiver type:
+							<ul>
+							  <li>Cisco: <span class="highlight-text">show interfaces transceiver detail</span> or <span class="highlight-text">show inventory</span></li>
+							</ul>
+						  </li>
+						</ol>
+
+						<h4>Resolution:</h4>
+						<ol>
+						  <li>Reseat cable and transceiver.</li>
+						  <li>Replace patch cable with known-good cable.</li>
+						  <li>On Cisco: <span class="highlight-text">shutdown</span> → <span class="highlight-text">no shutdown</span> on interface to bounce port.</li>
+						  <li>Verify link up:
+							<ul>
+							  <li>Linux: <span class="highlight-text">ip link show eth0</span> → <span class="highlight-text">state UP</span>; <span class="highlight-text">ethtool eth0</span> shows speed/duplex.</li>
+							  <li>Cisco: <span class="highlight-text">show interfaces Gi1/0/1 status</span> → connected.</li>
+							</ul>
+						  </li>
+						</ol>
+						</div>
+						<h4>Issue 2 — Broken/failed patch panel or RJ-45 connector</h4>
+						<div style="margin-left: 2em;">
+						  <p><strong>Symptoms:</strong> Physical link flaps under movement, intermittent link loss.</p>
+						  <p><strong>Counter questions:</strong> When does it fail (when moving the cable)? Similar reports from same patch panel?</p>
+
+						  <p><strong>Troubleshooting:</strong></p>
+						  <ol>
+							<li>Move patch cable to a different jack and test.</li>
+							<li>Use a cable tester (Fluke) to test pair continuity. If unavailable:
+							  <ul>
+								<li>Linux: <span class="highlight-text">ethtool -S eth0</span> (statistics) to spot CRC errors or carrier transitions.</li>
+								<li>Cisco: <span class="highlight-text">show interface Gi... counters errors</span></li>
+							  </ul>
+							</li>
+							<li>Check switch for excessive errors:
+							  <ul>
+								<li><span class="highlight-text">show interfaces Gi1/0/1 counters errors</span> (Cisco)</li>
+							  </ul>
+							</li>
+						  </ol>
+
+						  <h5>Resolution:</h5>
+						  <ol>
+							<li>Replace affected RJ-45 / patch cable or move to a new port.</li>
+							<li>If wall jack faulty, open and re-terminate or escalate to cabling team.</li>
+							<li>Verify with <span class="highlight-text">ethtool</span>/<span class="highlight-text">show interfaces</span> — no CRC/FCS errors.</li>
+						  </ol>
+						</div>
+
+						<h4>Issue 3 — SFP / transceiver mismatch or bad optics</h4>
+						<div style="margin-left: 2em;">
+						  <p><strong>Symptoms:</strong> Fiber link not up; module not recognized; SFP incompatible.</p>
+						  <p><strong>Counter questions:</strong> Is the SFP vendor-compatible? Are both ends same type (LR/ER/SX)?</p>
+
+						  <p><strong>Troubleshooting:</strong></p>
+						  <ol>
+							<li>Check SFP presence:
+							  <ul>
+								<li>Cisco: <span class="highlight-text">show inventory</span> / <span class="highlight-text">show interfaces GigabitEthernet1/1 transceiver</span></li>
+							  </ul>
+							</li>
+							<li>Check error counters and logs:
+							  <ul>
+								<li><span class="highlight-text">show logging | include SFP</span></li>
+							  </ul>
+							</li>
+							<li>Try swapping SFP to another known-good port or replacing with known-good SFP.</li>
+						  </ol>
+
+						  <h5>Resolution:</h5>
+						  <ol>
+							<li>Replace SFP with correct type (match singlemode/multimode and LC/SC).</li>
+							<li>Verify link: <span class="highlight-text">show interfaces</span> shows <span class="highlight-text">up/up</span>.</li>
+						  </ol>
+						</div>
+
+						<h4>Issue 4 — Speed/Duplex mismatch</h4>
+						<div style="margin-left: 2em;">
+						  <p><strong>Symptoms:</strong> Slowness, high collisions or late collisions, intermittent throughput.</p>
+						  <p><strong>Counter questions:</strong> Was either side set manually recently? Is auto-negotiation disabled?</p>
+
+						  <p><strong>Troubleshooting:</strong></p>
+						  <ol>
+							<li>Check negotiated speed/duplex:
+							  <ul>
+								<li>Linux: <span class="highlight-text">ethtool eth0</span> → <span class="highlight-text">Speed: 1000Mb/s</span> <span class="highlight-text">Duplex: Full</span></li>
+								<li>Windows: <span class="highlight-text">Get-NetAdapterAdvancedProperty -Name "Ethernet"</span> (or view NIC properties)</li>
+								<li>Cisco: <span class="highlight-text">show interfaces Gi1/0/1</span> → 1000Mb/s, full-duplex</li>
+							  </ul>
+							</li>
+							<li>Look for <span class="highlight-text">duplex mismatch</span> signs: lots of retransmits, collisions (on older gear).</li>
+						  </ol>
+
+						  <h5>Resolution:</h5>
+						  <ol>
+							<li>Prefer auto-negotiation. Set both sides to <span class="highlight-text">auto</span>.
+							  <ul>
+								<li>Cisco: interface config <span class="highlight-text">speed auto</span> <span class="highlight-text">duplex auto</span> (if supported)</li>
+							  </ul>
+							</li>
+							<li>If using fixed speed required, set both ends explicitly the same.</li>
+							<li>Verify throughput and <span class="highlight-text">ethtool</span> output.</li>
+						  </ol>
+						</div>
+
+						<h4>Issue 5 — NIC / Port hardware fault (intermittent)</h4>
+						<div style="margin-left: 2em;">
+						  <p><strong>Symptoms:</strong> Link flaps, device unreachable intermittently; only on a specific NIC/port.</p>
+						  <p><strong>Counter questions:</strong> Does issue follow host or port? Any recent driver updates?</p>
+
+						  <p><strong>Troubleshooting:</strong></p>
+						  <ol>
+							<li>Check kernel logs:
+							  <ul>
+								<li><span class="highlight-text">dmesg | egrep -i 'link|eth0|phy'</span></li>
+							  </ul>
+							</li>
+							<li>Check NIC stats:
+							  <ul>
+								<li><span class="highlight-text">ethtool -S eth0</span> or <span class="highlight-text">ip -s link show eth0</span></li>
+							  </ul>
+							</li>
+							<li>Try a different port or a USB/Ethernet adapter to isolate host vs switch.</li>
+							<li>On Windows check Device Manager events and driver versions.</li>
+						  </ol>
+
+						  <h5>Resolution:</h5>
+						  <ol>
+							<li>Replace NIC or move host to different switch port.</li>
+							<li>Update NIC driver/firmware cautiously.</li>
+							<li>Verify stability over hours with <span class="highlight-text">ping -i 0.2 &lt;gateway&gt;</span>.</li>
+						  </ol>
+						</div>
+
+						<h3>Layer 2 — Data Link (5 Common Issues)</h3>
+
+						<h4>Issue 1 — VLAN misconfiguration (host in wrong VLAN)</h4>
+						<div style="margin-left: 2em;">
+						  <p><strong>Symptoms:</strong> Host can’t reach servers in same expected subnet; isolated broadcast domain.</p>
+						  <p><strong>Counter questions:</strong> Was the port recently reconfigured? Is the switchport access mode correct?</p>
+
+						  <p><strong>Troubleshooting:</strong></p>
+						  <ol>
+							<li>Check switch port VLAN:
+							  <ul>
+								<li>Cisco: <span class="highlight-text">show running-config interface Gi1/0/1</span> or <span class="highlight-text">show vlan brief</span></li>
+							  </ul>
+							</li>
+							<li>On host, check IP/subnet and gateway:
+							  <ul>
+								<li>Linux: <span class="highlight-text">ip addr show</span>, <span class="highlight-text">ip route</span></li>
+								<li>Windows: <span class="highlight-text">ipconfig /all</span></li>
+							  </ul>
+							</li>
+							<li>Verify VLAN membership from switch:
+							  <ul>
+								<li><span class="highlight-text">show interfaces trunk</span> to see trunk allowed VLANs</li>
+							  </ul>
+							</li>
+							<li>Capture ARP on host:
+							  <ul>
+								<li><span class="highlight-text">sudo tcpdump -n -i eth0 arp</span> and look for ARP requests/replies</li>
+							  </ul>
+							</li>
+						  </ol>
+
+						  <h5>Resolution:</h5>
+						  <ol>
+							<li>Correct switch configuration:
+							  <ul>
+								<li>Set as access VLAN: <span class="highlight-text">interface Gi1/0/1 → switchport access vlan 10</span></li>
+								<li>If trunk: ensure trunk allows VLAN (e.g., <span class="highlight-text">switchport trunk allowed vlan add 10</span>)</li>
+							  </ul>
+							</li>
+							<li>Verify host is in correct VLAN and can ARP:
+							  <ul>
+								<li>Host <span class="highlight-text">arp -n</span> / <span class="highlight-text">ip neigh</span></li>
+								<li><span class="highlight-text">ping</span> to default gateway</li>
+							  </ul>
+							</li>
+						  </ol>
+						</div>
+
+						<h4>Issue 2 — Native VLAN mismatch or trunking problem</h4>
+						<div style="margin-left: 2em;">
+						  <p><strong>Symptoms:</strong> Management VLAN leaks, VLAN 1 traffic in wrong domain, failing VLANs over trunk.</p>
+						  <p><strong>Counter questions:</strong> Are both ends of trunk configured with same native VLAN? Any mismatch?</p>
+
+						  <p><strong>Troubleshooting:</strong></p>
+						  <ol>
+							<li>Check trunk config both sides:
+							  <ul>
+								<li>Cisco: <span class="highlight-text">show interfaces trunk</span> and <span class="highlight-text">show running-config interface Gi...</span></li>
+							  </ul>
+							</li>
+							<li>Check trunk allowed VLANs and native VLAN:
+							  <ul>
+								<li><span class="highlight-text">show interfaces trunk</span></li>
+							  </ul>
+							</li>
+							<li>Verify with packet capture tagged/untagged:
+							  <ul>
+								<li><span class="highlight-text">sudo tcpdump -n -i eth0 -e vlan</span> (Linux)</li>
+							  </ul>
+							</li>
+						  </ol>
+
+						  <h5>Resolution:</h5>
+						  <ol>
+							<li>Align native VLAN on both ends, or explicitly set native VLAN and use <span class="highlight-text">switchport trunk native vlan X</span>.</li>
+							<li>Reconfigure trunk allowed VLANs if needed.</li>
+							<li>Verify reachability across VLANs via routed SVI or router-on-a-stick.</li>
+						  </ol>
+						</div>
+
+						<h4>Issue 3 — MAC address flapping (same MAC appearing on multiple ports)</h4>
+						<div style="margin-left: 2em;">
+						  <p><strong>Symptoms:</strong> Intermittent connectivity, frequent MAC table updates, traffic bouncing.</p>
+						  <p><strong>Counter questions:</strong> Is there a loop? Any virtual machines with same MAC? Is port-channel misconfigured?</p>
+
+						  <p><strong>Troubleshooting:</strong></p>
+						  <ol>
+							<li>Watch MAC table changes:
+							  <ul>
+								<li>Cisco: <span class="highlight-text">show mac address-table address &lt;MAC&gt;</span></li>
+								<li>Cisco: <span class="highlight-text">show mac address-table dynamic | include &lt;MAC&gt;</span></li>
+							  </ul>
+							</li>
+							<li>Check for loops or STP changes:
+							  <ul>
+								<li><span class="highlight-text">show spanning-tree detail</span> ; <span class="highlight-text">show logging</span></li>
+							  </ul>
+							</li>
+							<li>Use packet capture on each suspected port to locate source:
+							  <ul>
+								<li>Use <span class="highlight-text">monitor session</span> or SPAN port to a capture device</li>
+							  </ul>
+							</li>
+						  </ol>
+
+						  <h5>Resolution:</h5>
+						  <ol>
+							<li>Fix loop source (miswired port-channel, duplicate MAC VM).</li>
+							<li>If VM clones: ensure unique MAC or correct virtual switch config.</li>
+							<li>Clear MAC table if needed: <span class="highlight-text">clear mac address-table dynamic</span> and monitor.</li>
+						  </ol>
+						</div>
+
+						<h4>Issue 4 — Spanning Tree blocking a required port (STP topology change)</h4>
+						<div style="margin-left: 2em;">
+						  <p><strong>Symptoms:</strong> Network segment unreachable when STP blocked port that should forward.</p>
+						  <p><strong>Counter questions:</strong> Any recent topology changes? Did someone plug in an extra switch?</p>
+
+						  <p><strong>Troubleshooting:</strong></p>
+						  <ol>
+							<li>Check STP status:
+							  <ul>
+								<li>Cisco: <span class="highlight-text">show spanning-tree vlan 1</span> and <span class="highlight-text">show spanning-tree blockedports</span></li>
+							  </ul>
+							</li>
+							<li>Check for TCNs and root bridge changes:
+							  <ul>
+								<li><span class="highlight-text">show spanning-tree summary</span></li>
+							  </ul>
+							</li>
+							<li>Inspect port roles and cost:
+							  <ul>
+								<li><span class="highlight-text">show spanning-tree interface Gi1/0/1 detail</span></li>
+							  </ul>
+							</li>
+						  </ol>
+
+						  <h5>Resolution:</h5>
+						  <ol>
+							<li>Fix topology: remove redundant link or configure BPDU guard/portfast as needed.</li>
+							<li>If port must forward, adjust STP priorities or path-costs so correct port becomes designated.</li>
+							<li>Verify: <span class="highlight-text">show spanning-tree</span> shows desired port <em>forwarding</em>.</li>
+						  </ol>
+						</div>
+
+						<h4>Issue 5 — ARP table poisoning / ARP issues</h4>
+						<div style="margin-left: 2em;">
+						  <p><strong>Symptoms:</strong> Intermittent connectivity to same IP, man-in-the-middle suspicion, wrong MACs.</p>
+						  <p><strong>Counter questions:</strong> Any suspicious hosts added? Are multiple hosts claiming gateway MAC?</p>
+
+						  <p><strong>Troubleshooting:</strong></p>
+						  <ol>
+							<li>Check ARP table on affected host:
+							  <ul>
+								<li>Linux: <span class="highlight-text">ip neigh</span> or <span class="highlight-text">arp -n</span></li>
+								<li>Windows: <span class="highlight-text">arp -a</span></li>
+							  </ul>
+							</li>
+							<li>Capture ARP to watch for gratuitous ARP/poisoning:
+							  <ul>
+								<li><span class="highlight-text">sudo tcpdump -n -i eth0 arp</span></li>
+							  </ul>
+							</li>
+							<li>On switch, identify MAC → port: <span class="highlight-text">show mac address-table | include &lt;MAC&gt;</span></li>
+						  </ol>
+
+						  <h5>Resolution:</h5>
+						  <ol>
+							<li>Remove/Quarantine host doing poisoning and investigate.</li>
+							<li>Enable Dynamic ARP Inspection (DAI) on switches (if supported) and configure DHCP snooping to bind IP/MACs.</li>
+							<li>Clear ARP caches where needed: Linux <span class="highlight-text">ip neigh flush all</span>, Windows <span class="highlight-text">arp -d *</span>.</li>
+						  </ol>
+						</div>
+
+						<h3>Layer 3 — Network (5 Common Issues)</h3>
+
+						<h4>Issue 1 — Wrong IP/subnet on host</h4>
+						<div style="margin-left: 2em;">
+						  <p><strong>Symptoms:</strong> Host can’t reach gateway or other subnet devices; local-only connectivity.</p>
+						  <p><strong>Counter questions:</strong> Recent DHCP changes? Static config recently reapplied?</p>
+
+						  <p><strong>Troubleshooting:</strong></p>
+						  <ol>
+							<li>Check IP & netmask:
+							  <ul>
+								<li>Linux: <span class="highlight-text">ip addr show eth0</span></li>
+								<li>Windows: <span class="highlight-text">ipconfig /all</span></li>
+							  </ul>
+							</li>
+							<li>Verify default gateway:
+							  <ul>
+								<li>Linux: <span class="highlight-text">ip route show</span> or <span class="highlight-text">ip route get 8.8.8.8</span></li>
+								<li>Windows: <span class="highlight-text">route print</span></li>
+							  </ul>
+							</li>
+							<li>Attempt ping to gateway: <span class="highlight-text">ping -c 4 &lt;gateway-ip&gt;</span></li>
+						  </ol>
+
+						  <h5>Resolution:</h5>
+						  <ol>
+							<li>Correct the IP/subnet or switch to DHCP.</li>
+							<li>If DHCP: check DHCP lease (<span class="highlight-text">dhclient -v eth0</span> or <span class="highlight-text">journalctl -u dhclient</span>).</li>
+							<li>Verify with <span class="highlight-text">ip route</span> and <span class="highlight-text">ping</span>.</li>
+						  </ol>
+						</div>
+
+						<h4>Issue 2 — Missing or incorrect static route</h4>
+						<div style="margin-left: 2em;">
+						  <p><strong>Symptoms:</strong> Traceroute shows packet stops at local router; certain subnets unreachable.</p>
+						  <p><strong>Counter questions:</strong> Was topology changed? Any migration to new routers?</p>
+
+						  <p><strong>Troubleshooting:</strong></p>
+						  <ol>
+							<li>Check routing table:
+							  <ul>
+								<li>Linux: <span class="highlight-text">ip route show</span></li>
+								<li>Cisco: <span class="highlight-text">show ip route</span></li>
+							  </ul>
+							</li>
+							<li>Trace to destination:
+							  <ul>
+								<li>Linux: <span class="highlight-text">traceroute -n &lt;dest&gt;</span></li>
+								<li>Windows: <span class="highlight-text">tracert &lt;dest&gt;</span></li>
+							  </ul>
+							</li>
+							<li>On routers, check route distribution (OSPF/BGP):
+							  <ul>
+								<li><span class="highlight-text">show ip protocols</span>, <span class="highlight-text">show ip bgp summary</span></li>
+							  </ul>
+							</li>
+						  </ol>
+
+						  <h5>Resolution:</h5>
+						  <ol>
+							<li>Add missing static route:
+							  <ul>
+								<li>Linux: <span class="highlight-text">sudo ip route add 10.10.20.0/24 via 192.168.1.1</span></li>
+								<li>Cisco: <span class="highlight-text">ip route 10.10.20.0 255.255.255.0 192.168.1.1</span></li>
+							  </ul>
+							</li>
+							<li>Verify with <span class="highlight-text">ip route</span> and <span class="highlight-text">traceroute</span>.</li>
+						  </ol>
+						</div>
+
+						<h4>Issue 3 — Routing loops or misadvertised prefixes (dynamic routing)</h4>
+						<div style="margin-left: 2em;">
+						  <p><strong>Symptoms:</strong> High latency, TTL exceeded, routes flap, BGP/OSPF route oscillation.</p>
+						  <p><strong>Counter questions:</strong> Any configuration changes on routers? Recent ACL or redistribution changes?</p>
+
+						  <p><strong>Troubleshooting:</strong></p>
+						  <ol>
+							<li>Check BGP/OSPF states:
+							  <ul>
+								<li>Cisco OSPF: <span class="highlight-text">show ip ospf neighbor</span></li>
+								<li>Cisco BGP: <span class="highlight-text">show ip bgp summary</span> and <span class="highlight-text">show ip bgp &lt;prefix&gt;</span></li>
+							  </ul>
+							</li>
+							<li>Check for route flaps and logs:
+							  <ul>
+								<li><span class="highlight-text">show ip route</span> and <span class="highlight-text">show logging</span></li>
+							  </ul>
+							</li>
+							<li>Use <span class="highlight-text">traceroute</span> from multiple points to detect loop points.</li>
+						  </ol>
+
+						  <h5>Resolution:</h5>
+						  <ol>
+							<li>Fix misconfigured redistribution or route-maps.</li>
+							<li>Implement route dampening or route filters if necessary.</li>
+							<li>Verify stability: <span class="highlight-text">show ip bgp &lt;prefix&gt;</span> should converge.</li>
+						  </ol>
+						</div>
+
+						<h4>Issue 4 — ACL / firewall blocking at L3</h4>
+						<div style="margin-left: 2em;">
+						  <p><strong>Symptoms:</strong> Specific networks inaccessible, ICMP blocked, no connectivity to certain hosts.</p>
+						  <p><strong>Counter questions:</strong> Any recent policy/app changes? Was a new firewall rule deployed?</p>
+
+						  <p><strong>Troubleshooting:</strong></p>
+						  <ol>
+							<li>On firewalls/routers, view ACLs:
+							  <ul>
+								<li>Cisco: <span class="highlight-text">show access-lists</span> or <span class="highlight-text">show run | include ip access-list</span></li>
+								<li>Linux iptables: <span class="highlight-text">sudo iptables -L -n -v</span> or <span class="highlight-text">sudo nft list ruleset</span></li>
+							  </ul>
+							</li>
+							<li>From client, test reachability and record ports/protocols:
+							  <ul>
+								<li><span class="highlight-text">ping</span>, <span class="highlight-text">traceroute</span>, <span class="highlight-text">telnet server 80</span> or <span class="highlight-text">nc -zv server 80</span></li>
+							  </ul>
+							</li>
+							<li>On path devices check logs for denied packets.</li>
+						  </ol>
+
+						  <h5>Resolution:</h5>
+						  <ol>
+							<li>Adjust ACL to permit required traffic with least privilege.</li>
+							<li>On Linux <span class="highlight-text">iptables -I</span> or firewall GUI, add rule.</li>
+							<li>Verify by re-running <span class="highlight-text">ping</span>/<span class="highlight-text">telnet</span> or service-specific client.</li>
+						  </ol>
+						</div>
+
+						<h4>Issue 5 — MTU / Path MTU blackhole</h4>
+						<div style="margin-left: 2em;">
+						  <p><strong>Symptoms:</strong> Large transfers fail, TLS downloads hang, ICMP fragmentation-needed blocked.</p>
+						  <p><strong>Counter questions:</strong> Are there tunnels (VPN/GRE) or PPPoE in path? Any MTU changes recently?</p>
+
+						  <p><strong>Troubleshooting:</strong></p>
+						  <ol>
+							<li>Test with increasing ping payload and "Don't Fragment":
+							  <ul>
+								<li>Linux: <span class="highlight-text">ping -M do -s 1472 &lt;dest&gt;</span> (1472 + 28 = 1500)</li>
+								<li>Windows: <span class="highlight-text">ping -f -l 1472 &lt;dest&gt;</span></li>
+							  </ul>
+							</li>
+							<li>Use <span class="highlight-text">tracepath &lt;dest&gt;</span> (Linux) to see MTU along path. tracepath reports MTU.</li>
+							<li>Check for ICMP being blocked on intermediate firewall (preventing Path MTU discovery).</li>
+						  </ol>
+
+						  <h5>Resolution:</h5>
+						  <ol>
+							<li>Lower MTU on endpoints or set MSS clamping on routers (e.g., <span class="highlight-text">ip route change</span> or firewall set MSS 1400).</li>
+							<li>On Linux: <span class="highlight-text">ip link set dev eth0 mtu 1400</span></li>
+							<li>Verify large transfers succeed (HTTP download or <span class="highlight-text">scp</span>).</li>
+						  </ol>
+						</div>
+
+						<h3>Layer 4 — Transport (5 Common Issues)</h3>
+
+						<h4>Issue 1 — Service not listening (port closed)</h4>
+						<div style="margin-left: 2em;">
+						  <p><strong>Symptoms:</strong> Connection refused; <span class="highlight-text">telnet host port</span> immediately fails.</p>
+						  <p><strong>Counter questions:</strong> Is the service running? Any crash recently? Port changed?</p>
+
+						  <p><strong>Troubleshooting:</strong></p>
+						  <ol>
+							<li>Check listening services:
+							  <ul>
+								<li>Linux: <span class="highlight-text">ss -tuln | grep :443</span> or <span class="highlight-text">sudo ss -tulpen</span></li>
+								<li>Older Linux: <span class="highlight-text">netstat -tulpen</span></li>
+								<li>Windows: <span class="highlight-text">netstat -ano | findstr :443</span> then <span class="highlight-text">tasklist /FI "PID eq &lt;pid&gt;"</span></li>
+								<li>Docker/k8s: <span class="highlight-text">docker ps</span>, <span class="highlight-text">docker logs</span> or <span class="highlight-text">kubectl get pods</span> / <span class="highlight-text">kubectl logs</span></li>
+							  </ul>
+							</li>
+							<li>Try connecting:
+							  <ul>
+								<li><span class="highlight-text">telnet &lt;host&gt; &lt;port&gt;</span> or <span class="highlight-text">nc -vz &lt;host&gt; &lt;port&gt;</span> / PowerShell <span class="highlight-text">Test-NetConnection -ComputerName host -Port 443</span></li>
+							  </ul>
+							</li>
+						  </ol>
+
+						  <h5>Resolution:</h5>
+						  <ol>
+							<li>Start the service (systemd): <span class="highlight-text">sudo systemctl start apache2</span> or check <span class="highlight-text">systemctl status</span> for errors.</li>
+							<li>Open port if firewall blocked.</li>
+							<li>Verify with <span class="highlight-text">ss -tuln</span> and <span class="highlight-text">curl -v</span> or <span class="highlight-text">telnet</span>.</li>
+						  </ol>
+						</div>
+
+						<h4>Issue 2 — Firewall / security group blocking TCP/UDP</h4>
+						<div style="margin-left: 2em;">
+						  <p><strong>Symptoms:</strong> Connection times out, no SYN-ACK, <span class="highlight-text">telnet</span> hangs.</p>
+						  <p><strong>Counter questions:</strong> Network firewall change? Cloud security group change?</p>
+
+						  <p><strong>Troubleshooting:</strong></p>
+						  <ol>
+							<li>Check host firewall:
+							  <ul>
+								<li>Linux (iptables): <span class="highlight-text">sudo iptables -L -n -v</span> or <span class="highlight-text">sudo nft list ruleset</span></li>
+								<li>UFW: <span class="highlight-text">sudo ufw status verbose</span></li>
+								<li>Windows: <span class="highlight-text">netsh advfirewall firewall show rule name=all</span> or <span class="highlight-text">Get-NetFirewallRule</span></li>
+							  </ul>
+							</li>
+							<li>Check upstream firewall/cloud SG:
+							  <ul>
+								<li>AWS: Security Group and NACL settings</li>
+								<li>Azure: NSG rules</li>
+							  </ul>
+							</li>
+							<li>Use packet capture to see SYN reaching server:
+							  <ul>
+								<li>Server: <span class="highlight-text">sudo tcpdump -n -i eth0 'tcp[tcpflags] &amp; (tcp-syn) != 0 and port 443'</span></li>
+							  </ul>
+							</li>
+						  </ol>
+
+						  <h5>Resolution:</h5>
+						  <ol>
+							<li>Open port in firewall: <span class="highlight-text">sudo ufw allow 443/tcp</span> or add iptables rule.</li>
+							<li>Update cloud SG to allow source IP/port.</li>
+							<li>Retest with <span class="highlight-text">telnet</span>/<span class="highlight-text">nc</span>.</li>
+						  </ol>
+						</div>
+
+						<h4>Issue 3 — TCP handshake failing (SYN sent, no SYN-ACK)</h4>
+						<div style="margin-left: 2em;">
+						  <p><strong>Symptoms:</strong> Client sends SYNs, server never replies or drops them.</p>
+						  <p><strong>Counter questions:</strong> Is server overloaded? Any SYN cookies or DoS mitigations active? Is RST being sent?</p>
+
+						  <p><strong>Troubleshooting:</strong></p>
+						  <ol>
+							<li>Capture packets on client and server:
+							  <ul>
+								<li><span class="highlight-text">sudo tcpdump -n -i eth0 host &lt;client-ip&gt; and port &lt;port&gt;</span></li>
+							  </ul>
+							</li>
+							<li>Check SYN_RECV backlog:
+							  <ul>
+								<li><span class="highlight-text">ss -s</span> and <span class="highlight-text">ss -t state syn-recv</span> (Linux)</li>
+							  </ul>
+							</li>
+							<li>Check server resources (CPU, memory) and processes:
+							  <ul>
+								<li><span class="highlight-text">top</span>, <span class="highlight-text">ps aux | grep &lt;service&gt;</span></li>
+							  </ul>
+							</li>
+						  </ol>
+
+						  <h5>Resolution:</h5>
+						  <ol>
+							<li>Fix application to accept connections or tune backlog (e.g., <span class="highlight-text">tcp_max_syn_backlog</span>).</li>
+							<li>Add more workers or scale service.</li>
+							<li>If SYN flood, enable SYN cookies: <span class="highlight-text">sysctl -w net.ipv4.tcp_syncookies=1</span>.</li>
+						  </ol>
+						</div>
+
+						<h4>Issue 4 — UDP packet loss or DNS failures</h4>
+						<div style="margin-left: 2em;">
+						  <p><strong>Symptoms:</strong> DNS queries time out intermittently; UDP-based app suffers high packet loss.</p>
+						  <p><strong>Counter questions:</strong> Are authoritative DNS servers reachable? Any firewall blocking UDP?</p>
+
+						  <p><strong>Troubleshooting:</strong></p>
+						  <ol>
+							<li>Test DNS with <span class="highlight-text">dig</span>:
+							  <ul>
+								<li><span class="highlight-text">dig @8.8.8.8 example.com +tcp</span> (force TCP)</li>
+								<li><span class="highlight-text">dig @8.8.8.8 example.com</span> (UDP)</li>
+							  </ul>
+							</li>
+							<li>Packet capture to see UDP retransmits:
+							  <ul>
+								<li><span class="highlight-text">sudo tcpdump -n -i eth0 port 53</span></li>
+							  </ul>
+							</li>
+							<li>Check host for high packet drops:
+							  <ul>
+								<li><span class="highlight-text">cat /proc/net/dev</span> and <span class="highlight-text">ip -s link</span> counters</li>
+							  </ul>
+							</li>
+						  </ol>
+
+						  <h5>Resolution:</h5>
+						  <ol>
+							<li>If firewall blocks UDP, allow DNS/UDP or force TCP fallback.</li>
+							<li>If server-side UDP issue, use caching DNS or DNS over TLS/HTTPS.</li>
+							<li>Verify <span class="highlight-text">dig</span> UDP responses and round-trip times.</li>
+						  </ol>
+						</div>
+
+						<h4>Issue 5 — TCP retransmissions and poor throughput</h4>
+						<div style="margin-left: 2em;">
+						  <p><strong>Symptoms:</strong> Transfers are slow; Wireshark shows many retransmissions and high RTT variance.</p>
+						  <p><strong>Counter questions:</strong> Any packet loss on path? High latency link? MTU fragmentation?</p>
+
+						  <p><strong>Troubleshooting:</strong></p>
+						  <ol>
+							<li>Capture TCP flow:
+							  <ul>
+								<li><span class="highlight-text">sudo tcpdump -w /tmp/flow.pcap host &lt;dest&gt; and port 443</span></li>
+							  </ul>
+							</li>
+							<li>Check interface errors:
+							  <ul>
+								<li><span class="highlight-text">ifconfig</span> / <span class="highlight-text">ip -s link</span> or <span class="highlight-text">ethtool -S</span></li>
+							  </ul>
+							</li>
+							<li>Check network for congestion or queueing:
+							  <ul>
+								<li><span class="highlight-text">tc -s qdisc show dev eth0</span></li>
+							  </ul>
+							</li>
+						  </ol>
+
+						  <h5>Resolution:</h5>
+						  <ol>
+							<li>Fix underlying packet loss (bad link, MTU).</li>
+							<li>Tune TCP window scaling if necessary.</li>
+							<li>If on WAN, consider QoS shaping or increase buffer sizes.
+							<li>Verify improved throughput with <span class="highlight-text">iperf3 -c <server></span>.</li>
+						  </ol>
+						</div>	
+						<h3>Layer 5 — Session (5 Common Issues)</h3>
+						<p>&gt; Note: The “Session” layer is often implemented by protocols and services (VPN sessions, database sessions, remote desktop). I’ll treat session-related problems accordingly.</p>
+
+						<h4>Issue 1 — Max sessions reached (server hitting session limit)</h4>
+						<div style="margin-left: 2em;">
+						  <p><strong>Symptoms:</strong> New sessions refused; service reports “too many connections”.</p>
+						  <p><strong>Counter questions:</strong> Have connection patterns changed? Are sessions being leaked?</p>
+
+						  <p><strong>Troubleshooting:</strong></p>
+						  <ol>
+							<li>Check service session stats:
+							  <ul>
+								<li>Web server (NGINX): <span class="highlight-text">nginx_status</span> module or <span class="highlight-text">stub_status</span> endpoint</li>
+								<li>Application: check metrics or Postgres: <span class="highlight-text">SELECT count(*) FROM pg_stat_activity;</span></li>
+							  </ul>
+							</li>
+							<li>Check OS file descriptor limits:
+							  <ul>
+								<li><span class="highlight-text">ulimit -n</span> and <span class="highlight-text">cat /proc/&lt;pid&gt;/limits</span></li>
+							  </ul>
+							</li>
+							<li>Check established TCP connections:
+							  <ul>
+								<li><span class="highlight-text">ss -s</span> and <span class="highlight-text">ss -tn state established</span></li>
+							  </ul>
+							</li>
+						  </ol>
+
+						  <h5>Resolution:</h5>
+						  <ol>
+							<li>Increase server session limits or process pool size (e.g., <span class="highlight-text">worker_connections</span> in nginx)</li>
+							<li>Fix session leaks in application code</li>
+							<li>Implement session timeout / idle session cleanup</li>
+							<li>Verify new sessions accepted</li>
+						  </ol>
+						</div>
+
+						<h4>Issue 2 — VPN session dropouts (session establishment or keepalive fail)</h4>
+						<div style="margin-left: 2em;">
+						  <p><strong>Symptoms:</strong> VPN disconnects after X minutes; traffic stops across VPN.</p>
+						  <p><strong>Counter questions:</strong> Any NAT timeouts? Keepalive settings? Were endpoints updated?</p>
+
+						  <p><strong>Troubleshooting:</strong></p>
+						  <ol>
+							<li>Check VPN logs:
+							  <ul>
+								<li>OpenVPN: <span class="highlight-text">/var/log/openvpn.log</span></li>
+								<li>IPsec: <span class="highlight-text">sudo journalctl -u strongswan</span></li>
+							  </ul>
+							</li>
+							<li>Check NAT timeouts on intermediate firewall/router</li>
+							<li>Inspect keepalive/DPD (Dead Peer Detection) settings</li>
+						  </ol>
+
+						  <h5>Resolution:</h5>
+						  <ol>
+							<li>Increase NAT mapping timeout or enable periodic keepalives</li>
+							<li>Tune DPD/keepalive intervals in VPN config</li>
+							<li>Verify stable connection over extended time</li>
+						  </ol>
+						</div>
+
+						<h4>Issue 3 — Session stickiness / load balancing wrong session affinity</h4>
+						<div style="margin-left: 2em;">
+						  <p><strong>Symptoms:</strong> Users lose session when requests hit different backend nodes (logout, shopping cart empty)</p>
+						  <p><strong>Counter questions:</strong> Is sticky session configured? Are cookies or IP-based affinity used?</p>
+
+						  <p><strong>Troubleshooting:</strong></p>
+						  <ol>
+							<li>Check LB config (HAProxy, Nginx LB, cloud LB) for <span class="highlight-text">cookie</span> or <span class="highlight-text">sessionAffinity</span></li>
+							<li>Reproduce and observe which backend receives requests using LB logs / access logs</li>
+							<li>Use <span class="highlight-text">tcpdump</span> to verify repeated request headers/cookies</li>
+						  </ol>
+
+						  <h5>Resolution:</h5>
+						  <ol>
+							<li>Configure sticky sessions (cookie, IP hash) or implement stateless session store (Redis) for session sharing</li>
+							<li>Test and validate with repeated requests from same client; verify same backend or shared session store returns consistent state</li>
+						  </ol>
+						</div>
+
+						<h4>Issue 4 — Authentication session token expired or invalid</h4>
+						<div style="margin-left: 2em;">
+						  <p><strong>Symptoms:</strong> Users logged out unexpectedly or get 401 unauthorized though credentials valid</p>
+						  <p><strong>Counter questions:</strong> Were tokens TTL/clock changes made? Any logout hooks triggered?</p>
+
+						  <p><strong>Troubleshooting:</strong></p>
+						  <ol>
+							<li>Check auth service logs (JWT validation errors, token issuer)</li>
+							<li>Verify system clocks (NTP) on servers:
+							  <ul>
+								<li><span class="highlight-text">timedatectl</span> / <span class="highlight-text">ntpq -p</span></li>
+							  </ul>
+							</li>
+							<li>Capture login flow to inspect token properties (expiration, iss/aud):
+							  <ul>
+								<li><span class="highlight-text">curl -v -X POST ...</span> to auth endpoint and inspect token</li>
+							  </ul>
+							</li>
+						  </ol>
+
+						  <h5>Resolution:</h5>
+						  <ol>
+							<li>Fix token TTL configuration or renew token issuance</li>
+							<li>Ensure NTP sync for clock drift</li>
+							<li>Invalidate stale sessions safely and confirm new login works</li>
+						  </ol>
+						</div>
+
+						<h4>Issue 5 — NAT session timeouts breaking long-lived sessions</h4>
+						<div style="margin-left: 2em;">
+						  <p><strong>Symptoms:</strong> Long-lived TCP sessions dropped after NAT entry times out (e.g., long SSH idle)</p>
+						  <p><strong>Counter questions:</strong> Any NAT/reverse-proxy in front? How long is the idle period before drop?</p>
+
+						  <p><strong>Troubleshooting:</strong></p>
+						  <ol>
+							<li>Check NAT device session timeout settings (firewall/NAT appliance)</li>
+							<li>Reproduce by leaving session idle and monitoring NAT table</li>
+							<li>Use <span class="highlight-text">conntrack</span> (Linux) to list NAT entries:
+							  <ul>
+								<li><span class="highlight-text">sudo conntrack -L | grep &lt;ip&gt;</span></li>
+							  </ul>
+							</li>
+						  </ol>
+
+						  <h5>Resolution:</h5>
+						  <ol>
+							<li>Increase NAT timeout for required protocols or enable keepalive on clients:
+							  <ul>
+								<li>For SSH: <span class="highlight-text">ServerAliveInterval 60</span> in <span class="highlight-text">~/.ssh/config</span></li>
+							  </ul>
+							</li>
+							<li>Use persistent keepalive packets for UDP (e.g., WireGuard <span class="highlight-text">PersistentKeepalive = 25</span>)</li>
+							<li>Verify long-lived session remains up</li>
+						  </ol>
+						</div>
+						<h3>Layer 6 — Presentation (5 Common Issues)</h3>
+						<p>&gt; Presentation-layer problems often look like TLS/encoding/format issues.</p>
+
+						<h4>Issue 1 — TLS/SSL handshake failure (certificate expired / name mismatch)</h4>
+						<div style="margin-left: 2em;">
+						  <p><strong>Symptoms:</strong> Browser shows certificate error; <span class="highlight-text">openssl s_client</span> fails; apps refuse to connect.</p>
+						  <p><strong>Counter questions:</strong> Is the certificate expired? Is SNI required? Is hostname matching cert CN/SAN?</p>
+
+						  <p><strong>Troubleshooting:</strong></p>
+						  <ol>
+							<li>Inspect cert with OpenSSL:
+							  <ul>
+								<li><span class="highlight-text">openssl s_client -connect example.com:443 -servername example.com</span></li>
+								<li>After connection: <span class="highlight-text">openssl x509 -noout -text -in cert.pem</span></li>
+							  </ul>
+							</li>
+							<li>Use curl verbose:
+							  <ul>
+								<li><span class="highlight-text">curl -Iv https://example.com</span> → shows cert chain and errors</li>
+							  </ul>
+							</li>
+							<li>Check expiry:
+							  <ul>
+								<li><span class="highlight-text">openssl x509 -enddate -noout -in cert.pem</span></li>
+							  </ul>
+							</li>
+						  </ol>
+
+						  <h5>Resolution:</h5>
+						  <ol>
+							<li>Renew certificate (Let’s Encrypt / CA) and install new certs</li>
+							<li>Ensure server config uses correct cert for SNI host if multiple vhosts</li>
+							<li>Reload server and verify <span class="highlight-text">curl -Iv</span> shows valid chain</li>
+						  </ol>
+						</div>
+
+						<h4>Issue 2 — TLS cipher suite / protocol mismatch</h4>
+						<div style="margin-left: 2em;">
+						  <p><strong>Symptoms:</strong> Old clients can’t establish TLS; negotiation fails or downgrades cause failure</p>
+						  <p><strong>Counter questions:</strong> Do clients require legacy ciphers? Are servers configured to disallow weak ciphers?</p>
+
+						  <p><strong>Troubleshooting:</strong></p>
+						  <ol>
+							<li>Enumerate supported ciphers:
+							  <ul>
+								<li><span class="highlight-text">openssl s_client -connect host:443 -cipher 'ALL'</span> (trial)</li>
+								<li><span class="highlight-text">nmap --script ssl-enum-ciphers -p 443 host</span></li>
+							  </ul>
+							</li>
+							<li>Test with failing client; capture handshake in Wireshark to see ClientHello/CipherSuites</li>
+						  </ol>
+
+						  <h5>Resolution:</h5>
+						  <ol>
+							<li>If required, enable compatible ciphers temporarily (careful — security implications)</li>
+							<li>Update client to modern TLS (1.2/1.3)</li>
+							<li>Verify with <span class="highlight-text">openssl s_client</span> and <span class="highlight-text">nmap</span> scan</li>
+						  </ol>
+						</div>
+
+						<h4>Issue 3 — Data encoding/charset mismatch (garbled characters)</h4>
+						<div style="margin-left: 2em;">
+						  <p><strong>Symptoms:</strong> Web pages show � or wrong characters; API payloads misinterpreted</p>
+						  <p><strong>Counter questions:</strong> Which side sets <span class="highlight-text">Content-Type</span> charset? Is compression applied?</p>
+
+						  <p><strong>Troubleshooting:</strong></p>
+						  <ol>
+							<li>Inspect HTTP headers:
+							  <ul>
+								<li><span class="highlight-text">curl -I https://api.example.com</span> and check <span class="highlight-text">Content-Type: application/json; charset=utf-8</span></li>
+							  </ul>
+							</li>
+							<li>Capture payloads (tcpdump/Wireshark) and examine actual bytes</li>
+							<li>Check app/server code for encoding used when writing responses</li>
+						  </ol>
+
+						  <h5>Resolution:</h5>
+						  <ol>
+							<li>Ensure both ends use same charset (UTF-8 recommended)</li>
+							<li>Set <span class="highlight-text">charset utf-8</span> in web server headers or template engine</li>
+							<li>Verify with <span class="highlight-text">curl</span> that content renders properly</li>
+						  </ol>
+						</div>
+
+						<h4>Issue 4 — Compression / gzip mismatch or double-compress</h4>
+						<div style="margin-left: 2em;">
+						  <p><strong>Symptoms:</strong> Clients get corrupted content or can’t decompress responses</p>
+						  <p><strong>Counter questions:</strong> Is proxy or LB adding compression? App server compressing too?</p>
+
+						  <p><strong>Troubleshooting:</strong></p>
+						  <ol>
+							<li>Inspect headers:
+							  <ul>
+								<li><span class="highlight-text">curl -I -H "Accept-Encoding: gzip" http://example.com</span> → see <span class="highlight-text">Content-Encoding: gzip</span></li>
+							  </ul>
+							</li>
+							<li>Capture response bytes and try to decompress locally</li>
+							<li>Check app & proxy configs to avoid double compression</li>
+						  </ol>
+
+						  <h5>Resolution:</h5>
+						  <ol>
+							<li>Disable double-compression on one layer</li>
+							<li>Ensure <span class="highlight-text">Vary</span> and <span class="highlight-text">Content-Encoding</span> headers set correctly</li>
+							<li>Validate with <span class="highlight-text">curl --compressed</span> and browser</li>
+						  </ol>
+						</div>
+
+						<h4>Issue 5 — Binary/protocol misinterpretation (e.g., wrong TLS record vs app data)</h4>
+						<div style="margin-left: 2em;">
+						  <p><strong>Symptoms:</strong> Service speaks TLS but server expects plain HTTP, or vice-versa; garbage received</p>
+						  <p><strong>Counter questions:</strong> Was port swapped between HTTP and HTTPS? Are proxies misconfigured for SSL termination?</p>
+
+						  <p><strong>Troubleshooting:</strong></p>
+						  <ol>
+							<li>Try plain connect:
+							  <ul>
+								<li><span class="highlight-text">curl -v http://host:8443</span> vs <span class="highlight-text">https://host:8443</span></li>
+							  </ul>
+							</li>
+							<li>Use <span class="highlight-text">openssl s_client</span> to see if TLS handshake happens</li>
+							<li>Review proxy/LB config for SSL offloading vs pass-through</li>
+						  </ol>
+
+						  <h5>Resolution:</h5>
+						  <ol>
+							<li>Correct port/protocol assignments: enable TLS on right port or terminate at LB and forward plain to backend correctly</li>
+							<li>Restart services to apply changes</li>
+							<li>Verify with <span class="highlight-text">curl -I</span> and <span class="highlight-text">openssl s_client</span></li>
+						  </ol>
+						</div>
+						<h3>Layer 7 — Application (5 Common Issues)</h3>
+
+						<h4>Issue 1 — HTTP 500 / application exception</h4>
+						<div style="margin-left: 2em;">
+						  <p><strong>Symptoms:</strong> API returns 500, server logs exceptions, application crashes</p>
+						  <p><strong>Counter questions:</strong> Is recent deploy or config change made? Any resource exhaustion?</p>
+
+						  <p><strong>Troubleshooting:</strong></p>
+						  <ol>
+							<li>Check application logs:
+							  <ul>
+								<li><span class="highlight-text">sudo journalctl -u myapp</span> or <span class="highlight-text">tail -F /var/log/myapp/app.log</span></li>
+								<li>For containers: <span class="highlight-text">docker logs &lt;container&gt;</span> or <span class="highlight-text">kubectl logs &lt;pod&gt; -c &lt;container&gt;</span></li>
+							  </ul>
+							</li>
+							<li>Reproduce request with <span class="highlight-text">curl -v</span> to see headers/body causing 500</li>
+							<li>Check error tracebacks to identify module/line</li>
+						  </ol>
+
+						  <h5>Resolution:</h5>
+						  <ol>
+							<li>Fix code or revert bad deploy if regression</li>
+							<li>If due to resources, scale app or increase memory/connection pool</li>
+							<li>Redeploy and verify <span class="highlight-text">curl</span> returns 200 for same request</li>
+						  </ol>
+						</div>
+
+						<h4>Issue 2 — Database connection failure (DB down or auth fail)</h4>
+						<div style="margin-left: 2em;">
+						  <p><strong>Symptoms:</strong> App logs show “cannot connect to database”, slow queries, or timeouts</p>
+						  <p><strong>Counter questions:</strong> Is DB reachable from application host? Any credential change? Maintenance window?</p>
+
+						  <p><strong>Troubleshooting:</strong></p>
+						  <ol>
+							<li>Try direct DB connection from app host:
+							  <ul>
+								<li>PostgreSQL: <span class="highlight-text">psql -h dbhost -U user -c 'select 1;'</span></li>
+								<li>MySQL: <span class="highlight-text">mysql -h dbhost -u user -p -e 'select 1'</span></li>
+							  </ul>
+							</li>
+							<li>Check DB process status and logs on DB host</li>
+							<li>Check network: <span class="highlight-text">telnet dbhost 5432</span> or <span class="highlight-text">nc -vz dbhost 3306</span></li>
+						  </ol>
+
+						  <h5>Resolution:</h5>
+						  <ol>
+							<li>Start DB or restore from replica/failover</li>
+							<li>Update connection strings or credentials in app config; restart app</li>
+							<li>Verify with <span class="highlight-text">psql</span> and by exercising app endpoints</li>
+						  </ol>
+						</div>
+
+						<h4>Issue 3 — DNS resolution failure (app cannot resolve hostnames)</h4>
+						<div style="margin-left: 2em;">
+						  <p><strong>Symptoms:</strong> App cannot call external APIs or connect to services by name; IP works</p>
+						  <p><strong>Counter questions:</strong> Is DNS server reachable? Did resolver configs change?</p>
+
+						  <p><strong>Troubleshooting:</strong></p>
+						  <ol>
+							<li>Check <span class="highlight-text">/etc/resolv.conf</span> for configured nameservers</li>
+							<li>Test DNS resolution:
+							  <ul>
+								<li><span class="highlight-text">dig example.com @&lt;nameserver&gt;</span> and <span class="highlight-text">dig +trace example.com</span></li>
+							  </ul>
+							</li>
+							<li>Try using IP instead of name; confirm it works</li>
+						  </ol>
+
+						  <h5>Resolution:</h5>
+						  <ol>
+							<li>Fix <span class="highlight-text">/etc/resolv.conf</span> or DHCP client config</li>
+							<li>Restart DNS service (e.g., <span class="highlight-text">systemd-resolved</span>) or switch to reliable DNS (e.g., 8.8.8.8) for testing</li>
+							<li>Verify resolution with <span class="highlight-text">dig</span> and app functionality</li>
+						  </ol>
+						</div>
+
+						<h4>Issue 4 — API rate-limiting / 429 responses</h4>
+						<div style="margin-left: 2em;">
+						  <p><strong>Symptoms:</strong> App receives 429 Too Many Requests from third-party APIs intermittently</p>
+						  <p><strong>Counter questions:</strong> Are we sending bursts? Is backoff implemented? Any shared client causing burst?</p>
+
+						  <p><strong>Troubleshooting:</strong></p>
+						  <ol>
+							<li>Inspect request logs to identify burst patterns (timestamps & client IPs)</li>
+							<li>Confirm third-party rate limits in their docs or response headers</li>
+							<li>Reproduce pattern with load scripts</li>
+						  </ol>
+
+						  <h5>Resolution:</h5>
+						  <ol>
+							<li>Implement exponential backoff and retry with jitter</li>
+							<li>Rate-limit requests at client side (token bucket, leaky bucket)</li>
+							<li>Cache responses where possible to reduce calls</li>
+						  </ol>
+						</div>
+
+						<h4>Issue 5 — Configuration / environment mismatch (dev vs prod variables)</h4>
+						<div style="margin-left: 2em;">
+						  <p><strong>Symptoms:</strong> App runs locally but fails in production (missing env var, DB name mismatch)</p>
+						  <p><strong>Counter questions:</strong> Are environment variables deployed? Are secrets mounted? Any config map differences?</p>
+
+						  <p><strong>Troubleshooting:</strong></p>
+						  <ol>
+							<li>Inspect environment variables:
+							  <ul>
+								<li>Linux: <span class="highlight-text">sudo systemctl show-environment</span> or <span class="highlight-text">env | grep APP_</span></li>
+								<li>Docker: <span class="highlight-text">docker inspect &lt;container&gt; | jq '.[0].Config.Env'</span></li>
+								<li>Kubernetes: <span class="highlight-text">kubectl describe pod &lt;pod&gt;</span> → shows envVars, secrets</li>
+							  </ul>
+							</li>
+							<li>Check app logs for missing key errors</li>
+						  </ol>
+
+						  <h5>Resolution:</h5>
+						  <ol>
+							<li>Deploy missing environment variables or secret mounts</li>
+							<li>Use centralized config/secret store (Vault, Kubernetes secrets)</li>
+							<li>Restart service and validate behavior</li>
+						  </ol>
+						</div>
+					</div>	
+					<h2 id="realtime-pkt-toubleshoot" class="section-title">c. Real-Time Troubleshooting Transcripts</h2>
+					<a href="#features-overview" class="back-to-top-btn">↑ Back to Features</a>				
+					<div class="subsection1">
+						<h3>OSI Layer 1 (Physical) – Troubleshooting Scenarios</h3>
+
+						<h4>Issue 1 — User’s PC Cannot Connect (Bad Cable)</h4>
+						<div style="margin-left: 2em;">
+							<p><strong>Scenario:</strong> A user reports no network access.</p>
+
+							<p><strong>Transcript:</strong></p>
+							<div class="code-block">
+								Admin> ping 10.10.10.5<br>
+								Reply: Destination host unreachable
+							</div>
+
+							<p><strong>Checking interface status:</strong></p>
+							<div class="code-block">show interface eth0<br>
+							  eth0 is administratively up, line protocol is down<br>
+								Hardware: Intel Gigabit<br>
+								Speed: 1000Mb/s, Duplex: full<br>
+								Last input: never, Last output: never<br>
+								Errors: 0
+							</div>
+
+							<p><strong>Thinking:</strong> Interface is enabled, but no link detected → likely cable/port issue.</p>
+							<div class="code-block">
+								Admin> ethtool eth0<br>
+								Link detected: no
+							</div>
+
+							<p><strong>Action:</strong> Replace Ethernet cable.</p>
+							<div class="code-block">
+								Admin> ethtool eth0<br>
+								Link detected: yes
+							</div>
+
+							<p><strong>Verification:</strong></p>
+							<div class="code-block">
+								Admin> ping 10.10.10.5<br>
+								Reply from 10.10.10.5: bytes=32 time=2ms TTL=64
+							</div>
+
+							<h4>Resolution:</h4>
+							<ol>
+								<li>Identified faulty Ethernet cable (no link detected).</li>
+								<li>Replaced with a known-good Ethernet cable.</li>
+								<li>Verified link is up with <span class="highlight-text">ethtool</span> and successful <span class="highlight-text">ping</span>.</li>
+							</ol>
+						</div>
+						<h4>Issue 2 — Duplex/Speed Mismatch</h4>
+						<div style="margin-left: 2em;">
+						  <p><strong>Scenario:</strong> Slow application response reported by user.</p>
+
+						  <p><strong>Transcript:</strong></p>
+						  <div class="code-block">
+							Admin> ping 10.10.20.10<br>
+							Reply from 10.10.20.10: time=200ms (normally 2ms)
+						  </div>
+
+						  <p><strong>Check interface:</strong></p>
+						  <div class="code-block">
+							Admin> show interface eth1<br>
+							eth1 is up, line protocol is up<br>
+							Hardware: Intel Gigabit<br>
+							Speed: 100Mb/s, Duplex: half<br>
+							Errors: 320 collisions
+						  </div>
+
+						  <p><strong>Thinking:</strong> Interface shows half duplex → collisions detected.</p>
+
+						  <p><strong>Action:</strong> Force full duplex to match switch.</p>
+						  <div class="code-block">
+							Admin> ethtool -s eth1 speed 100 duplex full autoneg off
+						  </div>
+
+						  <p><strong>Verify:</strong></p>
+						  <div class="code-block">
+							Admin> show interface eth1<br>
+							Speed: 100Mb/s, Duplex: full<br>
+							Errors: 0 (no new collisions)
+						  </div>
+
+						  <p><strong>Ping check:</strong></p>
+						  <div class="code-block">
+							Admin> ping 10.10.20.10<br>
+							Reply from 10.10.20.10: time=2ms
+						  </div>
+
+						  <h4>Resolution:</h4>
+						  <ol>
+							<li>Identified speed/duplex mismatch causing collisions and latency.</li>
+							<li>Forced <span class="highlight-text">100Mb/s full duplex</span> to match switch configuration.</li>
+							<li>Verified no new collisions and restored normal ping times.</li>
+						  </ol>
+						</div>
+						<h4>Issue 3 — Fiber Link Down (SFP Faulty)</h4>
+						<div style="margin-left: 2em;">
+						  <p><strong>Scenario:</strong> Core switch uplink not passing traffic.</p>
+
+						  <p><strong>Transcript:</strong></p>
+						  <div class="code-block">
+							Switch> show interface gi1/0/1<br>
+							Gi1/0/1 is down, line protocol is down<br>
+							Hardware: SFP-GE-LX<br>
+							Reason: No light received
+						  </div>
+
+						  <p><strong>Thinking:</strong> Likely faulty fiber or SFP module.</p>
+
+						  <p><strong>Check counters:</strong></p>
+						  <div class="code-block">
+							Switch> show interface gi1/0/1 counters errors<br>
+							RX Loss of Signal: Yes<br>
+							TX: Normal
+						  </div>
+
+						  <p><strong>Action:</strong> Swap fiber patch cable and reseat SFP.</p>
+						  <div class="code-block">
+							Switch> show interface gi1/0/1<br>
+							Gi1/0/1 is up, line protocol is up
+						  </div>
+
+						  <h4>Resolution:</h4>
+						  <ol>
+							<li>Identified fiber link failure (no light received).</li>
+							<li>Replaced faulty fiber patch cable and reseated SFP.</li>
+							<li>Verified uplink is operational.</li>
+						  </ol>
+						</div>
+
+						<h4>Issue 4 — Intermittent Connectivity (Loose Patch Panel)</h4>
+						<div style="margin-left: 2em;">
+						  <p><strong>Scenario:</strong> User randomly loses connectivity.</p>
+
+						  <p><strong>Transcript:</strong></p>
+						  <div class="code-block">
+							Admin> ping 10.10.30.5 -t<br>
+							Reply from 10.10.30.5: time=2ms<br>
+							Request timed out<br>
+							Reply from 10.10.30.5: time=2ms<br>
+							Request timed out
+						  </div>
+
+						  <p><strong>Check interface errors:</strong></p>
+						  <div class="code-block">
+							Admin> show interface fa0/2<br>
+							Input errors: 120<br>
+							CRC errors: 120
+						  </div>
+
+						  <p><strong>Thinking:</strong> CRC errors → physical layer issue (loose termination).</p>
+
+						  <p><strong>Action:</strong> Inspect patch panel → cable not properly punched down. Reseated and re-crimped.</p>
+						  <div class="code-block">
+							Admin> show interface fa0/2<br>
+							Input errors: 0<br>
+							CRC errors: 0
+						  </div>
+
+						  <h4>Resolution:</h4>
+						  <ol>
+							<li>Detected CRC/input errors due to poor cabling.</li>
+							<li>Re-crimped loose patch panel termination.</li>
+							<li>Verified interface error counters cleared.</li>
+						  </ol>
+						</div>
+
+						<h4>Issue 5 — Power Issue (Device Not Booting)</h4>
+						<div style="margin-left: 2em;">
+						  <p><strong>Scenario:</strong> Access switch not powering on.</p>
+
+						  <p><strong>Transcript (Technician on-site):</strong></p>
+						  <div class="code-block">
+							- No LEDs on switch<br>
+							- Power cord plugged in<br>
+							- Checked UPS outlet, showing 230V
+						  </div>
+
+						  <p><strong>Thinking:</strong> Suspect faulty power supply.</p>
+
+						  <p><strong>Action:</strong> Swap to another known good power supply → switch boots.</p>
+						  <div class="code-block">
+							Switch> show log<br>
+							%SYS-5-RESTART: System restarted -- power failure
+						  </div>
+
+						  <h4>Resolution:</h4>
+						  <ol>
+							<li>Identified power failure due to faulty PSU.</li>
+							<li>Replaced with known-good PSU.</li>
+							<li>Switch successfully powered on and restored service.</li>
+						  </ol>
+						</div>
+
+						<h3>Summary for Layer 1</h3>
+						<div style="margin-left: 2em;">
+						  <ul>
+							<li><strong>Issue 1:</strong> Bad cable → replaced</li>
+							<li><strong>Issue 2:</strong> Duplex mismatch → forced full duplex</li>
+							<li><strong>Issue 3:</strong> Faulty fiber/SFP → replaced</li>
+							<li><strong>Issue 4:</strong> Loose patch panel → re-crimped</li>
+							<li><strong>Issue 5:</strong> Power failure → replaced PSU</li>
+						  </ul>
+						</div>
+						<h3>OSI Layer 2 (Data Link Layer) – Troubleshooting Scenarios</h3>
+
+						<h4>Issue 1 — VLAN Misconfiguration</h4>
+						<div style="margin-left: 2em;">
+						  <p><strong>Scenario:</strong> A user in VLAN 20 cannot reach others in the same VLAN.</p>
+
+						  <p><strong>Transcript:</strong></p>
+						  <div class="code-block">
+							User> ping 10.20.20.5<br>
+							Reply: Destination host unreachable
+						  </div>
+
+						  <p><strong>Check switch port:</strong></p>
+						  <div class="code-block">
+							Switch> show interface fa0/10 switchport<br>
+							Name: Fa0/10<br>
+							Administrative Mode: static access<br>
+							Operational Mode: static access<br>
+							Access Mode VLAN: 1 (default)
+						  </div>
+
+						  <p><strong>Thinking:</strong> Port is in VLAN 1 instead of VLAN 20.</p>
+
+						  <p><strong>Action:</strong> Correct VLAN assignment.</p>
+						  <div class="code-block">
+							Switch(config)# interface fa0/10<br>
+							Switch(config-if)# switchport mode access<br>
+							Switch(config-if)# switchport access vlan 20
+						  </div>
+
+						  <p><strong>Verify:</strong></p>
+						  <div class="code-block">
+							Switch> show interface fa0/10 switchport<br>
+							Access Mode VLAN: 20
+						  </div>
+
+						  <p><strong>Ping test:</strong></p>
+						  <div class="code-block">
+							User> ping 10.20.20.5<br>
+							Reply from 10.20.20.5: time=2ms
+						  </div>
+
+						  <h4>Resolution:</h4>
+						  <ol>
+							<li>Identified wrong VLAN assignment (default VLAN 1).</li>
+							<li>Corrected to VLAN 20.</li>
+							<li>Verified communication successful.</li>
+						  </ol>
+						</div>
+
+						<h4>Issue 2 — Trunk Port Not Passing VLANs</h4>
+						<div style="margin-left: 2em;">
+						  <p><strong>Scenario:</strong> Hosts in VLAN 30 on different switches cannot communicate.</p>
+
+						  <p><strong>Transcript:</strong></p>
+						  <div class="code-block">
+							Host1> ping 10.30.30.10<br>
+							Request timed out
+						  </div>
+
+						  <p><strong>Check trunk configuration:</strong></p>
+						  <div class="code-block">
+							SwitchA> show interface gi0/1 switchport<br>
+							Operational Mode: trunk<br>
+							Allowed VLANs: 1-10
+						  </div>
+
+						  <p><strong>Thinking:</strong> VLAN 30 not allowed on trunk.</p>
+
+						  <p><strong>Action:</strong> Add VLAN 30 to trunk.</p>
+						  <div class="code-block">
+							SwitchA(config)# interface gi0/1<br>
+							SwitchA(config-if)# switchport trunk allowed vlan add 30
+						  </div>
+
+						  <p><strong>Verify:</strong></p>
+						  <div class="code-block">
+							SwitchA> show interface gi0/1 switchport<br>
+							Allowed VLANs: 1-10,30
+						  </div>
+
+						  <p><strong>Ping test:</strong></p>
+						  <div class="code-block">
+							Host1> ping 10.30.30.10<br>
+							Reply from 10.30.30.10: time=3ms
+						  </div>
+
+						  <h4>Resolution:</h4>
+						  <ol>
+							<li>Detected missing VLAN in trunk allowed list.</li>
+							<li>Added VLAN 30 to trunk configuration.</li>
+							<li>Verified inter-switch VLAN connectivity restored.</li>
+						  </ol>
+						</div>
+
+						<h4>Issue 3 — MAC Address Flapping (Loop/Redundant Link)</h4>
+						<div style="margin-left: 2em;">
+						  <p><strong>Scenario:</strong> Network shows instability, logs reveal MAC flapping.</p>
+
+						  <p><strong>Transcript:</strong></p>
+						  <div class="code-block">
+							Switch> show log<br>
+							%SW_MATM-4-MACFLAP_NOTIF: Host 0011.2233.4455 in vlan 10 is flapping between Gi0/1 and Gi0/2
+						  </div>
+
+						  <p><strong>Check STP:</strong></p>
+						  <div class="code-block">
+							Switch> show spanning-tree vlan 10<br>
+							VLAN0010 is executing the ieee compatible Spanning Tree protocol<br>
+							Root ID: 32778/0012.3456.789a<br>
+							Port Gi0/1: Forwarding<br>
+							Port Gi0/2: Forwarding
+						  </div>
+
+						  <p><strong>Thinking:</strong> Both uplinks forwarding → loop present.</p>
+
+						  <p><strong>Action:</strong> Shut one redundant link.</p>
+						  <div class="code-block">
+							Switch(config)# interface gi0/2<br>
+							Switch(config-if)# shutdown
+						  </div>
+
+						  <p><strong>Logs:</strong></p>
+						  <div class="code-block">
+							%LINK-5-CHANGED: Interface Gi0/2, changed state to administratively down
+						  </div>
+
+						  <p><strong>Verify:</strong></p>
+						  <div class="code-block">
+							Switch> show log<br>
+							(no more MAC flaps)
+						  </div>
+
+						  <h4>Resolution:</h4>
+						  <ol>
+							<li>Detected MAC address flapping due to loop.</li>
+							<li>Disabled redundant link causing instability.</li>
+							<li>MAC flapping resolved, network stable.</li>
+						  </ol>
+						</div>
+
+						<h4>Issue 4 — ARP Table Issue (Stale MAC)</h4>
+						<div style="margin-left: 2em;">
+						  <p><strong>Scenario:</strong> User cannot reach gateway.</p>
+
+						  <p><strong>Transcript:</strong></p>
+						  <div class="code-block">
+							User> ping 10.10.1.1<br>
+							Request timed out
+						  </div>
+
+						  <p><strong>Check ARP:</strong></p>
+						  <div class="code-block">
+							User> arp -a<br>
+							Gateway 10.10.1.1 -> 00-11-22-33-44-55 (incomplete)
+						  </div>
+
+						  <p><strong>Check switch MAC table:</strong></p>
+						  <div class="code-block">
+							Switch> show mac address-table | include 0011.2233.4455<br>
+							(no entry)
+						  </div>
+
+						  <p><strong>Thinking:</strong> Gateway MAC not learned.</p>
+
+						  <p><strong>Action:</strong> Clear ARP and check again.</p>
+						  <div class="code-block">
+							User> arp -d *<br><br>
+							Switch> show mac address-table dynamic<br>
+							VLAN 10    0011.2233.4455    DYNAMIC    Fa0/1
+						  </div>
+
+						  <p><strong>Ping test:</strong></p>
+						  <div class="code-block">
+							User> ping 10.10.1.1<br>
+							Reply from 10.10.1.1: time=1ms
+						  </div>
+
+						  <h4>Resolution:</h4>
+						  <ol>
+							<li>Identified missing/stale ARP entry.</li>
+							<li>Cleared ARP table and refreshed MAC address learning.</li>
+							<li>Verified user can reach gateway.</li>
+						  </ol>
+						</div>
+
+						<h4>Issue 5 — STP Blocking Unexpectedly</h4>
+						<div style="margin-left: 2em;">
+						  <p><strong>Scenario:</strong> User in VLAN 50 cannot access servers across trunk.</p>
+
+						  <p><strong>Transcript:</strong></p>
+						  <div class="code-block">
+							User> ping 10.50.50.10<br>
+							Request timed out
+						  </div>
+
+						  <p><strong>Check STP status:</strong></p>
+						  <div class="code-block">
+							Switch> show spanning-tree vlan 50<br>
+							VLAN0050 is executing ieee STP<br>
+							Root ID: 32778/0012.3456.789a<br>
+							Port Gi0/1: Blocking
+						  </div>
+
+						  <p><strong>Thinking:</strong> STP blocked uplink, cutting VLAN 50 path.</p>
+
+						  <p><strong>Action:</strong> Investigate root cause → misconfigured priority. Lower local switch priority to be root.</p>
+						  <div class="code-block">
+							Switch(config)# spanning-tree vlan 50 priority 24576
+						  </div>
+
+						  <p><strong>Verify:</strong></p>
+						  <div class="code-block">
+							Switch> show spanning-tree vlan 50<br>
+							This bridge is the root<br>
+							Port Gi0/1: Forwarding
+						  </div>
+
+						  <p><strong>Ping test:</strong></p>
+						  <div class="code-block">
+							User> ping 10.50.50.10<br>
+							Reply from 10.50.50.10: time=2ms
+						  </div>
+
+						  <h4>Resolution:</h4>
+						  <ol>
+							<li>Identified uplink blocked by STP.</li>
+							<li>Adjusted spanning-tree priority to make local switch root.</li>
+							<li>Port unblocked, VLAN 50 traffic restored.</li>
+						  </ol>
+						</div>
+
+						<h3>Summary for Layer 2</h3>
+						<div style="margin-left: 2em;">
+						  <ul>
+							<li><strong>Issue 1:</strong> Wrong VLAN → fixed port assignment</li>
+							<li><strong>Issue 2:</strong> VLAN not on trunk → added VLAN</li>
+							<li><strong>Issue 3:</strong> MAC flapping → disabled redundant link</li>
+							<li><strong>Issue 4:</strong> Stale ARP → cleared ARP table</li>
+							<li><strong>Issue 5:</strong> STP blocking → adjusted bridge priority</li>
+						  </ul>
+						</div>
+					
+						<h3>OSI Layer 3 (Network) – Troubleshooting Scenarios</h3>
+
+						<h4>Issue 1 — Wrong IP / Subnet on Host (Cannot reach gateway or remote subnets)</h4>
+						<div style="margin-left: 2em;">
+						  <p><strong>Scenario:</strong> User reports they can’t reach the internet or other subnets; local coworkers reachable.</p>
+						  <p><strong>Transcript</strong></p>
+						  <div class="code-block">
+							Admin&gt; ssh user@host1.example.com<br>
+							Connected to host1<br><br>
+							host1$ ip addr show eth0<br>
+							2: eth0: &lt;BROADCAST,MULTICAST,UP,LOWER_UP&gt; mtu 1500 qdisc mq state UP qlen 1000<br>
+							&nbsp;&nbsp;inet 10.10.50.25/24 brd 10.10.50.255 scope global eth0<br><br>
+							host1$ ip route<br>
+							10.10.50.0/24 dev eth0 proto kernel scope link src 10.10.50.25<br>
+							default via 10.10.1.1 dev eth0
+						  </div>
+						  <p>Test connectivity:</p>
+						  <div class="code-block">
+							host1$ ping -c 3 10.10.1.1<br>
+							PING 10.10.1.1 (10.10.1.1) 56(84) bytes of data.<br>
+							From 10.10.50.25 icmp_seq=1 Destination Host Unreachable
+						  </div>
+						  <p>Check netmask and intended network (asked user): they should be in 10.10.0.0/16 network per inventory.</p>
+						  <p><strong>Thinking:</strong> Host is in 10.10.50.0/24 while design expects /16; gateway 10.10.1.1 is outside /24 and unreachable on L2.</p>
+						  <p><strong>Action:</strong></p>
+						  <ol>
+							<li>Fix network config to correct netmask (temporary):</li>
+						  </ol>
+						  <div class="code-block">
+							host1$ sudo ip addr flush dev eth0<br>
+							host1$ sudo ip addr add 10.10.50.25/16 dev eth0<br>
+							host1$ ip addr show eth0<br>
+							&nbsp;&nbsp;inet 10.10.50.25/16 brd 10.10.255.255 scope global eth0
+						  </div>
+						  <ol start="2">
+							<li>Re-check route:</li>
+						  </ol>
+						  <div class="code-block">
+							host1$ ip route<br>
+							10.10.0.0/16 dev eth0 proto kernel scope link src 10.10.50.25<br>
+							default via 10.10.1.1 dev eth0
+						  </div>
+						  <p>Verification:</p>
+						  <div class="code-block">
+							host1$ ping -c 3 10.10.1.1<br>
+							PING 10.10.1.1 (10.10.1.1): 56 data bytes<br>
+							64 bytes from 10.10.1.1: icmp_seq=1 ttl=63 time=1.2 ms
+						  </div>
+						  <p><strong>Resolution:</strong> Corrected netmask to /16. Persist change in network config (e.g., <code>/etc/netplan/*.yaml</code> or DHCP server fix).</p>
+						  <p>Persist action (example for Debian netplan): edit file and <code>sudo netplan apply</code>.<br>
+							 If DHCP used, fix DHCP scope or reservation.</p>
+						</div>
+
+						<h4>Issue 2 — Missing Static Route (Certain subnet unreachable)</h4>
+						<div style="margin-left: 2em;">
+						  <p><strong>Scenario:</strong> Application server cannot reach a partner network 172.20.10.0/24; traceroute shows it stops at the default gateway.</p>
+						  <p><strong>Transcript</strong></p>
+						  <div class="code-block">
+							AppServer$ traceroute -n 172.20.10.5<br>
+							traceroute to 172.20.10.5 (172.20.10.5), 30 hops max, 60 byte packets<br>
+							 1  10.10.1.1  1.0 ms  0.9 ms  0.8 ms<br>
+							 2  10.10.2.1  3.1 ms  3.0 ms  3.0 ms<br>
+							 3  *
+						  </div>
+						  <p>Check routing on gateway router (Cisco):</p>
+						  <div class="code-block">
+							Router&gt; show ip route 172.20.10.0<br>
+							% Network not in table
+						  </div>
+						  <p>Check routing table on upstream router:</p>
+						  <div class="code-block">
+							Router&gt; show ip route<br>
+							... (lots of entries) ...<br>
+							10.10.0.0/16 is directly connected, via Gig0/1
+						  </div>
+						  <p><strong>Thinking:</strong> No route exists to reach 172.20.10.0/24 from our routers — likely missing static route or BGP advertisement.</p>
+						  <p><strong>Action:</strong></p>
+						  <ol>
+							<li>On edge router, add static route (temporary):</li>
+						  </ol>
+						  <div class="code-block">
+							Router(config)# ip route 172.20.10.0 255.255.255.0 10.10.2.2
+						  </div>
+						  <ol start="2">
+							<li>Verify:</li>
+						  </ol>
+						  <div class="code-block">
+							Router&gt; show ip route 172.20.10.0<br>
+							S   172.20.10.0/24 [1/0] via 10.10.2.2
+						  </div>
+						  <p>Verification:</p>
+						  <div class="code-block">
+							AppServer$ traceroute -n 172.20.10.5<br>
+							 1  10.10.1.1  1.0 ms<br>
+							 2  10.10.2.2  4.0 ms<br>
+							 3  172.20.10.5  8.5 ms
+						  </div>
+						  <p><strong>Resolution:</strong> Added static route pointing to partner/next-hop.</p>
+						  <p>For permanent fix, update routing protocol (announce prefix via BGP/OSPF) or add to network documentation and persist config.</p>
+						</div>
+
+						<h4>Issue 3 — OSPF Adjacency Not Forming (neighbor stuck in INIT/2WAY)</h4>
+						<div style="margin-left: 2em;">
+						  <p><strong>Scenario:</strong> New router added to area 0 but OSPF neighbor is stuck in INIT stage; routes not exchanged.</p>
+						  <p><strong>Transcript</strong></p>
+						  <div class="code-block">
+							RouterA&gt; show ip ospf neighbor<br>
+							Neighbor ID     Pri   State           Dead Time   Address         Interface<br>
+							10.10.3.2         1   INIT/         00:00:33    10.10.3.2       Gig0/1
+						  </div>
+						  <p>Check interface:</p>
+						  <div class="code-block">
+							RouterA&gt; show ip interface brief | include Gig0/1<br>
+							Gig0/1    10.10.3.1   YES NVRAM  up    up
+						  </div>
+						  <p>Check OSPF config:</p>
+						  <div class="code-block">
+							RouterA&gt; show running-config | section router ospf<br>
+							router ospf 1<br>
+							 network 10.10.3.0 0.0.0.255 area 0
+						  </div>
+						  <p>On RouterB (the neighbor):</p>
+						  <div class="code-block">
+							RouterB&gt; show ip ospf neighbor<br>
+							Neighbor ID     Pri   State           Dead Time   Address         Interface<br>
+							10.10.3.1         1   2WAY/         00:00:34    10.10.3.1       Gig0/1
+						  </div>
+						  <p>Packet capture on RouterA interface shows only Hello with dead neighbor field set (no two-way exchange).</p>
+						  <p><strong>Thinking:</strong> One-sided neighbor state indicates possible mismatch on OSPF parameters (area, interface type, hello/dead timers, authentication).</p>
+						  <p><strong>Action:</strong> Compare OSPF parameters:</p>
+						  <p>Check area and network statements (both in area 0? yes).<br>
+							 Check interface hello/dead timers and authentication:</p>
+						  <div class="code-block">
+							RouterA&gt; show ip ospf interface Gig0/1<br>
+							Gig0/1 is up, line protocol is up<br>
+							  Internet Address 10.10.3.1/24, Area 0<br>
+							  Hello 10, Dead 40, Wait 40, Retransmit 5<br>
+							  No authentication
+						  </div>
+						  <p>RouterB:</p>
+						  <div class="code-block">
+							RouterB&gt; show ip ospf interface Gig0/1<br>
+							Internet Address 10.10.3.2/24, Area 0<br>
+							  Hello 10, Dead 40, Wait 40, Retransmit 5<br>
+							  MD5 authentication enabled
+						  </div>
+						  <p>MD5 auth mismatch found.</p>
+						  <p>Fix: configure RouterA with matching authentication:</p>
+						  <div class="code-block">
+							RouterA(config-if)# ip ospf authentication message-digest<br>
+							RouterA(config-if)# ip ospf message-digest-key 1 md5 cisco123
+						  </div>
+						  <p>And on RouterB ensure same key.</p>
+						  <p>Verification:</p>
+						  <div class="code-block">
+							RouterA&gt; show ip ospf neighbor<br>
+							Neighbor ID     Pri   State           Dead Time   Address         Interface<br>
+							10.10.3.2         1   FULL/DR        00:00:36    10.10.3.2       Gig0/1
+						  </div>
+						  <p><strong>Resolution:</strong> OSPF adjacency came to FULL after aligning authentication. Persist keys in config management.</p>
+						</div>
+
+						<h4>Issue 4 — BGP Neighbor Down (TCP session not established)</h4>
+						<div style="margin-left: 2em;">
+						  <p><strong>Scenario:</strong> BGP session with ISP is down, routes not received.</p>
+						  <p><strong>Transcript</strong></p>
+						  <div class="code-block">
+							EdgeRouter&gt; show ip bgp summary<br>
+							BGP router identifier 10.10.100.1, local AS 65001<br>
+							Neighbor        V    AS MsgRcvd MsgSent   TblVer  State/PfxRcd<br>
+							203.0.113.2     4  65002      0       0        0     Connect
+						  </div>
+						  <p>Check TCP session:</p>
+						  <div class="code-block">
+							EdgeRouter&gt; show tcp brief | include 203.0.113.2<br>
+							tcp  0  0 10.10.100.1:179 203.0.113.2:54781  SYN_SENT
+						  </div>
+						  <p>Check reachability:</p>
+						  <div class="code-block">
+							EdgeRouter&gt; ping 203.0.113.2<br>
+							Type escape sequence to abort.<br>
+							Sending 5, 100-byte ICMP Echos to 203.0.113.2, timeout is 2 seconds:<br>
+							!!!!! 
+						  </div>
+						  <p>Ping OK. Check firewall:</p>
+						  <div class="code-block">
+							EdgeRouter&gt; show access-lists<br>
+							access-list 101 deny tcp any host 203.0.113.2 eq 179<br>
+							...
+						  </div>
+						  <p><strong>Thinking:</strong> TCP SYNs are being blocked by outbound ACL denying TCP port 179, hence BGP cannot establish.</p>
+						  <p><strong>Action:</strong> Remove/adjust ACL to permit BGP:</p>
+						  <div class="code-block">
+							EdgeRouter(config)# no access-list 101 deny tcp any host 203.0.113.2 eq 179<br>
+							EdgeRouter(config)# access-list 101 permit tcp any host 203.0.113.2 eq 179
+						  </div>
+						  <p>Alternatively place ACL in correct order or use prefix-list for BGP policy.</p>
+						  <p>Verification:</p>
+						  <div class="code-block">
+							EdgeRouter&gt; show tcp brief | include 203.0.113.2<br>
+							tcp  0  0 10.10.100.1:179 203.0.113.2:54781  ESTAB<br><br>
+							EdgeRouter&gt; show ip bgp summary<br>
+							Neighbor        V    AS MsgRcvd MsgSent   TblVer  State/PfxRcd<br>
+							203.0.113.2     4  65002    120    115     2345     5021
+						  </div>
+						  <p><strong>Resolution:</strong> ACL corrected, BGP established, routes received. Persist ACL change and monitor.</p>
+						</div>
+
+						<h4>Issue 5 — MTU / Path MTU Blackhole (Large transfers hang)</h4>
+						<div style="margin-left: 2em;">
+						  <p><strong>Scenario:</strong> Users able to open web pages but large downloads/time-consuming requests hang or time out. FTP/HTTPS large file transfers fail.</p>
+						  <p><strong>Transcript</strong></p>
+						  <div class="code-block">
+							Client$ curl -v -O https://downloads.example.com/largefile.iso<br>
+							Rebuilt URL to: https://downloads.example.com/largefile.iso<br>
+							Connected to downloads.example.com (198.51.100.5) port 443 (#0)<br>
+							&gt; GET /largefile.iso HTTP/1.1<br>
+							&lt; HTTP/1.1 200 OK<br>
+							... then transfer stalls and no progress ...
+						  </div>
+						  <p>Check path MTU using ping (DF bit):</p>
+						  <div class="code-block">
+							Client$ ping -M do -s 1472 198.51.100.5<br>
+							PING 198.51.100.5 (198.51.100.5) 1472(1500) bytes of data.<br>
+							From 10.10.1.1 icmp_seq=1 Frag needed and DF set (mtu = 1400)
+						  </div>
+						  <p><code>tracepath</code> shows MTU drop:</p>
+						  <div class="code-block">
+							Client$ tracepath 198.51.100.5<br>
+							 1: 10.10.1.1                                         0.905ms pmtu 1500<br>
+							 2: 192.0.2.1                                         8.123ms pmtu 1400<br>
+							 3: 198.51.100.5                                      11.234ms reached
+						  </div>
+						  <p>Check firewall/router blocking ICMP fragmentation-needed messages:</p>
+						  <p>On intermediate firewall, syslog shows <code>drop icmp type 3 code 4</code> or firewall policy denies ICMP.</p>
+						  <p><strong>Thinking:</strong> Path MTU discovery depends on ICMP Type 3 Code 4 messages. If they are blocked, endpoints keep sending large packets with DF causing blackhole.</p>
+						  <p><strong>Action Options:</strong></p>
+						  <ol>
+							<li>Configure intermediate device to allow ICMP Type 3 Code 4 (Fragmentation Needed) messages through.</li>
+							<li>As workaround, clamp MSS on edge router so TCP sessions use lower MSS:</li>
+						  </ol>
+						  <p>On Cisco IOS using PPPoE or where needed:</p>
+						  <div class="code-block">
+							Router(config-if)# interface Gig0/0<br>
+							Router(config-if)# ip tcp adjust-mss 1360
+						  </div>
+						  <p>On iptables-based router use <code>--clamp-mss-to-pmtu</code>:</p>
+						  <div class="code-block">
+							iptables -t mangle -A FORWARD -p tcp --tcp-flags SYN,RST SYN -j TCPMSS --clamp-mss-to-pmtu
+						  </div>
+						  <p>Verification:</p>
+						  <p>After allowing ICMP:</p>
+						  <div class="code-block">
+							Client$ ping -M do -s 1472 198.51.100.5<br>
+							PING ...<br>
+							64 bytes from 198.51.100.5: icmp_seq=1 ttl=50 time=11.2 ms
+						  </div>
+						  <p>or after MSS clamp:</p>
+						  <div class="code-block">
+							Client$ curl -O https://downloads.example.com/largefile.iso<br>
+							100 1024M  100 1024M  0 0  1.2M  0:14:00 --:--:--  1.2M
+						  </div>
+						  <p><strong>Resolution:</strong> Allowed ICMP Fragmentation Needed through firewall (preferred) and/or clamped MSS at edge as immediate mitigation. Document change and monitor transfers.</p>
+						</div>
+						
+						<h3>Quick Layer-3 Tools &amp; Commands Recap</h3>
+						<div style="margin-left: 2em;">
+							<ul>
+							  <li><strong>Host checks:</strong> <span class="highlight-text">ip addr, ip route, ping, traceroute, tracepath</span></li>
+							  <li><strong>Router checks (Cisco):</strong> <span class="highlight-text"> show ip route, show ip ospf neighbor, show ip bgp summary, show ip interface brief, show running-config</span></li>
+							  <li><strong>Packet inspection:</strong> <span class="highlight-text"> tcpdump -i eth0 host <ip> and icmp, tcpdump -i eth0 -w /tmp/capture.pcap</span></li>
+							  <li><strong>MTU tests:</strong> <span class="highlight-text"> ping -M do -s <size>, tracepath <host></span></li>
+							  <li><strong>Fixing:</strong> <span class="highlight-text"> ip route add, router ospf config changes, ip tcp adjust-mss, iptables TCPMSS clamp</span></li>
+							</ul>
+						</div>						
+						<h3>OSI Layer 4 (Transport) – Troubleshooting Scenarios</h3>
+
+						<h4>Issue 1 — TCP Port Blocked by Firewall</h4>
+						<div style="margin-left: 2em;">
+						  <p><strong>Scenario:</strong> Web application is unreachable.</p>
+						  <p><strong>Transcript:</strong></p>
+						  <div class="code-block">
+							User&gt; telnet 10.10.10.5 443<br>
+							Connecting To 10.10.10.5...Could not open connection to the host, on port 443: Connect failed
+						  </div>
+						  <p><strong>Action:</strong> Checked firewall. Port 443 was not allowed.</p>
+						  <div class="code-block">
+							Firewall(config)allow tcp any host 10.10.10.5 eq 443
+						  </div>
+						  <p><strong>Verification:</strong></p>
+						  <div class="code-block">
+							User&gt; telnet 10.10.10.5 443<br>
+							Connected to 10.10.10.5
+						  </div>
+						  <p><strong>Resolution:</strong> HTTPS traffic working again.</p>
+						</div>
+
+						<h4>Issue 2 — TCP Handshake Failure (SYN Flood Suspicion)</h4>
+						<div style="margin-left: 2em;">
+						  <p><strong>Scenario:</strong> Users complain web page is loading slowly.</p>
+						  <p><strong>Transcript (server capture):</strong></p>
+						  <div class="code-block">
+							SYN → <br>
+							SYN-ACK → <br>
+							SYN → <br>
+							SYN-ACK → (repeated, no ACK)
+						  </div>
+						  <p><strong>Action:</strong> Too many half-open connections → possible SYN flood attack. Enabled SYN cookies.</p>
+						  <div class="code-block">
+							Server(config)sysctl -w net.ipv4.tcp_syncookies=1
+						  </div>
+						  <p><strong>Verification:</strong> Connections stabilized. Handshake now completing.</p>
+						</div>
+
+						<h4>Issue 3 — UDP DNS Query Failure</h4>
+						<div style="margin-left: 2em;">
+						  <p><strong>Scenario:</strong> Clients cannot resolve domain names.</p>
+						  <p><strong>Transcript:</strong></p>
+						  <div class="code-block">
+							Client&gt; nslookup google.com<br>
+							DNS request timed out.
+						  </div>
+						  <p>Checked DNS server reachability (UDP 53):</p>
+						  <div class="code-block">
+							Client&gt; nc -u 10.10.10.2 53<br>
+							Ncat: Connection refused
+						  </div>
+						  <p><strong>Action:</strong> Firewall was blocking UDP/53. Allowed it.</p>
+						  <div class="code-block">
+							Firewall(config)allow udp any host 10.10.10.2 eq 53
+						  </div>
+						  <p><strong>Verification:</strong></p>
+						  <div class="code-block">
+							Client&gt; nslookup google.com<br>
+							Name: google.com<br>
+							Address: 142.250.77.14
+						  </div>
+						  <p><strong>Resolution:</strong> DNS working.</p>
+						</div>
+
+						<h4>Issue 4 — High Retransmissions (TCP Window Issue)</h4>
+						<div style="margin-left: 2em;">
+						  <p><strong>Scenario:</strong> File transfer (FTP) is very slow.</p>
+						  <p><strong>Transcript (Wireshark):</strong></p>
+						  <div class="code-block">
+							[TCP Retransmission]<br>
+							[TCP Dup ACK]<br>
+							[TCP Window Full]
+						  </div>
+						  <p><strong>Action:</strong> Increased TCP window size on client.</p>
+						  <div class="code-block">
+							Client&gt; netsh int tcp set global autotuninglevel=normal
+						  </div>
+						  <p><strong>Verification:</strong> FTP transfer speed increased. Window scaling fixed throughput.</p>
+						</div>
+
+						<h4>Issue 5 — Wrong Application Port Config</h4>
+						<div style="margin-left: 2em;">
+						  <p><strong>Scenario:</strong> Database client fails to connect to DB server.</p>
+						  <p><strong>Transcript:</strong></p>
+						  <div class="code-block">
+							Client&gt; telnet 10.10.10.50 1521<br>
+							Connecting... failed
+						  </div>
+						  <p>Checked DB config:</p>
+						  <div class="code-block">
+							DB listener running on port 1522
+						  </div>
+						  <p><strong>Action:</strong> Corrected application config to use port 1522.</p>
+						  <p><strong>Verification:</strong></p>
+						  <div class="code-block">
+							Client&gt; telnet 10.10.10.50 1522<br>
+							Connected
+						  </div>
+						  <p><strong>Resolution:</strong> DB connection established.</p>
+						</div>
+
+						<h3>Summary for Layer 4</h3>
+						<div style="margin-left: 2em;">
+						  <ul>
+							<li>Firewall blocks → open ports.</li>
+							<li>Handshake failure → check SYN flood or misconfig.</li>
+							<li>UDP failure → allow UDP services (DNS, SNMP, etc.).</li>
+							<li>Retransmissions → check window size &amp; congestion.</li>
+							<li>Wrong app port → verify service port config.</li>
+						  </ul>
+						</div>
+						<h3>OSI Layer 5 (Session Layer) – Troubleshooting Scenarios</h3>
+
+						<h4>Issue 1 — SSH Session Timeout</h4>
+						<div style="margin-left: 2em;">
+						  <p><strong>Scenario:</strong> SSH disconnects after 60 seconds of inactivity.</p>
+						  <p><strong>Transcript:</strong></p>
+						  <div class="code-block">
+							User&gt; ssh admin@10.10.10.5<br>
+							Connection established...<br>
+							&lt;after 1 min idle&gt;<br>
+							Connection closed by remote host
+						  </div>
+						  <p><strong>Action:</strong> Checked server SSH config.</p>
+						  <div class="code-block">
+							Server&gt; cat /etc/ssh/sshd_config | grep ClientAliveInterval<br>
+							ClientAliveInterval 60<br>
+							ClientAliveCountMax 0
+						  </div>
+						  <p><strong>Resolution:</strong> Increased keepalive.</p>
+						  <div class="code-block">
+							Server&gt; vi /etc/ssh/sshd_config<br>
+							&nbsp;&nbsp;ClientAliveInterval 300<br>
+							&nbsp;&nbsp;ClientAliveCountMax 3<br>
+							Server&gt; systemctl restart sshd
+						  </div>
+						  <p><strong>Verification:</strong> Session stays active even after 5 minutes idle. SSH session stabilized.</p>
+						</div>
+
+						<h4>Issue 2 — RDP Session Disconnect</h4>
+						<div style="margin-left: 2em;">
+						  <p><strong>Scenario:</strong> Remote Desktop session closes after 10 mins.</p>
+						  <p><strong>Transcript (Windows Event Viewer):</strong></p>
+						  <div class="code-block">
+							Event ID: 1026<br>
+							Reason: Session timed out due to inactivity
+						  </div>
+						  <p><strong>Action:</strong> Checked Group Policy.</p>
+						  <div class="code-block">
+							gpedit.msc → Computer Config → Admin Templates → Windows Components → Remote Desktop Services → Session Time Limits
+						  </div>
+						  <p><strong>Resolution:</strong> Increased idle timeout to 2 hours.</p>
+						  <p><strong>Verification:</strong> RDP session now persists. RDP stable.</p>
+						</div>
+
+						<h4>Issue 3 — Database Connection Pool Exhaustion</h4>
+						<div style="margin-left: 2em;">
+						  <p><strong>Scenario:</strong> Web app failing with DB session errors.</p>
+						  <p><strong>Transcript (App Logs):</strong></p>
+						  <div class="code-block">
+							java.sql.SQLException: ORA-12516: TNS:listener could not find available handler
+						  </div>
+						  <p><strong>Action:</strong> Checked DB session usage.</p>
+						  <div class="code-block">
+							DB&gt; SELECT count(*) FROM v$session;<br>
+							Count = 500 (Max reached)
+						  </div>
+						  <p><strong>Resolution:</strong> Increased session pool size.</p>
+						  <div class="code-block">
+							DB&gt; ALTER SYSTEM SET processes=1000 scope=spfile;<br>
+							DB&gt; ALTER SYSTEM SET sessions=1105 scope=spfile;<br>
+							DB&gt; shutdown immediate; startup;
+						  </div>
+						  <p><strong>Verification:</strong></p>
+						  <div class="code-block">
+							App&gt; Successfully connected to DB
+						  </div>
+						  <p><strong>Resolution:</strong> DB sessions restored.</p>
+						</div>
+
+						<h4>Issue 4 — VoIP SIP Call Drop</h4>
+						<div style="margin-left: 2em;">
+						  <p><strong>Scenario:</strong> SIP phone calls drop after 30 seconds.</p>
+						  <p><strong>Transcript (SIP debug):</strong></p>
+						  <div class="code-block">
+							SIP INVITE → OK<br>
+							ACK → Call setup<br>
+							&lt;30 sec later&gt;<br>
+							BYE → Session terminated (Re-INVITE missing)
+						  </div>
+						  <p><strong>Action:</strong> Checked SIP ALG (Session helper) on firewall → interfering.</p>
+						  <p><strong>Resolution:</strong> Disabled SIP ALG.</p>
+						  <div class="code-block">
+							Firewall(config)no ip nat service sip udp port 5060
+						  </div>
+						  <p><strong>Verification:</strong> Calls stay active beyond 30 seconds. VoIP stable.</p>
+						</div>
+
+						<h4>Issue 5 — SMB File Share Session Issues</h4>
+						<div style="margin-left: 2em;">
+						  <p><strong>Scenario:</strong> Windows users get disconnected from network share randomly.</p>
+						  <p><strong>Transcript (Event Viewer):</strong></p>
+						  <div class="code-block">
+							Event ID: 30806<br>
+							The session from client \\10.10.10.25 was terminated.
+						  </div>
+						  <p><strong>Action:</strong> Checked SMB session limits.</p>
+						  <div class="code-block">
+							Server&gt; net config server<br>
+							Max Logged On Users = 20
+						  </div>
+						  <p><strong>Resolution:</strong> Increased limit.</p>
+						  <div class="code-block">
+							Server&gt; regedit<br>
+							&nbsp;&nbsp;HKEY_LOCAL_MACHINE\SYSTEM\CurrentControlSet\Services\LanmanServer\Parameters<br>
+							&nbsp;&nbsp;MaxMpxCt → 50<br>
+							Restart server service
+						  </div>
+						  <p><strong>Verification:</strong> Users stay connected. SMB sessions stable.</p>
+						</div>
+
+						<h3>Summary for Layer 5</h3>
+						<div style="margin-left: 2em;">
+						  <ul>
+							<li>SSH/RDP timeout → Adjust keepalive &amp; idle timers.</li>
+							<li>DB pool exhaustion → Increase sessions/processes.</li>
+							<li>SIP/VoIP drops → Disable SIP ALG / NAT misconfig.</li>
+							<li>File share drops → Increase SMB session limits.</li>
+							<li>Session persistence is the key troubleshooting focus.</li>
+						  </ul>
+						</div>
+						<h3>OSI Layer 6 (Presentation Layer) – Troubleshooting Scenarios</h3>
+
+						<h4>Issue 1 — HTTPS TLS Handshake Failure</h4>
+						<div style="margin-left: 2em;">
+						  <p><strong>Scenario:</strong> User can’t access a secure site.</p>
+						  <p><strong>Transcript (Browser error):</strong></p>
+						  <div class="code-block">
+							ERR_SSL_PROTOCOL_ERROR
+						  </div>
+						  <p><strong>Action:</strong> Checked server SSL/TLS version.</p>
+						  <div class="code-block">
+							Server&gt; openssl s_client -connect example.com:443<br>
+							CONNECTED(00000003)<br>
+							140735125336992:error:14094410:SSL routines:ssl3_read_bytes:sslv3 alert handshake failure
+						  </div>
+						  <p><strong>Cause:</strong> Server only supports TLS 1.2+, client was using SSLv3/TLS1.0.</p>
+						  <p><strong>Resolution:</strong> Enabled modern TLS on client.</p>
+						  <div class="code-block">
+							Chrome → Settings → Security → Enable TLS 1.2/1.3
+						  </div>
+						  <p><strong>Verification:</strong></p>
+						  <div class="code-block">
+							$ curl -vk https://example.com<br>
+							SSL connection using TLSv1.2 / AES256-GCM-SHA384
+						  </div>
+						  <p><strong>Result:</strong> HTTPS works.</p>
+						</div>
+
+						<h4>Issue 2 — Certificate Expired</h4>
+						<div style="margin-left: 2em;">
+						  <p><strong>Scenario:</strong> API calls failing with SSL error.</p>
+						  <p><strong>Transcript (App logs):</strong></p>
+						  <div class="code-block">
+							javax.net.ssl.SSLHandshakeException:<br>
+							sun.security.validator.ValidatorException: PKIX path validation failed: certificate expired
+						  </div>
+						  <p><strong>Action:</strong> Checked cert.</p>
+						  <div class="code-block">
+							$ openssl s_client -connect api.example.com:443 | openssl x509 -noout -dates<br>
+							notAfter=Aug 29 23:59:59 2025 GMT
+						  </div>
+						  <p><strong>Cause:</strong> Certificate expired today.</p>
+						  <p><strong>Resolution:</strong> Renewed certificate via Let’s Encrypt.</p>
+						  <div class="code-block">
+							$ certbot renew<br>
+							$ systemctl reload nginx
+						  </div>
+						  <p><strong>Verification:</strong></p>
+						  <div class="code-block">
+							$ curl -I https://api.example.com<br>
+							HTTP/1.1 200 OK
+						  </div>
+						  <p><strong>Result:</strong> Certificate updated.</p>
+						</div>
+
+						<h4>Issue 3 — Wrong Character Encoding (UTF-8 vs ISO-8859-1)</h4>
+						<div style="margin-left: 2em;">
+						  <p><strong>Scenario:</strong> Special characters (é, ñ, ü) showing as garbage in web app.</p>
+						  <p><strong>Transcript (HTML page):</strong></p>
+						  <div class="code-block">
+							Ã© instead of é
+						  </div>
+						  <p><strong>Action:</strong> Checked HTTP headers.</p>
+						  <div class="code-block">
+							$ curl -I http://app.example.com<br>
+							Content-Type: text/html; charset=ISO-8859-1
+						  </div>
+						  <p><strong>Cause:</strong> App content is UTF-8, but header says ISO-8859-1.</p>
+						  <p><strong>Resolution:</strong> Updated web server config.</p>
+						  <div class="code-block">
+							Server&gt; vi /etc/nginx/sites-enabled/app.conf<br>
+							&nbsp;&nbsp;add_header Content-Type "text/html; charset=UTF-8";<br>
+							Server&gt; systemctl reload nginx
+						  </div>
+						  <p><strong>Verification:</strong> Reload page → characters display correctly. Encoding fixed.</p>
+						</div>
+
+						<h4>Issue 4 — JSON Serialization Mismatch</h4>
+						<div style="margin-left: 2em;">
+						  <p><strong>Scenario:</strong> Backend rejects API request with decoding error.</p>
+						  <p><strong>Transcript (Backend log):</strong></p>
+						  <div class="code-block">
+							Error: Cannot deserialize value of type `int` from String "abc": not a valid Integer value
+						  </div>
+						  <p><strong>Action:</strong> Checked API payload.</p>
+						  <div class="code-block">
+							$ cat request.json<br>
+							{<br>
+							&nbsp;&nbsp;"user_id": "abc",<br>
+							&nbsp;&nbsp;"age": 25<br>
+							}
+						  </div>
+						  <p><strong>Cause:</strong> <code>user_id</code> expected integer, client sending string.</p>
+						  <p><strong>Resolution:</strong> Fixed client-side code.</p>
+						  <div class="code-block">
+							// Before<br>
+							user_id = "abc";<br><br>
+							// After<br>
+							user_id = 123;
+						  </div>
+						  <p><strong>Verification:</strong></p>
+						  <div class="code-block">
+							$ curl -X POST -H "Content-Type: application/json" -d '{"user_id":123,"age":25}' http://api.example.com/user<br>
+							{"status":"success"}
+						  </div>
+						  <p><strong>Result:</strong> JSON parsing fixed.</p>
+						</div>
+
+						<h4>Issue 5 — Encrypted File Transfer Failure</h4>
+						<div style="margin-left: 2em;">
+						  <p><strong>Scenario:</strong> SFTP client fails to decrypt file.</p>
+						  <p><strong>Transcript:</strong></p>
+						  <div class="code-block">
+							$ sftp user@10.10.10.20<br>
+							sftp&gt; get report.enc<br>
+							Downloaded<br>
+							$ openssl aes-256-cbc -d -in report.enc -out report.txt -k secret123<br>
+							bad decrypt
+						  </div>
+						  <p><strong>Action:</strong> Checked encryption metadata.</p>
+						  <div class="code-block">
+							$ file report.enc<br>
+							report.enc: data<br>
+							$ hexdump -C report.enc | head<br>
+							... shows AES256 with salt ...
+						  </div>
+						  <p><strong>Cause:</strong> Wrong key used.</p>
+						  <p><strong>Resolution:</strong> Used correct passphrase from sender.</p>
+						  <div class="code-block">
+							$ openssl aes-256-cbc -d -in report.enc -out report.txt -k CorrectKey123
+						  </div>
+						  <p><strong>Verification:</strong></p>
+						  <div class="code-block">
+							$ cat report.txt<br>
+							Quarterly Sales Report...
+						  </div>
+						  <p><strong>Result:</strong> File decrypted.</p>
+						</div>
+
+						<h3>Summary for Layer 6</h3>
+						<div style="margin-left: 2em;">
+						  <ul>
+							<li>TLS/SSL handshake failures → Fix versions, ciphers, certificates.</li>
+							<li>Expired certs → Renew and reload services.</li>
+							<li>Encoding issues → Align charset headers with actual data.</li>
+							<li>Serialization errors → Ensure matching schema (JSON/XML).</li>
+							<li>Encryption/decryption failures → Verify keys &amp; algorithms.</li>
+						  </ul>
+						</div>
+						<h3>OSI Layer 7 (Application Layer) – Troubleshooting Scenarios</h3>
+
+						<h4>Issue 1 — DNS Resolution Failure</h4>
+						<div style="margin-left: 2em;">
+						  <p><strong>Scenario:</strong> User can’t reach <code>app.example.com</code>.</p>
+						  <p><strong>Transcript:</strong></p>
+						  <div class="code-block">
+							$ ping app.example.com<br>
+							ping: unknown host app.example.com
+						  </div>
+						  <p><strong>Action:</strong> Checked DNS resolution.</p>
+						  <div class="code-block">
+							$ nslookup app.example.com<br>
+							server can't find app.example.com: NXDOMAIN
+						  </div>
+						  <p><strong>Cause:</strong> DNS record missing in zone file.</p>
+						  <p><strong>Resolution:</strong> Added A record in DNS server.</p>
+						  <div class="code-block">
+							app.example.com.&nbsp;&nbsp;IN&nbsp;&nbsp;A&nbsp;&nbsp;192.168.1.100
+						  </div>
+						  <p>Reloaded DNS:</p>
+						  <div class="code-block">
+							$ systemctl reload named
+						  </div>
+						  <p><strong>Verification:</strong></p>
+						  <div class="code-block">
+							$ nslookup app.example.com<br>
+							Name: app.example.com<br>
+							Address: 192.168.1.100<br>
+							$ ping app.example.com<br>
+							64 bytes from 192.168.1.100: icmp_seq=1 ttl=64 time=0.45 ms
+						  </div>
+						  <p><strong>Resolution:</strong> DNS fixed.</p>
+						</div>
+
+						<h4>Issue 2 — HTTP 500 Internal Server Error</h4>
+						<div style="margin-left: 2em;">
+						  <p><strong>Scenario:</strong> User reports web app throws HTTP 500.</p>
+						  <p><strong>Transcript (Browser):</strong></p>
+						  <div class="code-block">
+							HTTP ERROR 500 – Internal Server Error
+						  </div>
+						  <p><strong>Action:</strong> Checked web server logs.</p>
+						  <div class="code-block">
+							$ tail -f /var/log/tomcat9/catalina.out<br>
+							Caused by: java.sql.SQLException: FATAL: database "appdb" does not exist
+						  </div>
+						  <p><strong>Cause:</strong> Application pointing to a non-existent DB.</p>
+						  <p><strong>Resolution:</strong> Corrected DB name in application config.</p>
+						  <div class="code-block">
+							spring.datasource.url=jdbc:postgresql://db:5432/mydb
+						  </div>
+						  <p>Restarted service:</p>
+						  <div class="code-block">
+							$ systemctl restart tomcat9
+						  </div>
+						  <p><strong>Verification:</strong></p>
+						  <div class="code-block">
+							$ curl -I http://app.example.com<br>
+							HTTP/1.1 200 OK
+						  </div>
+						  <p><strong>Resolution:</strong> Application works.</p>
+						</div>
+
+						<h4>Issue 3 — Mail Delivery Failure (SMTP)</h4>
+						<div style="margin-left: 2em;">
+						  <p><strong>Scenario:</strong> Emails not reaching external users.</p>
+						  <p><strong>Transcript (Mail log):</strong></p>
+						  <div class="code-block">
+							postfix/smtp[1234]: connect to gmail-smtp-in.l.google.com[74.125.200.27]:25: Connection timed out
+						  </div>
+						  <p><strong>Action:</strong> Tested manually with Telnet.</p>
+						  <div class="code-block">
+							$ telnet gmail-smtp-in.l.google.com 25<br>
+							Trying 74.125.200.27...<br>
+							telnet: Unable to connect to remote host: Connection timed out
+						  </div>
+						  <p><strong>Cause:</strong> ISP blocking outbound port 25.</p>
+						  <p><strong>Resolution:</strong> Configured Postfix to use SMTP relay (587).</p>
+						  <div class="code-block">
+							relayhost = [smtp.myprovider.com]:587<br>
+							smtp_sasl_auth_enable = yes<br>
+							smtp_sasl_password_maps = hash:/etc/postfix/sasl_passwd
+						  </div>
+						  <p>Reloaded Postfix:</p>
+						  <div class="code-block">
+							$ systemctl reload postfix
+						  </div>
+						  <p><strong>Verification:</strong></p>
+						  <div class="code-block">
+							$ tail -f /var/log/maillog<br>
+							status=sent (250 2.0.0 OK&nbsp;&nbsp;1693405000 z10-20020a1d0010...)
+						  </div>
+						  <p><strong>Resolution:</strong> Mail delivered.</p>
+						</div>
+
+						<h4>Issue 4 — Web App Login Failure (Auth Issue)</h4>
+						<div style="margin-left: 2em;">
+						  <p><strong>Scenario:</strong> Users can’t log into app.</p>
+						  <p><strong>Transcript (App log):</strong></p>
+						  <div class="code-block">
+							ERROR [AuthService] Invalid JWT signature
+						  </div>
+						  <p><strong>Action:</strong> Checked JWT public key mismatch.</p>
+						  <div class="code-block">
+							$ diff auth-service/public.pem app-service/public.pem<br>
+							Files differ
+						  </div>
+						  <p><strong>Cause:</strong> Wrong public key deployed in app service.</p>
+						  <p><strong>Resolution:</strong> Copied correct key.</p>
+						  <div class="code-block">
+							$ scp auth-service/public.pem app-service:/etc/app/keys/public.pem<br>
+							$ systemctl restart app-service
+						  </div>
+						  <p><strong>Verification:</strong></p>
+						  <div class="code-block">
+							$ curl -X POST http://app.example.com/login -d '{"user":"akhil","password":"test"}'<br>
+							{"token":"eyJhbGciOiJIUzI1NiIs..."}
+						  </div>
+						  <p><strong>Resolution:</strong> Login works.</p>
+						</div>
+
+						<h4>Issue 5 — API Rate Limit Exceeded</h4>
+						<div style="margin-left: 2em;">
+						  <p><strong>Scenario:</strong> Client app gets 429 errors.</p>
+						  <p><strong>Transcript (Client log):</strong></p>
+						  <div class="code-block">
+							HTTP/1.1 429 Too Many Requests<br>
+							Retry-After: 60
+						  </div>
+						  <p><strong>Action:</strong> Checked API gateway logs.</p>
+						  <div class="code-block">
+							[WARN] UserID=123 exceeded 100 requests/minute
+						  </div>
+						  <p><strong>Cause:</strong> Client exceeded rate limit.</p>
+						  <p><strong>Resolution:</strong> Increased quota for premium users:</p>
+						  <div class="code-block">
+							apigateway update-usage-plan --usage-plan-id abcd123 --throttle burstLimit=200 rateLimit=200
+						  </div>
+						  <p>Implemented exponential backoff on client side:</p>
+						  <div class="code-block">
+							function apiCall(retry = 1) {<br>
+							&nbsp;&nbsp;fetch("https://api.example.com/data")<br>
+							&nbsp;&nbsp;&nbsp;&nbsp;.catch(err =&gt; {<br>
+							&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;if (retry &lt; 5) setTimeout(() =&gt; apiCall(retry+1), retry*2000);<br>
+							&nbsp;&nbsp;&nbsp;&nbsp;});<br>
+							}
+						  </div>
+						  <p><strong>Verification:</strong> Client requests succeed without 429. API access restored.</p>
+						</div>
+
+						<h3>Summary for Layer 7</h3>
+						<div style="margin-left: 2em;">
+						  <ul>
+							<li>DNS issues → Fix DNS records, caching, and resolution.</li>
+							<li>Web errors (HTTP 5xx) → Trace logs → DB, app, or code-level fixes.</li>
+							<li>Mail issues → Check SMTP ports, relays, and SPF/DKIM.</li>
+							<li>Authentication failures → Key mismatches, expired tokens.</li>
+							<li>Rate limiting → API gateway configs, client retry logic.</li>
+						  </ul>
+						</div>						
+					</div>						
+				</div>
+			</div> 		
+
+			<h2 id="problem-solving-section" class="section-title">4. Problem Solving</h2>
+			<a href="#features-overview" class="back-to-top-btn">↑ Back to Features</a>			
+			<div class="subsection">
+				<h2 id="overview" class="section-title">1. How topological changes are handled</h2>
+				<a href="#features-overview" class="back-to-top-btn">↑ Back to Features</a>
+				<div class="subsection1">
+						<div class="interview">
+							<div class="question">
+								What is a Topological Change in STP?
+							</div>
+							<div class="answer">
+								A topology change in STP occurs when there is a modification in the network structure that can affect loop prevention. Typical events include:
+								<ul>
+									<li>A link goes down or comes up</li>
+									<li>A switch is added or removed</li>
+									<li>A port changes its state (e.g., <code>Blocking → Forwarding</code>)</li>
+								</ul>
+								STP must react to these events to prevent loops and maintain a loop-free network.
+							</div>
+						</div>
+
+						<div class="interview">
+							<div class="question">
+								How STP Detects a Topology Change?
+							</div>
+							<div class="answer">
+								STP detects topology changes using BPDUs (Bridge Protocol Data Units). The process includes:
+								<ul>
+									<li>Switches send BPDUs periodically.</li>
+									<li>If a switch detects that a link went down, it sends a <strong>Topology Change Notification (TCN) BPDU</strong> toward the Root Bridge.</li>
+									<li>The Root Bridge then floods the network with <strong>Topology Change (TC) BPDUs</strong>.</li>
+								</ul>
+							</div>
+						</div>
+						<div class="interview">
+							<div class="question">
+								Steps When a Topological Change Happens
+							</div>
+							<div class="answer">
+								<h4>Step 1: Detection</h4>
+								<ul>
+									<li>Example: A link between Switch 2 and Switch 3 goes <strong>down</strong>.</li>
+									<li>Switch 2 detects the link failure.</li>
+								</ul>
+
+								<h4>Step 2: TCN BPDU is Sent</h4>
+								<ul>
+									<li>Switch 2 sends a <strong>TCN BPDU</strong> to its <strong>upstream switch</strong> (toward the Root Bridge).</li>
+								</ul>
+
+								<h4>Step 3: Root Bridge Notification</h4>
+								<ul>
+									<li>The Root Bridge receives the TCN BPDU and <strong>sets the Topology Change flag</strong>.</li>
+									<li>Root Bridge sends <strong>Configuration BPDUs</strong> with the <strong>TC flag</strong> set to <strong>all switches</strong> in the network.</li>
+								</ul>
+
+								<h4>Step 4: Aging of MAC Addresses</h4>
+								<ul>
+									<li>Switches that receive a <strong>TC BPDU</strong> <strong>reduce the aging time</strong> of their MAC address table.</li>
+									<li>Normally, MAC addresses are aged out in <strong>300 seconds</strong>, but after a TC, they age in <strong>15 seconds</strong>.</li>
+									<li>This helps <strong>flush old paths</strong> and <strong>learn new ones quickly</strong>.</li>
+								</ul>
+
+								<h4>Step 5: Recalculating the Spanning Tree</h4>
+								<ul>
+									<li>Switches <strong>recalculate the spanning tree</strong> if necessary using the <strong>STP algorithm (Root Path Calculation)</strong>.</li>
+									<li>Ports may <strong>transition states</strong> (<code>Blocking → Listening → Learning → Forwarding</code>).</li>
+								</ul>
+							</div>
+						</div>
+						<div class="interview">
+							<div class="question">
+								<h3>Real-World Example</h3>
+							</div>
+							<div class="answer">
+								<p><strong>Scenario:</strong> Link between <strong>Switch A</strong> and <strong>Switch B</strong> goes down.</p>
+								<ol>
+									<li>Switch B detects the failure → sends <strong>TCN BPDU</strong> to Switch C (upstream).</li>
+									<li>Switch C forwards it toward the <strong>Root Bridge</strong>.</li>
+									<li><strong>Root Bridge</strong> floods <strong>TC BPDUs</strong> to all switches.</li>
+									<li>Switches flush old MACs and recalculate paths.</li>
+									<li>Traffic now flows through an alternate path, avoiding loops.</li>
+								</ol>
+							</div>
+						</div>
+
+						<div class="interview">
+							<div class="question">
+								<h3>Key Points</h3>
+							</div>
+							<div class="answer">
+								<ul>
+									<li><strong>TCN BPDU</strong> = sent <em>toward Root Bridge</em></li>
+									<li><strong>TC BPDU</strong> = sent <em>from Root Bridge to all switches</em></li>
+									<li><strong>MAC table aging</strong> is reduced to speed up convergence</li>
+									<li><strong>STP</strong> ensures <em>loop-free topology</em> after a change</li>
+								</ul>
+							</div>
+						</div>
+					</div>
+
+				<h2 id="real-time-troubleshoot" class="section-title">2. Real time troubleshooting - STP</h2>
+				<a href="#features-overview" class="back-to-top-btn">↑ Back to Features</a>
+				<div class="subsection1">
+						<div class="subsection-title">
+							<b>Scenario Recap</b>
+						</div>
+
+						<ul>
+							<li>Link between <strong>Switch A</strong> and <strong>Switch B</strong> goes down.</li>
+							<li>Network experiences connectivity issues.</li>
+							<li><strong>STP</strong> should recalculate the tree, but something is not working as expected.</li>
+						</ul>
+
+						<div class="subsection-title1">
+							<h3>Step 1: Identify the Issue</h3>
+						</div>
+						<ul>
+							<li><strong>Symptom:</strong> Some devices cannot communicate; certain VLANs are unreachable.</li>
+							<li><strong>Check:</strong> Physical link status, port LEDs, and logs.</li>
+							<li>
+								<p><strong>Commands (Cisco example):</strong></p>
+								<div class="code-block">
+									show interface status<br />
+									show interface gig0/1<br />
+									ping &lt;neighbor&gt;
+								</div>
+							</li>
+							<li>Look for <strong>down/down</strong> or <strong>err-disabled</strong> ports.</li>
+						</ul>
+						<div class="subsection-title1">
+							<h3>Step 2: Verify STP Status</h3>
+						</div>
+						<ul>
+							<li>Check if <strong>STP</strong> detected the topology change.</li>
+							<li>
+								<p><strong>Commands:</strong></p>
+								<div class="code-block">
+									show spanning-tree<br />
+									show spanning-tree vlan 1
+								</div>
+							</li>
+							<li>Look for:</li>
+							<ul>
+								<li>Port Roles (Root, Designated, Blocking)</li>
+								<li>Port States (Forwarding, Learning, Blocking)</li>
+								<li>Topology Change Flag (TC flag)</li>
+							</ul>
+						</ul>
+
+						<div class="subsection-title1">
+							<h3>Step 3: Check for TCN BPDUs</h3>
+						</div>
+						<ul>
+							<li>Ensure that <strong>Topology Change Notifications (TCNs)</strong> are propagating.</li>
+							<li>
+								<p><strong>Command:</strong></p>
+								<div class="code-block">
+									debug spanning-tree events
+								</div>
+							</li>
+							<li>Observe whether TCNs are sent when the link goes down.</li>
+							<li>If no TCNs are seen → could be <strong>BPDU filtering</strong>, misconfigured <strong>PortFast</strong>, or <strong>BPDU Guard</strong>.</li>
+						</ul>
+
+						<div class="subsection-title1">
+							<h3>Step 4: Verify MAC Address Table</h3>
+						</div>
+						<ul>
+							<li>After a topology change, switches flush old MACs and relearn addresses.</li>
+							<li>
+								<p><strong>Command:</strong></p>
+								<div class="code-block">
+									show mac address-table
+								</div>
+							</li>
+							<li>If traffic is still being sent to wrong ports → MAC aging may not have triggered correctly.</li>
+						</ul>
+
+						<div class="subsection-title1">
+							<h3>Step 5: Look for Misconfigurations</h3>
+						</div>
+						<ul>
+							<li><strong>Common issues that prevent STP convergence:</strong></li>
+							<ol>
+								<li>
+									<strong>PortFast enabled on non-edge ports</strong><br />
+									Causes unexpected transitions to forwarding → loops
+								</li>
+								<li>
+									<strong>BPDU Guard disabled on edge ports</strong><br />
+									Unmanaged switches can inject BPDUs → root changes
+								</li>
+								<li>
+									<strong>Incorrect STP priorities</strong><br />
+									Root bridge election may take longer → longer downtime
+								</li>
+								<li>
+									<strong>VLAN mismatch</strong><br />
+									STP only runs per VLAN. A missing VLAN on a trunk can block convergence.
+								</li>
+							</ol>
+						</ul>
+
+						<div class="subsection-title1">
+							<h3>Step 6: Take Corrective Actions</h3>
+						</div>
+						<ul>
+							<li>Force recalculation manually (optional):</li>
+							<li>
+								<div class="code-block">
+									clear spanning-tree detected-protocols
+								</div>
+							</li>
+							<li>Adjust STP priorities to ensure a stable root.</li>
+							<li>Enable <strong>BPDU Guard / BPDU Filter</strong> on edge ports.</li>
+							<li>Verify redundant links and ensure alternate/backup ports are correctly configured.</li>
+						</ul>
+
+						<div class="subsection-title1">
+							<h3>Step 7: Test</h3>
+						</div>
+						<ul>
+							<li>Bring the failed link up.</li>
+							<li>Verify that traffic flows correctly.</li>
+							<li>Confirm STP port states stabilize: <code>Forwarding → Blocking</code> as expected.</li>
+							<li>Confirm MAC table refresh.</li>
+						</ul>
+
+						<div class="subsection-title">
+							<h3>Key Troubleshooting Tips</h3>
+						</div>
+						<ul>
+							<li>Always trace the TCN flow toward the root bridge.</li>
+							<li>Watch port state transitions for slow convergence.</li>
+							<li>Monitor MAC address table to confirm old entries are flushed.</li>
+							<li>Check for misconfigured edge ports (<strong>PortFast</strong>/<strong>BPDU Guard</strong>).</li>
+						</ul>
+
+						<h3>STP Real-Time Troubleshooting Checklist</h3>
+						<div style="overflow-x: auto;">
+							<table border="1" cellspacing="0" cellpadding="5" overflow="auto">
+								<tr>
+									<th>Step</th>
+									<th>What to Check</th>
+									<th>Commands (Cisco example)</th>
+									<th>Expected Output / Notes</th>
+								</tr>
+								<tr>
+									<td>1. Check physical links</td>
+									<td>Verify port is up and connected</td>
+									<td class= "highlight-text">show interface status show interface gig0/1</td>
+									<td>Status should be up/up. Look for down/down or errors.</td>
+								</tr>
+								<tr>
+									<td>2. Verify STP root bridge</td>
+									<td>Identify which switch is Root Bridge</td>
+									<td class= "highlight-text">show spanning-tree show spanning-tree vlan 1</td>
+									<td>Root bridge should have priority 32768 (default) unless manually set. Check Root ID and Root Port on each switch.</td>
+								</tr>
+								<tr>
+									<td>3. Check port roles</td>
+									<td>See if ports are designated, root, or blocking</td>
+									<td class= "highlight-text">show spanning-tree vlan 1</td>
+									<td>Port Roles: Root, Designated, Alternate, Backup. Ensure only intended ports forward traffic.</td>
+								</tr>
+								<tr>
+									<td>4. Check port states</td>
+									<td>Verify forwarding/blocking states</td>
+									<td class= "highlight-text">show spanning-tree interface gig0/1 detail</td>
+									<td>Ports should transition: <b>Blocking → Listening → Learning → Forwarding</b> after topology change.</td>
+								</tr>
+								<tr>
+									<td>5. Monitor TCN BPDUs</td>
+									<td>Check if topology change notifications are sent/received</td>
+									<td class= "highlight-text">debug spanning-tree events</td>
+									<td>TCN messages should flow toward Root Bridge; TC flag should propagate back.</td>
+								</tr>
+								<tr>
+									<td>6. Verify MAC table behavior</td>
+									<td>Ensure old entries are flushed after topology change</td>
+									<td class= "highlight-text">show mac address-table</td>
+									<td>MAC addresses should age quickly (default 15 sec after TC) and be relearned on new ports.</td>
+								</tr>
+								<tr>
+									<td>7. Check PortFast / Edge Ports</td>
+									<td>Ensure edge ports don’t cause loops</td>
+									<td class= "highlight-text">show running-config</td>
+									<td>Include <code>spanning-tree portfast</code></td>
+								</tr>
+								<tr>
+									<td>8. Check BPDU Guard / Filter</td>
+									<td>Ensure rogue switches don’t become root</td>
+									<td class= "highlight-text">show running-config</td>
+									<td>Include <code>bpdu</code></td>
+								</tr>
+								<tr>
+									<td>9. Check STP priorities</td>
+									<td>Ensure stable root election</td>
+									<td class= "highlight-text">show spanning-tree</td>
+									<td>Lower priority = higher chance to become root. Avoid unnecessary root changes.</td>
+								</tr>
+								<tr>
+									<td>10. Test convergence</td>
+									<td>Simulate link failure</td>
+									<td class= "highlight-text">shutdown / no shutdown</td>
+									<td>Observe port state changes; traffic should reroute correctly.</td>
+								</tr>
+								<tr>
+									<td>11. VLAN consistency</td>
+									<td>Ensure all VLANs participate in STP</td>
+									<td class= "highlight-text">show vlan brief show spanning-tree vlan &lt;vlan&gt;</td>
+									<td>Trunk ports should carry all relevant VLANs; missing VLANs block STP for that VLAN.</td>
+								</tr>
+								<tr>
+									<td>12. Force recalculation (if needed)</td>
+									<td>Manually reset STP timers</td>
+									<td class= "highlight-text">clear spanning-tree detected-protocols</td>
+									<td>Forces switches to recalc STP tree; only use if troubleshooting convergence issues.</td>
+								</tr>
+							</table>
+						</div>
+
+						<div class="subsection-title"><h3>Tips for Using This Table</h3></div>
+						<ul>
+							<li>Start from <strong>physical layer → STP → MAC tables</strong>.</li>
+							<li>Observe the <strong>root bridge election</strong>; unexpected root changes often cause loops.</li>
+							<li>Use <strong>debug spanning-tree events</strong> carefully on production networks (high CPU).</li>
+							<li>Check all <strong>VLANs individually</strong> in multi-VLAN environments.</li>
+							<li>Document normal topology and root bridge for faster troubleshooting next time.</li>
+						</ul>
+					</div>
+
+				<h2 id="ts-rs" class="section-title">3. STP Troubleshooting Counter Questions & Scenarios</h2>
+				<a href="#features-overview" class="back-to-top-btn">↑ Back to Features</a>
+				<div class="subsection1">
+						<div class="subsection-title1">
+							<h3>1. Link goes down between switches</h3>
+						</div>
+						<p><strong>Question:</strong> How does STP react when a link between two switches fails?</p>
+						<p><strong>How to troubleshoot:</strong></p>
+						<ul>
+							<li>Check the <strong>interface status:</strong> <span class="highlight-text">show interface gig0/1</span> → down/down?</li>
+							<li>Verify <strong>TCN BPDU</strong> propagation: <span class="highlight-text">debug spanning-tree events</span></li>
+							<li>Confirm <strong>port states:</strong> <span class="highlight-text">show spanning-tree vlan 1</span></li>
+						</ul>
+						<p><strong>Resolution:</strong></p>
+						<ul>
+							<li>If <strong>TCN</strong> not sent → check <strong>BPDU filtering / PortFast</strong> misconfiguration.</li>
+							<li>If traffic loops → ensure <strong>alternate path</strong> is forwarding and <strong>MAC table</strong> is flushed.</li>
+						</ul>
+
+						<!-- 2. Unexpected root bridge -->
+						<div class="subsection-title1">
+							<h3>2. Unexpected root bridge</h3>
+						</div>
+						<p><strong>Question:</strong> Suddenly, a new switch becomes the root. What’s happening?</p>
+						<p><strong>How to troubleshoot:</strong></p>
+						<ul>
+							<li><span class="highlight-text">show spanning-tree</span> → check <strong>Root ID</strong> and priority</li>
+							<li>Check for <strong>rogue switches</strong> on the network.</li>
+						</ul>
+						<p><strong>Resolution:</strong></p>
+						<ul>
+							<li>Adjust <strong>STP priorities</strong> so the intended root has the lowest priority.</li>
+							<li>Enable <strong>BPDU Guard</strong> on edge ports to prevent rogue switches from becoming root.</li>
+						</ul>
+
+						<!-- 3. Slow convergence after topology change -->
+						<div class="subsection-title1">
+							<h3>3. Slow convergence after topology change</h3>
+						</div>
+						<p><strong>Question:</strong> After a link failure, traffic takes too long to recover.</p>
+						<p><strong>How to troubleshoot:</strong></p>
+						<ul>
+							<li>Check <strong>STP timers</strong> (Hello, Forward Delay, Max Age).</li>
+							<li>Verify port states (Listening → Learning → Forwarding).</li>
+						</ul>
+						<p><strong>Resolution:</strong></p>
+						<ul>
+							<li>Consider <strong>PortFast</strong> on edge ports for faster forwarding.</li>
+							<li>Reduce <strong>Forward Delay</strong> temporarily in test labs.</li>
+							<li>Check redundant paths and ensure alternate ports are correctly configured.</li>
+						</ul>
+
+						<!-- 4. MAC table not updating -->
+						<div class="subsection-title1">
+							<h3>4. MAC table not updating</h3>
+						</div>
+						<p><strong>Question:</strong> After a topology change, devices cannot communicate. MAC table still shows old entries.</p>
+						<p><strong>How to troubleshoot:</strong></p>
+						<ul>
+							<li><span class="highlight-text">show mac address-table</span> → see if old MACs remain.</li>
+							<li>Check <strong>TC BPDU</strong> propagation.</li>
+						</ul>
+						<p><strong>Resolution:</strong></p>
+						<ul>
+							<li>Ensure <strong>Topology Change Notification (TCN)</strong> BPDU reached the root.</li>
+							<li>Force MAC table aging if needed: <span class="highlight-text">clear mac address-table dynamic</span></li>
+						</ul>
+
+						<!-- 5. Traffic loops after adding a switch -->
+						<div class="subsection-title1">
+							<h3>5. Traffic loops after adding a switch</h3>
+						</div>
+						<p><strong>Question:</strong> Adding a new switch causes a loop.</p>
+						<p><strong>How to troubleshoot:</strong></p>
+						<ul>
+							<li>Check port roles: <span class="highlight-text">show spanning-tree vlan 1</span></li>
+							<li>Check <strong>PortFast</strong> on backbone/trunk ports.</li>
+						</ul>
+						<p><strong>Resolution:</strong></p>
+						<ul>
+							<li>Remove <strong>PortFast</strong> from non-edge ports.</li>
+							<li>Ensure <strong>STP recalculates</strong> properly and ports transition correctly.</li>
+						</ul>
+
+						<!-- 6. VLAN-specific STP issue -->
+						<div class="subsection-title1">
+							<h3>6. VLAN-specific STP issue</h3>
+						</div>
+						<p><strong>Question:</strong> Some VLANs lose connectivity after a link failure, others are fine.</p>
+						<p><strong>How to troubleshoot:</strong></p>
+						<ul>
+							<li><span class="highlight-text">show spanning-tree vlan &lt;vlan&gt;</span> → check port states per VLAN.</li>
+							<li><span class="highlight-text">show vlan brief</span> → verify VLAN membership on trunks.</li>
+						</ul>
+						<p><strong>Resolution:</strong></p>
+						<ul>
+							<li>Add missing VLANs to trunk ports.</li>
+							<li>Ensure <strong>STP</strong> is running per VLAN (PVST+) and recalculation occurs.</li>
+						</ul>
+
+						<!-- 7. Err-disabled ports due to BPDU Guard -->
+						<div class="subsection-title1">
+							<h3>7. Err-disabled ports due to BPDU Guard</h3>
+						</div>
+						<p><strong>Question:</strong> Edge ports go err-disabled when connecting new devices.</p>
+						<p><strong>How to troubleshoot:</strong></p>
+						<ul>
+							<li><span class="highlight-text">show running-config | include bpdu</span> → verify BPDU Guard configuration.</li>
+							<li><span class="highlight-text">show interface status</span> → identify err-disabled ports.</li>
+						</ul>
+						<p><strong>Resolution:</strong></p>
+						<ul>
+							<li>Confirm only <strong>user-facing ports</strong> have BPDU Guard.</li>
+							<li>Re-enable the interface: <span class="highlight-text">shutdown / no shutdown</span></li>
+						</ul>
+
+						<!-- 8. TCN BPDU not propagating -->
+						<div class="subsection-title1">
+							<h3>8. TCN BPDU not propagating</h3>
+						</div>
+						<p><strong>Question:</strong> Switch detects a topology change but root never learns.</p>
+						<p><strong>How to troubleshoot:</strong></p>
+						<ul>
+							<li><span class="highlight-text">debug spanning-tree events</span> → see if TCN is sent upstream.</li>
+							<li>Check <strong>blocked ports</strong> or <strong>BPDU filtering</strong>.</li>
+						</ul>
+						<p><strong>Resolution:</strong></p>
+						<ul>
+							<li>Remove <strong>BPDU filtering</strong> from intermediate switches.</li>
+							<li>Ensure all switches forward <strong>BPDUs</strong> correctly.</li>
+						</ul>
+						<div class="subsection-title">
+							<h3>Key Interview Tip</h3>
+						</div>
+						<p>When answering these, always follow the troubleshooting flow:</p>
+						<ul>
+							<li><strong>Observe the symptoms:</strong> interface, VLAN, MAC table</li>
+							<li><strong>Verify STP behavior:</strong> port roles, port states, <span class="highlight-text">TCN/TC BPDU</span></li>
+							<li><strong>Check for misconfigurations:</strong> <span class="highlight-text">PortFast</span>, <span class="highlight-text">BPDU Guard</span>, priorities</li>
+							<li><strong>Resolve the issue:</strong> correct configs, force recalculation if needed</li>
+							<li><strong>Test the fix:</strong> ensure traffic flows, MACs relearn, loops gone</li>
+						</ul>
+						<h3>STP Real-Time Troubleshooting Table</h3>
+						<div style="overflow-x: auto;">
+							<table border="1" cellspacing="0" cellpadding="5" overflow="auto">
+								<tr>
+									<th>Scenario</th>
+									<th>Likely Cause</th>
+									<th>Troubleshooting Steps</th>
+									<th>Resolution</th>
+								</tr>
+								<tr>
+									<td>1. Link goes down between switches</td>
+									<td>Physical failure, cable issues</td>
+									<td class= "highlight-text">
+										show interface status<br />
+										ping &lt;neighbor&gt;<br />
+										debug spanning-tree events
+									</td>
+									<td>Replace cable if physical; ensure TCN BPDU propagates; verify alternate paths forward</td>
+								</tr>
+								<tr>
+									<td>2. Unexpected root bridge</td>
+									<td>Rogue switch, misconfigured priority</td>
+									<td class= "highlight-text">
+										show spanning-tree<br />
+										show mac address-table
+									</td>
+									<td>Set intended root with lowest priority; enable BPDU Guard on edge ports</td>
+								</tr>
+								<tr>
+									<td>3. Slow convergence after topology change</td>
+									<td>High STP timers, long Forward Delay</td>
+									<td class= "highlight-text">
+										show spanning-tree vlan &lt;vlan&gt;<br />
+										show running-config
+									</td>
+									<td>Enable PortFast on edge ports; reduce Forward Delay in lab; verify redundant paths</td>
+								</tr>
+								<tr>
+									<td>4. MAC table not updating after change</td>
+									<td>TC BPDU not received, stale MACs</td>
+									<td class= "highlight-text">
+										show mac address-table<br />
+										debug spanning-tree events
+									</td>
+									<td>Force MAC table aging: <code>clear mac address-table dynamic</code>; verify TC BPDU propagation</td>
+								</tr>
+								<tr>
+									<td>5. Traffic loops after adding a switch</td>
+									<td>PortFast enabled on backbone/trunk, STP miscalculation</td>
+									<td class= "highlight-text">
+										show spanning-tree vlan &lt;vlan&gt;<br />
+										show interface status
+									</td>
+									<td>Remove PortFast from non-edge ports; allow STP recalculation</td>
+								</tr>
+								<tr>
+									<td>6. VLAN-specific connectivity loss</td>
+									<td>VLAN mismatch on trunks, STP per VLAN misconfig</td>
+									<td class= "highlight-text">
+										show spanning-tree vlan &lt;vlan&gt;<br />
+										show vlan brief
+									</td>
+									<td>Add missing VLANs to trunks; verify STP recalculation per VLAN</td>
+								</tr>
+								<tr>
+									<td>7. Err-disabled ports due to BPDU Guard</td>
+									<td>BPDU Guard triggered by rogue BPDU</td>
+									<td class= "highlight-text">
+										show running-config<br />
+										show interface status
+									</td>
+									<td>Include <code>bpdu</code> in config to protect edge ports</td>
+								</tr>
+								<tr>
+									<td>8. TCN BPDU not propagating to root</td>
+									<td>BPDU filtering, blocked intermediate ports</td>
+									<td class= "highlight-text">
+										debug spanning-tree events<br />
+										show spanning-tree vlan &lt;vlan&gt;
+									</td>
+									<td>Remove BPDU filtering; ensure all switches forward BPDUs; check port states</td>
+								</tr>
+								<tr>
+									<td>9. Root port blocked unexpectedly</td>
+									<td>Root path cost miscalculation, STP version mismatch</td>
+									<td class= "highlight-text">show spanning-tree vlan &lt;vlan&gt;</td>
+									<td>Adjust path costs; ensure consistent STP version across switches</td>
+								</tr>
+								<tr>
+									<td>10. Intermittent loops during topology change</td>
+									<td>STP timers too long, inconsistent config</td>
+									<td class= "highlight-text">
+										show spanning-tree detail<br />
+										show running-config
+									</td>
+									<td>Reduce Forward Delay/Max Age in lab; verify consistent STP settings</td>
+								</tr>
+							</table>
+						</div>
+
+						<div class="subsection-title"><h3>Tips for Using This Table</h3></div>
+						<ul>
+							<li>Start from <strong>scenario → identify likely cause → verify using commands → fix</strong>.</li>
+							<li>Always check <strong>physical layer first</strong>, then <strong>STP state</strong>, then <strong>configurations</strong>.</li>
+							<li>Simulate failures in a lab to see <strong>real-time TCN propagation</strong> and <strong>port state transitions</strong>.</li>
+							<li>Use this table as a <strong>quick-reference guide</strong> during interviews or hands-on troubleshooting.</li>
+						</ul>
+					</div>
+			</div> 		
 		</div>
            
         <footer>
