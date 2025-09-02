@@ -8470,11 +8470,63 @@
 					<p style="margin-left: 2em;"><em>Result:</em> Old entries cleared. Switch will re-learn MAC addresses dynamically as traffic resumes.</p>
 
 					<p><em>Best Practice:</em> Ensure STP TCN propagation is working correctly so MAC aging happens automatically. Manual clearing should only be used for troubleshooting.</p>
-
-
-					<!-- 5. VLAN-specific STP issue -->
+					
+					<!-- 5. Traffic Loops After Adding a Switch -->
 					<div class="subsection-title1">
-						<h3>5. VLAN-specific STP issue</h3>
+						<h3>5. Traffic Loops After Adding a Switch</h3>
+					</div>
+					<p><strong>Question:</strong> After adding a new switch into the network, a broadcast storm occurs and traffic loops form.</p>
+
+					<p><strong>Troubleshoot:</strong></p>
+
+					<p style="margin-left: 2em;"><strong>Step 1 – Verify STP Status on the VLAN:</strong></p>
+					<div style="margin-left: 2em;" class="code-block">
+					SwitchA# show spanning-tree vlan 1<br><br>
+
+					VLAN0001<br>
+					  Root ID    Priority    32769<br>
+								 Address     001b.2bff.aa01<br>
+								 Cost        4<br>
+								 Port        1 (Gi0/1)<br><br>
+
+					Interface           Role     Sts     Cost      Prio.Nbr Type<br>
+					------------------- -------- ------- --------- -------- --------------------<br>
+					Gi0/1               Root     FWD     4         128.1    P2p<br>
+					Gi0/2               Designated FWD  4         128.2    P2p<br>
+					Gi0/3               Designated FWD  4         128.3    Edge P2p PortFast<br>
+					</div>
+					<p style="margin-left: 2em;"><em>Observation:</em> Gi0/3 is a trunk/backbone port but PortFast is incorrectly enabled, allowing it to bypass STP convergence and causing a loop.</p>
+
+					<p style="margin-left: 2em;"><strong>Step 2 – Check for Excessive Broadcasts:</strong></p>
+					<div style="margin-left: 2em;" class="code-block">
+					SwitchA# show interface gi0/3<br><br>
+					  5 minute input rate 1200000 bits/sec, 2000 packets/sec<br>
+					  5 minute output rate 1150000 bits/sec, 1950 packets/sec<br>
+					  Broadcast packets input 1800, output 1750<br>
+					</div>
+					<p style="margin-left: 2em;"><em>Observation:</em> Very high broadcast packet counts indicate a loop.</p>
+
+					<p><strong>Resolution:</strong></p>
+
+					<p style="margin-left: 2em;"><strong>Step 3 – Disable PortFast on Non-Edge Ports:</strong></p>
+					<div style="margin-left: 2em;" class="code-block">
+					SwitchA(config)# interface gi0/3<br>
+					SwitchA(config-if)# no spanning-tree portfast<br>
+					</div>
+
+					<p style="margin-left: 2em;"><strong>Step 4 – Verify STP Recalculation:</strong></p>
+					<div style="margin-left: 2em;" class="code-block">
+					SwitchA# show spanning-tree vlan 1<br><br>
+					Gi0/3   Alternate   BLK   4   128.3   P2p<br>
+					</div>
+					<p style="margin-left: 2em;"><em>Result:</em> Gi0/3 is now blocked by STP to prevent a loop. Broadcast storm subsides.</p>
+
+					<p><em>Best Practice:</em> Only enable <strong>PortFast</strong> on true edge ports connected to end devices (like PCs or printers). On inter-switch or trunk ports, let STP handle convergence to avoid loops.</p>
+
+
+					<!-- 6. VLAN-specific STP issue -->
+					<div class="subsection-title1">
+						<h3>6. VLAN-specific STP issue</h3>
 					</div>
 					<p><strong>Question:</strong> Some VLANs lose connectivity after a link failure, while others remain unaffected.</p>
 
@@ -8539,11 +8591,54 @@
 					<p style="margin-left: 2em;"><em>Result:</em> VLAN 10 is now allowed on the trunk, and STP recalculates correctly. Connectivity restored for affected VLAN.</p>
 
 					<p><em>Best Practice:</em> Always confirm trunk allowed VLAN lists after link or config changes, especially when running PVST+ (per-VLAN STP).</p>
-
-
-					<!-- 6. TCN BPDU not propagating -->
+					
+					<!-- 7. Err-disabled Ports Due to BPDU Guard -->
 					<div class="subsection-title1">
-						<h3>6. TCN BPDU Not Propagating</h3>
+						<h3>7. Err-disabled Ports Due to BPDU Guard</h3>
+					</div>
+					<p><strong>Question:</strong> Edge/user-facing ports go <code>err-disabled</code> when connecting new devices.</p>
+
+					<p><strong>Troubleshoot:</strong></p>
+
+					<p style="margin-left: 2em;"><strong>Step 1 – Verify BPDU Guard Configuration:</strong></p>
+					<div style="margin-left: 2em;" class="code-block">
+					SwitchA# show running-config | include bpdu<br><br>
+					spanning-tree portfast bpduguard default
+					</div>
+					<p style="margin-left: 2em;"><em>Observation:</em> BPDU Guard is globally enabled on all PortFast-enabled interfaces.</p>
+
+					<p style="margin-left: 2em;"><strong>Step 2 – Identify Err-disabled Interfaces:</strong></p>
+					<div style="margin-left: 2em;" class="code-block">
+					SwitchA# show interface status<br><br>
+					Port      Name   Status       Vlan  Duplex Speed Type<br>
+					Gi0/1            connected    10    a-full a-100 10/100BaseTX<br>
+					Gi0/2            err-disabled 20    auto   auto  10/100BaseTX<br>
+					Gi0/3            connected    20    a-full a-100 10/100BaseTX
+					</div>
+					<p style="margin-left: 2em;"><em>Observation:</em> Gi0/2 is in <code>err-disabled</code> state because it received a BPDU while BPDU Guard was active.</p>
+
+					<p><strong>Resolution:</strong></p>
+
+					<p style="margin-left: 2em;"><strong>Step 3 – Re-enable the Interface:</strong></p>
+					<div style="margin-left: 2em;" class="code-block">
+					SwitchA(config)# interface gi0/2<br>
+					SwitchA(config-if)# shutdown<br>
+					SwitchA(config-if)# no shutdown
+					</div>
+
+					<p style="margin-left: 2em;"><strong>Step 4 – Limit BPDU Guard to True Edge Ports Only:</strong></p>
+					<div style="margin-left: 2em;" class="code-block">
+					SwitchA(config)# interface range gi0/1 - 24<br>
+					SwitchA(config-if-range)# spanning-tree bpduguard enable<br>
+					</div>
+					<p style="margin-left: 2em;"><em>Result:</em> Only access/user ports keep BPDU Guard. Trunk/backbone ports are safe from being err-disabled due to expected BPDUs.</p>
+
+					<p><em>Best Practice:</em> Always use <strong>BPDU Guard</strong> on <u>user-facing access ports</u> to prevent rogue switches from joining the network. Do <u>not</u> apply it on trunk or uplink ports.</p>
+
+
+					<!-- 8. TCN BPDU not propagating -->
+					<div class="subsection-title1">
+						<h3>8. TCN BPDU Not Propagating</h3>
 					</div>
 					<p><strong>Question:</strong> A switch detects a topology change but the root bridge never receives the Topology Change Notification (TCN) BPDU.</p>
 
