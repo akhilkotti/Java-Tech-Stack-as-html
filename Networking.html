@@ -417,14 +417,14 @@
             box-shadow: inset 0 0 5px rgba(0,0,0,0.3);
         }		
 
-		.highlight-text {
-			background: #2c3e50;
-			color: #ecf0f1;
-			padding: 2px 6px;
-			border-radius: 4px;
-			font-family: monospace;
-			font-size: 14px;
-		}		
+            .highlight-text {
+                background: #2c3e50;
+                color: #ecf0f1;
+                padding: 2px 6px;
+                border-radius: 4px;
+                font-family: monospace;
+                font-size: 14px;
+            }		
     </style>
 </head>
 <body>
@@ -8215,145 +8215,394 @@
 				<h2 id="ts-rs" class="section-title">3. STP Troubleshooting Counter Questions & Scenarios</h2>
 				<a href="#features-overview" class="back-to-top-btn">↑ Back to Features</a>
 				<div class="subsection1">
-						<div class="subsection-title1">
-							<h3>1. Link goes down between switches</h3>
-						</div>
-						<p><strong>Question:</strong> How does STP react when a link between two switches fails?</p>
-						<p><strong>How to troubleshoot:</strong></p>
-						<ul>
-							<li>Check the <strong>interface status:</strong> <span class="highlight-text">show interface gig0/1</span> → down/down?</li>
-							<li>Verify <strong>TCN BPDU</strong> propagation: <span class="highlight-text">debug spanning-tree events</span></li>
-							<li>Confirm <strong>port states:</strong> <span class="highlight-text">show spanning-tree vlan 1</span></li>
-						</ul>
-						<p><strong>Resolution:</strong></p>
-						<ul>
-							<li>If <strong>TCN</strong> not sent → check <strong>BPDU filtering / PortFast</strong> misconfiguration.</li>
-							<li>If traffic loops → ensure <strong>alternate path</strong> is forwarding and <strong>MAC table</strong> is flushed.</li>
-						</ul>
+					<div class="subsection-title1">
+						<h3>1. Link goes down between switches</h3>
+					</div>
+					<p><strong>Question:</strong> How does STP react when a link between two switches fails?</p>
 
-						<!-- 2. Unexpected root bridge -->
-						<div class="subsection-title1">
-							<h3>2. Unexpected root bridge</h3>
-						</div>
-						<p><strong>Question:</strong> Suddenly, a new switch becomes the root. What’s happening?</p>
-						<p><strong>How to troubleshoot:</strong></p>
-						<ul>
-							<li><span class="highlight-text">show spanning-tree</span> → check <strong>Root ID</strong> and priority</li>
-							<li>Check for <strong>rogue switches</strong> on the network.</li>
-						</ul>
-						<p><strong>Resolution:</strong></p>
-						<ul>
-							<li>Adjust <strong>STP priorities</strong> so the intended root has the lowest priority.</li>
-							<li>Enable <strong>BPDU Guard</strong> on edge ports to prevent rogue switches from becoming root.</li>
-						</ul>
+					<p><strong>How to troubleshoot:</strong></p>
 
-						<!-- 3. Slow convergence after topology change -->
-						<div class="subsection-title1">
-							<h3>3. Slow convergence after topology change</h3>
-						</div>
-						<p><strong>Question:</strong> After a link failure, traffic takes too long to recover.</p>
-						<p><strong>How to troubleshoot:</strong></p>
-						<ul>
-							<li>Check <strong>STP timers</strong> (Hello, Forward Delay, Max Age).</li>
-							<li>Verify port states (Listening → Learning → Forwarding).</li>
-						</ul>
-						<p><strong>Resolution:</strong></p>
-						<ul>
-							<li>Consider <strong>PortFast</strong> on edge ports for faster forwarding.</li>
-							<li>Reduce <strong>Forward Delay</strong> temporarily in test labs.</li>
-							<li>Check redundant paths and ensure alternate ports are correctly configured.</li>
-						</ul>
+					<p style="margin-left: 2em;"><strong>Step 1 – Check Interface Status:</strong></p>
+					<div style="margin-left: 2em;" class="code-block">
+					SwitchA# show interface gig0/1<br><br>
 
-						<!-- 4. MAC table not updating -->
-						<div class="subsection-title1">
-							<h3>4. MAC table not updating</h3>
-						</div>
-						<p><strong>Question:</strong> After a topology change, devices cannot communicate. MAC table still shows old entries.</p>
-						<p><strong>How to troubleshoot:</strong></p>
-						<ul>
-							<li><span class="highlight-text">show mac address-table</span> → see if old MACs remain.</li>
-							<li>Check <strong>TC BPDU</strong> propagation.</li>
-						</ul>
-						<p><strong>Resolution:</strong></p>
-						<ul>
-							<li>Ensure <strong>Topology Change Notification (TCN)</strong> BPDU reached the root.</li>
-							<li>Force MAC table aging if needed: <span class="highlight-text">clear mac address-table dynamic</span></li>
-						</ul>
+					GigabitEthernet0/1 is down, line protocol is down<br>
+					  Hardware is iGbE, address is 0011.2233.4455<br>
+					  MTU 1500 bytes, BW 1000000 Kbit/sec, DLY 10 usec<br>
+					  Encapsulation ARPA, loopback not set<br>
+					  Keepalive set (10 sec)<br>
+					</div>
+					<p style="margin-left: 2em;"><em>Observation:</em> The interface Gig0/1 went down due to the physical link failure.</p>
 
-						<!-- 5. Traffic loops after adding a switch -->
-						<div class="subsection-title1">
-							<h3>5. Traffic loops after adding a switch</h3>
-						</div>
-						<p><strong>Question:</strong> Adding a new switch causes a loop.</p>
-						<p><strong>How to troubleshoot:</strong></p>
-						<ul>
-							<li>Check port roles: <span class="highlight-text">show spanning-tree vlan 1</span></li>
-							<li>Check <strong>PortFast</strong> on backbone/trunk ports.</li>
-						</ul>
-						<p><strong>Resolution:</strong></p>
-						<ul>
-							<li>Remove <strong>PortFast</strong> from non-edge ports.</li>
-							<li>Ensure <strong>STP recalculates</strong> properly and ports transition correctly.</li>
-						</ul>
+					<p style="margin-left: 2em;"><strong>Step 2 – Verify TCN (Topology Change Notification) BPDU Propagation:</strong></p>
+					<div style="margin-left: 2em;" class="code-block">
+					SwitchA# debug spanning-tree events<br><br>
 
-						<!-- 6. VLAN-specific STP issue -->
-						<div class="subsection-title1">
-							<h3>6. VLAN-specific STP issue</h3>
-						</div>
-						<p><strong>Question:</strong> Some VLANs lose connectivity after a link failure, others are fine.</p>
-						<p><strong>How to troubleshoot:</strong></p>
-						<ul>
-							<li><span class="highlight-text">show spanning-tree vlan &lt;vlan&gt;</span> → check port states per VLAN.</li>
-							<li><span class="highlight-text">show vlan brief</span> → verify VLAN membership on trunks.</li>
-						</ul>
-						<p><strong>Resolution:</strong></p>
-						<ul>
-							<li>Add missing VLANs to trunk ports.</li>
-							<li>Ensure <strong>STP</strong> is running per VLAN (PVST+) and recalculation occurs.</li>
-						</ul>
+					*Mar 1 00:21:01: STP: VLAN0001 Topology Change rcvd on Gi0/1<br>
+					*Mar 1 00:21:01: STP: VLAN0001 sent Topology Change Notice on Gi0/2<br>
+					</div>
+					<p style="margin-left: 2em;"><em>Observation:</em> The switch generated and propagated a TCN BPDU to inform other switches.</p>
 
-						<!-- 7. Err-disabled ports due to BPDU Guard -->
-						<div class="subsection-title1">
-							<h3>7. Err-disabled ports due to BPDU Guard</h3>
-						</div>
-						<p><strong>Question:</strong> Edge ports go err-disabled when connecting new devices.</p>
-						<p><strong>How to troubleshoot:</strong></p>
-						<ul>
-							<li><span class="highlight-text">show running-config | include bpdu</span> → verify BPDU Guard configuration.</li>
-							<li><span class="highlight-text">show interface status</span> → identify err-disabled ports.</li>
-						</ul>
-						<p><strong>Resolution:</strong></p>
-						<ul>
-							<li>Confirm only <strong>user-facing ports</strong> have BPDU Guard.</li>
-							<li>Re-enable the interface: <span class="highlight-text">shutdown / no shutdown</span></li>
-						</ul>
+					<p style="margin-left: 2em;"><strong>Step 3 – Confirm Port States:</strong></p>
+					<div style="margin-left: 2em;" class="code-block">
+					SwitchA# show spanning-tree vlan 1<br><br>
 
-						<!-- 8. TCN BPDU not propagating -->
-						<div class="subsection-title1">
-							<h3>8. TCN BPDU not propagating</h3>
-						</div>
-						<p><strong>Question:</strong> Switch detects a topology change but root never learns.</p>
-						<p><strong>How to troubleshoot:</strong></p>
-						<ul>
-							<li><span class="highlight-text">debug spanning-tree events</span> → see if TCN is sent upstream.</li>
-							<li>Check <strong>blocked ports</strong> or <strong>BPDU filtering</strong>.</li>
-						</ul>
-						<p><strong>Resolution:</strong></p>
-						<ul>
-							<li>Remove <strong>BPDU filtering</strong> from intermediate switches.</li>
-							<li>Ensure all switches forward <strong>BPDUs</strong> correctly.</li>
-						</ul>
-						<div class="subsection-title">
-							<h3>Key Interview Tip</h3>
-						</div>
-						<p>When answering these, always follow the troubleshooting flow:</p>
-						<ul>
-							<li><strong>Observe the symptoms:</strong> interface, VLAN, MAC table</li>
-							<li><strong>Verify STP behavior:</strong> port roles, port states, <span class="highlight-text">TCN/TC BPDU</span></li>
-							<li><strong>Check for misconfigurations:</strong> <span class="highlight-text">PortFast</span>, <span class="highlight-text">BPDU Guard</span>, priorities</li>
-							<li><strong>Resolve the issue:</strong> correct configs, force recalculation if needed</li>
-							<li><strong>Test the fix:</strong> ensure traffic flows, MACs relearn, loops gone</li>
-						</ul>
+					VLAN0001<br>
+					  Spanning tree enabled protocol ieee<br>
+					  Root ID    Priority    32769<br>
+								 Address     00AA.BBCC.DDEE<br>
+								 Cost        19<br>
+								 Port        2 (GigabitEthernet0/2)<br><br>
+
+					  Bridge ID  Priority    32769 (priority 32768 sys-id-ext 1)<br>
+								 Address     0011.2233.4455<br>
+								 Hello Time  2 sec  Max Age 20 sec  Forward Delay 15 sec<br><br>
+
+					Interface        Role        Sts     Cost      Prio.Nbr Type<br>
+					Gi0/1            Desg        Down    19        128.1    P2p<br>
+					Gi0/2            Root        FWD     19        128.2    P2p<br>
+					</div>
+					<p style="margin-left: 2em;"><em>Observation:</em> Gi0/1 went down, Gi0/2 became the forwarding root port. STP reconverged.</p>
+
+					<p><strong>Resolution:</strong></p>
+
+					<p style="margin-left: 2em;"><strong>Step 4 – Ensure TCNs are Sent Correctly:</strong></p>
+					<div style="margin-left: 2em;" class="code-block">
+					SwitchA(config)# no spanning-tree bpdufilter enable<br>
+					SwitchA(config)# default spanning-tree portfast
+					</div>
+					<p style="margin-left: 2em;"><em>Result:</em> BPDU filtering and PortFast are disabled on trunk links, allowing proper TCN propagation.</p>
+
+					<p style="margin-left: 2em;"><strong>Step 5 – Verify Alternate Path is Forwarding:</strong></p>
+					<div style="margin-left: 2em;" class="code-block">
+					SwitchA# show spanning-tree vlan 1<br><br>
+
+					Interface        Role        Sts     Cost      Prio.Nbr Type<br>
+					Gi0/2            Root        FWD     19        128.2    P2p<br>
+					</div>
+					<p style="margin-left: 2em;"><em>Result:</em> Traffic successfully rerouted over Gi0/2, no loop present.</p>
+
+					<p style="margin-left: 2em;"><strong>Step 6 – Clear MAC Table if Needed:</strong></p>
+					<div style="margin-left: 2em;" class="code-block">
+					SwitchA# clear mac address-table dynamic
+					</div>
+					<p style="margin-left: 2em;"><em>Best Practice:</em> STP should automatically flush MAC tables after TCN, but manual clearing ensures stale entries are removed faster.</p>
+
+
+					<!-- 2. Unexpected root bridge -->
+					<div class="subsection-title1">
+						<h3>2. Unexpected root bridge</h3>
+					</div>
+					<p><strong>Question:</strong> A switch at the access layer unexpectedly became the root bridge, causing suboptimal paths and potential loops. What’s happening?</p>
+					<p><strong>How to troubleshoot:</strong></p>
+					<p style="margin-left: 2em;"><strong>Step 1 – Identify Current Root:</strong></p>
+					<div style="margin-left: 2em;" class="code-block">
+					SwitchA# show spanning-tree vlan 1<br><br>
+
+					VLAN0001<br>
+					  Spanning tree enabled protocol ieee<br>
+					  Root ID    Priority    32769<br>
+								 Address     0011.2233.4455<br>
+								 This bridge is the root<br>
+								 Hello Time  2 sec  Max Age 20 sec  Forward Delay 15 sec<br><br>
+
+					  Bridge ID  Priority    32769 (priority 32768 sys-id-ext 1)<br>
+								 Address     0011.2233.4455<br>
+					</div>
+					<p style="margin-left: 2em;"><em>Observation:</em> SwitchA (an access switch) is the root. Expected root should have been CoreSwitch (00AA.BBCC.DDEE).</p>
+
+					<p style="margin-left: 2em;"><strong>Step 2 – Check Expected Core Switch:</strong></p>
+					<div style="margin-left: 2em;" class="code-block">
+						SwitchA# show spanning-tree vlan 1<br><br>
+
+						VLAN0001<br>
+						  Spanning tree enabled protocol ieee<br>
+						  Root ID    Priority    32769<br>
+									 Address     0011.2233.4455<br>
+									 This bridge is the root<br>
+									 Hello Time  2 sec  Max Age 20 sec  Forward Delay 15 sec<br><br>
+
+						  Bridge ID  Priority    32769 (priority 32768 sys-id-ext 1)<br>
+									 Address     0011.2233.4455<br>
+					</div>
+					<p style="margin-left: 2em;"><em>Observation:</em> CoreSwitch lost root election because both have default priority, and access switch had the lower MAC address.</p>
+
+					<p><strong>Resolution:</strong></p>
+					<p style="margin-left: 2em;"><strong>Step 3 – Fix Root Bridge Priority:</strong></p>
+					<div style="margin-left: 2em;" class="code-block">
+					CoreSwitch(config)# spanning-tree vlan 1 priority 4096
+					</div>
+
+					<p style="margin-left: 2em;"><strong>Step 4 – Verify New Root Election:</strong></p>
+					<div style="margin-left: 2em;" class="code-block">
+					CoreSwitch# show spanning-tree vlan 1<br><br>
+
+					VLAN0001<br>
+					  Spanning tree enabled protocol ieee<br>
+					  Root ID    Priority    32769<br>
+								 Address     0011.2233.4455<br>
+								 Cost        19<br>
+								 Port        1 (GigabitEthernet1/0/1)<br>
+								 Hello Time  2 sec  Max Age 20 sec  Forward Delay 15 sec<br><br>
+
+					  Bridge ID  Priority    32769 (priority 32768 sys-id-ext 1)<br>
+								 Address     00AA.BBCC.DDEE<br>
+					</div>
+					<p style="margin-left: 2em;"><em>Result:</em> CoreSwitch is now the root as intended.</p>
+
+					<p style="margin-left: 2em;"><strong>Step 5 – Prevent Access Switches from Becoming Root in Future:</strong></p>
+					<div style="margin-left: 2em;" class="code-block">
+					SwitchA(config)# spanning-tree vlan 1 priority 61440
+					</div>
+
+					<p><em>Best Practice:</em> Always configure <strong>core/distribution</strong> switches with the lowest priorities and <strong>access switches</strong> with higher priorities, so unexpected root elections don’t happen again.</p>
+
+					<!-- 3. Slow convergence after topology change -->
+					<div class="subsection-title1">
+						<h3>3. Slow convergence after topology change</h3>
+					</div>
+					<p><strong>Question:</strong> After a link failure, users report that traffic takes too long (30–50 seconds) to recover.</p>
+					<p><strong>How to troubleshoot:</strong></p>
+					<p style="margin-left: 2em;"><strong>Step 1 – Check Spanning Tree Timers:</strong></p>
+					<div style="margin-left: 2em;" class="code-block">
+					CoreSwitch# show spanning-tree vlan 10<br><br>
+
+					VLAN0010<br>
+					  Spanning tree enabled protocol ieee<br>
+					  Root ID    Priority    4097<br>
+								 Address     00AA.BBCC.DDEE<br>
+								 Cost        19<br>
+								 Port        1 (GigabitEthernet1/0/1)<br>
+								 Hello Time  2 sec  Max Age 20 sec  Forward Delay 15 sec<br>
+					</div>
+					<p style="margin-left: 2em;"><em>Observation:</em> Default timers are in use. Convergence after a failure can take up to 50 seconds (Max Age + 2 × Forward Delay).</p>
+
+					<p style="margin-left: 2em;"><strong>Step 2 – Verify Port States During Transition:</strong></p>
+					<div style="margin-left: 2em;" class="code-block">
+					AccessSwitch# show spanning-tree vlan 10<br><br>
+
+					Interface           Role Sts Cost      Prio.Nbr Type<br>
+					------------------- ---- --- --------- -------- --------------------------------<br>
+					Fa0/1               Root FWD 19        128.1    P2p<br>
+					Fa0/2               Desg LRN 19        128.2    P2p<br>
+					</div>
+					<p style="margin-left: 2em;"><em>Observation:</em> Port Fa0/2 is stuck in <strong>Listening → Learning</strong> before moving to Forwarding, causing delay.</p>
+
+					<p style="margin-left: 2em;"><strong>Step 3 – Check if RSTP or PortFast is Configured:</strong></p>
+					<div style="margin-left: 2em;" class="code-block">
+					AccessSwitch# show running-config | include spanning-tree
+					</div>
+					<p style="margin-left: 2em;"><em>Observation:</em> So in your Slow Convergence scenario, when you saw no results from include spanning-tree, that’s your clue the switch is still using the default (legacy 802.1D) timers, hence the ~50s convergence delay.Only legacy 802.1D STP is enabled, no RSTP or PortFast.</p>
+
+					<p><strong>Resolution:</strong></p>
+
+					<p style="margin-left: 2em;"><strong>Step 4 – Enable Rapid Spanning Tree (RSTP):</strong></p>
+					<div style="margin-left: 2em;" class="code-block">
+					CoreSwitch(config)# spanning-tree mode rapid-pvst
+					</div>
+
+					<p style="margin-left: 2em;"><strong>Step 5 – Enable PortFast on Access Ports:</strong></p>
+					<div style="margin-left: 2em;" class="code-block">
+					AccessSwitch(config)# interface range fa0/2 - 24<br>
+					AccessSwitch(config-if-range)# spanning-tree portfast
+					</div>
+
+					<p style="margin-left: 2em;"><strong>Step 6 – Verify Improved Convergence:</strong></p>
+					<div style="margin-left: 2em;" class="code-block">
+					AccessSwitch# show spanning-tree vlan 10<br><br>
+
+					Interface           Role Sts Cost      Prio.Nbr Type<br>
+					------------------- ---- --- --------- -------- --------------------------------<br>
+					Fa0/2               Desg FWD 19        128.2    P2p Edge<br>
+					</div>
+					<p style="margin-left: 2em;"><em>Result:</em> Port immediately transitions to Forwarding (PortFast enabled). With RSTP, convergence occurs within ~1–3 seconds instead of 30–50 seconds.</p>
+
+					<p><strong>Best Practice:</strong> Always enable <strong>RSTP</strong> in modern networks and configure <strong>PortFast + BPDU Guard</strong> on access ports to prevent long delays and maintain loop protection.</p>
+
+
+					<!-- 4. MAC table not updating -->
+					<div class="subsection-title1">
+						<h3>4. MAC table not updating</h3>
+					</div>
+					<p><strong>Question:</strong> After a topology change, devices cannot communicate. The MAC address table still shows old entries.</p>
+
+					<p><strong>How to troubleshoot:</strong></p>
+
+					<p style="margin-left: 2em;"><strong>Step 1 – Check Current MAC Table:</strong></p>
+					<div style="margin-left: 2em;" class="code-block">
+					SwitchA# show mac address-table<br><br>
+
+							  Mac Address Table<br>
+					-------------------------------------------<br>
+					Vlan    Mac Address       Type        Ports<br>
+					----    -----------       --------    -----<br>
+					   1    aaaa.bbbb.cccc    DYNAMIC     Gi0/1<br>
+					   1    dddd.eeee.ffff    DYNAMIC     Gi0/2<br>
+					   1    1111.2222.3333    DYNAMIC     Gi0/3<br>
+					</div>
+					<p style="margin-left: 2em;"><em>Observation:</em> Old MAC addresses are still present on wrong ports even after topology change.</p>
+
+					<p style="margin-left: 2em;"><strong>Step 2 – Verify TC BPDU Propagation:</strong></p>
+					<div style="margin-left: 2em;" class="code-block">
+					SwitchA# debug spanning-tree events<br>
+					*Mar 1 00:01:12.123: STP: VLAN1 sent Topology Change Notice on Gi0/1<br>
+					*Mar 1 00:01:12.124: STP: VLAN1 Topology Change Acknowledged by Root<br>
+					</div>
+					<p style="margin-left: 2em;"><em>Observation:</em> Topology Change Notification (TCN) was generated and acknowledged.</p>
+
+					<p><strong>Resolution:</strong></p>
+
+					<p style="margin-left: 2em;"><strong>Step 3 – Force Clear MAC Table:</strong></p>
+					<div style="margin-left: 2em;" class="code-block">
+					SwitchA# clear mac address-table dynamic
+					</div>
+
+					<p style="margin-left: 2em;"><strong>Step 4 – Verify MAC Table After Flush:</strong></p>
+					<div style="margin-left: 2em;" class="code-block">
+					SwitchA# show mac address-table<br><br>
+
+							  Mac Address Table<br>
+					-------------------------------------------<br>
+					Vlan    Mac Address       Type        Ports<br>
+					----    -----------       --------    -----<br>
+					   1    (empty)<br>
+					</div>
+					<p style="margin-left: 2em;"><em>Result:</em> Old entries cleared. Switch will re-learn MAC addresses dynamically as traffic resumes.</p>
+
+					<p><em>Best Practice:</em> Ensure STP TCN propagation is working correctly so MAC aging happens automatically. Manual clearing should only be used for troubleshooting.</p>
+
+
+					<!-- 5. VLAN-specific STP issue -->
+					<div class="subsection-title1">
+						<h3>5. VLAN-specific STP issue</h3>
+					</div>
+					<p><strong>Question:</strong> Some VLANs lose connectivity after a link failure, while others remain unaffected.</p>
+
+					<p><strong>Troubleshoot:</strong></p>
+
+					<p style="margin-left: 2em;"><strong>Step 1 – Check Spanning Tree Status for Affected VLAN:</strong></p>
+					<div style="margin-left: 2em;" class="code-block">
+					SwitchA# show spanning-tree vlan 10<br><br>
+
+					VLAN0010<br>
+					  Spanning tree enabled protocol ieee<br>
+					  Root ID    Priority    32778<br>
+								 Address     0011.2233.4455<br>
+								 This bridge is the root<br><br>
+					Interface        Role Sts Cost      Prio.Nbr Type<br>
+					---------------- ---- --- --------- -------- --------------------------------<br>
+					Gi0/1            Desg FWD 4         128.1    P2p<br>
+					Gi0/2            Altn BLK 19        128.2    P2p<br>
+					</div>
+					<p style="margin-left: 2em;"><em>Observation:</em> VLAN 10 has an alternate port in blocking state, so traffic may not be taking the intended path after the link failure.</p>
+
+					<p style="margin-left: 2em;"><strong>Step 2 – Verify VLANs Allowed on Trunk:</strong></p>
+					<div style="margin-left: 2em;" class="code-block">
+					SwitchA# show vlan brief<br><br>
+
+					VLAN Name                             Status    Ports<br>
+					---- -------------------------------- --------- -----------------------------<br>
+					1    default                          active    Gi0/1, Gi0/2<br>
+					10   Sales                            active    Gi0/3<br>
+					20   HR                               active    Gi0/4<br><br>
+
+					SwitchA# show interfaces trunk<br><br>
+					Port    Mode     Encapsulation  Status        Native vlan<br>
+					Gi0/1   on       802.1q         trunking      1<br><br>
+					Port    Vlans allowed on trunk<br>
+					Gi0/1   1,20<br>
+					</div>
+					<p style="margin-left: 2em;"><em>Observation:</em> VLAN 10 is missing from the trunk allowed VLAN list, causing loss of connectivity for that VLAN.</p>
+
+					<p><strong>Resolution:</strong></p>
+
+					<p style="margin-left: 2em;"><strong>Step 3 – Add Missing VLANs to Trunk:</strong></p>
+					<div style="margin-left: 2em;" class="code-block">
+					SwitchA(config)# interface gi0/1<br>
+					SwitchA(config-if)# switchport trunk allowed vlan add 10<br>
+					</div>
+
+					<p style="margin-left: 2em;"><strong>Step 4 – Verify STP Per VLAN:</strong></p>
+					<div style="margin-left: 2em;" class="code-block">
+					SwitchA# show spanning-tree vlan 10<br><br>
+
+					VLAN0010<br>
+					  Spanning tree enabled protocol ieee<br>
+					  Root ID    Priority    32778<br>
+								 Address     0011.2233.4455<br>
+								 This bridge is the root<br><br>
+					Interface        Role Sts Cost      Prio.Nbr Type<br>
+					---------------- ---- --- --------- -------- --------------------------------<br>
+					Gi0/1            Desg FWD 4         128.1    P2p<br>
+					Gi0/2            Altn BLK 19        128.2    P2p<br>
+					</div>
+					<p style="margin-left: 2em;"><em>Result:</em> VLAN 10 is now allowed on the trunk, and STP recalculates correctly. Connectivity restored for affected VLAN.</p>
+
+					<p><em>Best Practice:</em> Always confirm trunk allowed VLAN lists after link or config changes, especially when running PVST+ (per-VLAN STP).</p>
+
+
+					<!-- 6. TCN BPDU not propagating -->
+					<div class="subsection-title1">
+						<h3>6. TCN BPDU Not Propagating</h3>
+					</div>
+					<p><strong>Question:</strong> A switch detects a topology change but the root bridge never receives the Topology Change Notification (TCN) BPDU.</p>
+
+					<p><strong>Troubleshoot:</strong></p>
+
+					<p style="margin-left: 2em;"><strong>Step 1 – Enable Spanning Tree Debug:</strong></p>
+					<div style="margin-left: 2em;" class="code-block">
+					SwitchA# debug spanning-tree events<br>
+					STP: VLAN0001 Topology Change detected on Gi0/3<br>
+					STP: Sending TCN BPDU on Gi0/1<br>
+					</div>
+					<p style="margin-left: 2em;"><em>Observation:</em> SwitchA generates a TCN BPDU but the root bridge never acknowledges it.</p>
+
+					<p style="margin-left: 2em;"><strong>Step 2 – Check Intermediate Switch Ports:</strong></p>
+					<div style="margin-left: 2em;" class="code-block">
+					SwitchB# show spanning-tree interface gi0/1 detail<br><br>
+
+					Port 1 (Gi0/1) of VLAN0001 is forwarding<br>
+					  PortFast is disabled<br>
+					  BPDU filter is enabled<br>
+					</div>
+					<p style="margin-left: 2em;"><em>Observation:</em> BPDU filtering is enabled on SwitchB’s trunk port, which prevents TCN BPDUs from being forwarded upstream.</p>
+
+					<p style="margin-left: 2em;"><strong>Step 3 – Verify BPDU Flow Towards Root:</strong></p>
+					<div style="margin-left: 2em;" class="code-block">
+					SwitchC# debug spanning-tree events<br>
+					(no TCN BPDU logs seen)<br>
+					</div>
+					<p style="margin-left: 2em;"><em>Observation:</em> The root bridge does not receive any TCN BPDUs.</p>
+
+					<p><strong>Resolution:</strong></p>
+
+					<p style="margin-left: 2em;"><strong>Step 4 – Remove BPDU Filtering:</strong></p>
+					<div style="margin-left: 2em;" class="code-block">
+					SwitchB(config)# interface gi0/1<br>
+					SwitchB(config-if)# no spanning-tree bpdufilter enable<br>
+					</div>
+
+					<p style="margin-left: 2em;"><strong>Step 5 – Confirm TCN Reaches Root:</strong></p>
+					<div style="margin-left: 2em;" class="code-block">
+					SwitchC# debug spanning-tree events<br>
+					STP: VLAN0001 Topology Change received from SwitchB<br>
+					STP: Flushing MAC address table<br>
+					</div>
+					<p style="margin-left: 2em;"><em>Result:</em> Root bridge now acknowledges the TCN BPDU and propagates the topology change. MAC address tables are flushed across the network.</p>
+
+					<p><em>Best Practice:</em> Never enable BPDU filtering on trunk or inter-switch links. Restrict its use to specific edge ports where BPDUs are not required.</p>
+
+					<div class="subsection-title">
+						<h3>Key Interview Tip</h3>
+					</div>
+					<p>When answering these, always follow the troubleshooting flow:</p>
+					<ul>
+						<li><strong>Observe the symptoms:</strong> interface, VLAN, MAC table</li>
+						<li><strong>Verify STP behavior:</strong> port roles, port states, <span class="highlight-text">TCN/TC BPDU</span></li>
+						<li><strong>Check for misconfigurations:</strong> <span class="highlight-text">PortFast</span>, <span class="highlight-text">BPDU Guard</span>, priorities</li>
+						<li><strong>Resolve the issue:</strong> correct configs, force recalculation if needed</li>
+						<li><strong>Test the fix:</strong> ensure traffic flows, MACs relearn, loops gone</li>
+					</ul>
 						<h3>STP Real-Time Troubleshooting Table</h3>
 						<div style="overflow-x: auto;">
 							<table border="1" cellspacing="0" cellpadding="5" overflow="auto">
@@ -8495,5 +8744,4 @@
         });
     </script>
 </body>
-
 </html>
