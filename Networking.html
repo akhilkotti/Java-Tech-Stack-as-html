@@ -375,6 +375,13 @@
 			margin-bottom: 10px;
 		}		
 		
+		.subsection2 {
+			font-size: 1rem;
+			font-weight: 600;
+			color: #2980b9;
+			margin-top: 10px;
+			margin-bottom: 10px;
+		}		
 		.real-world,
 		.interview {
 			margin-top: 10px;
@@ -428,7 +435,7 @@
     </style>
 </head>
 <body>
-	<div class="container">
+	<div class="container"><!--Container Section BEGIN -->
 		<header>
 			<h1>Network Architecture & Problem-Solving (Q&A)</h1>
 		</header>
@@ -523,27 +530,24 @@
 			</div>
 		</div>
         
-		<div class="content-section">
+		<div class="content-section"><!--Content Section BEGIN -->
 			<h2 id="spanning-tree-protocol-section" class="section-title">1. Spanning Tree Protocol (STP)</h2>
 			<a href="#features-overview" class="back-to-top-btn">↑ Back to Features</a>
-			<div class="subsection">
+			<div class="subsection"><!--1. Spanning Tree Protocol BEGIN -->
 				<h3 class="subsection-title">Definition</h3>
 				<p>STP is a Layer 2 network protocol designed to prevent loops in Ethernet networks. It dynamically identifies and blocks redundant paths while ensuring a loop-free topology for reliable communication.</p>
-				
 				<h3 class="subsection-title1">How STP Works</h3>
 				<h4>Root Bridge Election:</h4>
 				<ol class="custom-list">
 					<li>The switch with the lowest bridge ID (priority + MAC address) becomes the Root Bridge.</li>
 					<li>Bridge ID = Bridge Priority + MAC Address (Default priority: 32768)</li>
 				</ol>
-				
 				<h4>Port Roles:</h4>
 				<ol class="custom-list">
 					<li><b>Root Port (RP):</b> Port with the best path to the root bridge (one per switch, except root).</li>
 					<li><b>Designated Port (DP):</b> Port on a network segment that forwards traffic toward the root (one per segment).</li>
 					<li><b>Blocked Port:</b> Port that does not forward frames to prevent loops.</li>
 				</ol>		
-
 				<h4>Port States (STP 802.1D):</h4>
 				<ol class="custom-list">
 					<li><b>Blocking:</b> Receives BPDUs but does not forward frames.</li>
@@ -552,13 +556,11 @@
 					<li><b>Forwarding:</b> Forwards frames and continues learning MACs.</li>
 					<li><b>Disabled:</b> Manually disabled or administratively shut down.</li>
 				</ol>	
-
 				<h4>BPDU (Bridge Protocol Data Unit):</h4>
 				<ol class="custom-list">
 					<li>Used to exchange information between switches.</li>
 					<li><b>Types:</b> Configuration BPDU (CBPDU), Topology Change Notification (TCN BPDU).</li>
 				</ol>	<br>				
-
 				<h3 class="subsection-title">Benefits</h3>
 				<div class="benefits-grid">
 					<div class="benefit-card">
@@ -582,58 +584,45 @@
 						<p>Works with legacy switches and is supported in almost all Ethernet LAN environments</p>
 					</div>					
 				</div>
-				
 				<h3 class="subsection-title">Practical Example</h3>
 				<h4>Scenario:</h4>
 				<ul class="custom-list">
 					<li>The switch with the lowest bridge ID (priority + MAC address) becomes the Root Bridge.</li>
 					<li>Bridge ID = Bridge Priority + MAC Address (Default priority: 32768)</li>
-
 				</ul>
-				
 				<h4>STP Solution:</h4>
 				<ul class="custom-list">
 					<li>Switch A elected as Root Bridge.</li>
 					<li>Switch B and C select ports leading to root as Root Ports.</li>
 					<li>One of the redundant links is blocked to prevent loops.</li>
 				</ul>		
-
 				<h4>Outcome:</h4>
 				<ul class="custom-list">
 					<li>Traffic flows efficiently toward the root.</li>
 					<li>If a link fails, STP recalculates the topology and unblocks a redundant path.</li>
 				</ul>	<br>	
-
 				<h3 class="subsection-title">Common Use Cases</h3>
 				<h4>Campus Networks:</h4>
 				<ul class="custom-list">
 					<li>Prevents loops between access, distribution, and core switches.</li>
-
 				</ul>
-				
 				<h4>Data Centers:</h4>
 				<ul class="custom-list">
 					<li>Redundant links for failover while preventing broadcast storms.</li>
 				</ul>		
-
 				<h4>Enterprise LANs:</h4>
 				<ul class="custom-list">
 					<li>Maintains stability in networks with multiple switches and redundant paths.</li>
 				</ul>		<br>
-
 				<h3 class="subsection-title">Limitations</h3>
 				<h4>Campus Networks:</h4>
 				<ul class="custom-list">
 					<li>Convergence time in classic STP can be slow (30–50 seconds).</li>
 					<li>Uses a single active path; blocked paths remain unused until failover.</li>
 					<li>May not be suitable for very large, high-speed networks without RSTP/MSTP.</li>
-
 				</ul>	<br>                
-			</div>
-					
-			<h3>1. BPDU types (Configuration BPDU, TCN BPDU)</h3>
-			<div class="subsection1">               
-				<div class="subsection1">
+				<h3>1. BPDU types (Configuration BPDU, TCN BPDU)</h3>
+				<div class="subsection1"><!--a. Configuration BPDU BEGIN -->
 					<h3 id="config-bpdu">a. Configuration BPDU (CBPDU)</h3>
 					<div class="real-world">
 						<strong>Real-World Scenarios</strong>
@@ -988,8 +977,8 @@
 						</ol>
 						</div>
 					</div>
-				</div>
-				<div class="subsection1">
+				</div><!--a. Configuration BPDU END -->
+				<div class="subsection1"><!--b. TCN BPDU BEGIN -->
 					<h3 id="tcn-bpdu">b. Topology Change Notification BPDU (TCN BPDU)</h3>
 					<div class="real-world">
 							<strong>Real-World Scenarios</strong>
@@ -1283,13 +1272,11 @@
 							</ol>
 							</div>
 						</div>
-				</div>					
-			</div>
-			
-			<h3 id="root-bridge">2. Root Bridge election process</h3>
-			<div class="subsection1">			   
-				<p>The STP Root Bridge election process determines which switch will serve as the central reference point to prevent loops, optimize traffic, and stabilize the network.</p>
-				<div class="real-world">
+				</div><!--b. TCN BPDU END -->					
+				<h3 id="root-bridge">2. Root Bridge election process</h3>
+				<div class="subsection1"><!--2. Root Bridge election BEGIN -->			   
+					<p>The STP Root Bridge election process determines which switch will serve as the central reference point to prevent loops, optimize traffic, and stabilize the network.</p>
+					<div class="real-world">
 				  <strong>Real-World Example & Solution</strong><br>
 				  In a large campus network, the Core switch is manually configured as Root Bridge to optimize traffic paths and maintain stability. If an old access switch accidentally becomes Root Bridge due to a lower MAC or priority, set the desired switch priority manually (e.g., <code>spanning-tree vlan 1 priority 4096</code>) and validate with <code>show spanning-tree</code>.
 				  <ol>
@@ -1326,7 +1313,7 @@
 					 </li>
 				  </ol>
 			   </div>
-				<div class="interview">
+					<div class="interview">
 				  <strong>Interview Questions and Detailed Answers</strong>
 				  <div class="question">Q1. What is STP and why is it used?</div>
 				  <div class="answer">STP (Spanning Tree Protocol) prevents Layer 2 switching loops by blocking redundant paths, ensuring reliable forwarding and network stability.</div>
@@ -1600,12 +1587,11 @@
 					 </ol>
 				  </div>
 			   </div>
-			</div>
-			
-			<h3 id="port-states">3. Port States (Blocking, Listening, Learning, Forwarding, Disabled)</h3>
-			<div class="subsection1">               
-				<p>The five STP port states guide a switch’s ports through a safe, loop-free process before allowing traffic to flow.</p>
-				<div class="real-world">
+				</div><!--2. Root Bridge election END -->	
+				<h3 id="port-states">3. Port States (Blocking, Listening, Learning, Forwarding, Disabled)</h3>
+				<div class="subsection1"><!--3. Port States BEGIN -->	               
+					<p>The five STP port states guide a switch’s ports through a safe, loop-free process before allowing traffic to flow.</p>
+					<div class="real-world">
 				  <strong>Real-World Examples for Port States</strong>
 				  <ol>
 					 <li><strong>Redundant Link Protection</strong><br>
@@ -1619,7 +1605,7 @@
 					 </li>
 				  </ol>
 			   </div>
-				<div class="interview">
+					<div class="interview">
 				  <div class="question">Q1. What are the five STP port states?</div>
 				  <div class="answer">Disabled, Blocking, Listening, Learning, and Forwarding. Each prevents loops in Ethernet networks by controlling when a port forwards traffic.</div>
 				  <div class="counter-questions">
@@ -1896,11 +1882,10 @@
 					 </ol>
 				  </div>
 			   </div>
-			</div>
-			
-			<h3 id="port-roles">4. Port Roles (Root, Designated, Alternate, Backup)</h3>
-			<div class="subsection1">				   
-				<div class="real-world">
+				</div><!--3. Port States END -->
+				<h3 id="port-roles">4. Port Roles (Root, Designated, Alternate, Backup)</h3>
+				<div class="subsection1"><!--4. Port Roles BEGIN -->				   
+					<div class="real-world">
 				  <strong>Real-World Examples & Solutions for Each Port Role</strong>
 				  <ol>
 					 <li><strong>Root Port in Campus Network</strong><br>
@@ -1921,7 +1906,7 @@
 					 </li>
 				  </ol>
 			   </div>
-				<div class="interview">
+					<div class="interview">
 				  <div class="question">Q1. What is a Root Port in STP?</div>
 				  <div class="answer">The Root Port is the single port on a non-root switch with the shortest path cost to the Root Bridge. It forwards traffic toward the root and remains in forwarding state if topology is stable.</div>
 				  <div class="counter-questions">
@@ -2237,12 +2222,11 @@
 					 </ol>
 				  </div>
 			   </div>
-			</div>
-			
-			<h3 id="topological-changes">5. How Topological changes are detected and handled</h3>
-			<div class="subsection1">               
-				<p>STP reacts to topology changes (link up/down, port changes) by sending Topology Change Notifications (TCN) and adjusting MAC aging to ensure stale entries are flushed and loops are avoided.</p>
-				<div class="real-world">
+				</div><!--4. Port Roles END -->
+				<h3 id="topological-changes">5. How Topological changes are detected and handled</h3>
+				<div class="subsection1"><!--5. Topological changes BEGIN -->               
+					<p>STP reacts to topology changes (link up/down, port changes) by sending Topology Change Notifications (TCN) and adjusting MAC aging to ensure stale entries are flushed and loops are avoided.</p>
+					<div class="real-world">
 					<strong>Real-World Examples & Solutions for Topology Changes</strong>
 					<ol>
 						<li><strong>Link Failure in Campus Network</strong><br>
@@ -2261,7 +2245,7 @@
 						</li>
 					</ol>
 				</div>
-				<div class="interview">
+					<div class="interview">
 					<div class="question">Q1. What is a topology change in STP?</div>
 					<div class="answer">A topology change occurs when the physical or logical network topology changes, such as a port going up or down, a link failure, or addition/removal of switches. STP detects these changes to reconfigure the network and maintain loop-free paths.</div>
 					<div class="example">
@@ -2589,11 +2573,11 @@
 					 </ol>
 					</div>
 				</div>
-			</div>
-			
+				</div><!--5. Topological changes END -->
+			</div><!--1. Spanning Tree Protocol END -->
 			<h2 id="routing-protocol-section" class="section-title">2. Routing Protocols</h2>
 			<a href="#features-overview" class="back-to-top-btn">↑ Back to Features</a>
-            <div class="subsection">
+            <div class="subsection"><!--2. Routing Protocols BEGIN -->
                 <h3 class="subsection-title">Definition</h3>
                 <p>A routing protocol is a set of rules used by routers to discover networks, exchange routing information, and determine the best path for data to travel across a network. Routing protocols are essential in both LANs, WANs, and the internet to ensure data reaches the correct destination efficiently.</p>
                 
@@ -2704,12 +2688,10 @@
 					<li><b>Resource Consumption:</b> Some protocols require more CPU and memory.</li>
 					<li><b>Administrative Control:</b> Ability to define routing policies (important in BGP).</li>
 				</ul>		
-				<br>                
-            </div>	
+				<br>
 			
-            <h3>1. OSPF concepts (Areas, LSAs, DR/BDR election, Cost metric)</h3>
-            <div class="subsection1">
-				<div class="subsection1">
+				<h3>1. OSPF concepts (Areas, LSAs, DR/BDR election, Cost metric)</h3>
+				<div class="subsection1"><!--a. OSPF Areas BEGIN -->
 					<h3 id="ospf-areas">a. OSPF Areas</h3>
 					<div class="real-world">
 						<strong>Real-World Scenarios</strong>
@@ -2965,8 +2947,8 @@
 						</ol>
 						</div>
 					</div>				  
-				</div>
-				<div class="subsection1">
+				</div><!--a. OSPF Areas END -->
+				<div class="subsection1"><!--b. OSPF LSAs BEGIN -->
 					<h3 id="ospf-lsa">b. OSPF LSAs (Link-State Advertisements)</h3>
 					<div class="real-world">
 						<strong>OSPF LSAs: Real-World Examples</strong>
@@ -3244,8 +3226,8 @@
 							</ol>
 						</div>
 					</div>
-				</div>
-				<div class="subsection1">
+				</div><!--b. OSPF LSAs END -->
+				<div class="subsection1"><!--c. OSPF DR/BDR Election BEGIN -->
 					<h3 id="ospf-dr-bdr">c. OSPF DR/BDR Election</h3>
 					<div class="real-world">
 						<strong>OSPF DR/BDR Election: Real-World Examples</strong>
@@ -3490,12 +3472,12 @@
 						</ol>
 						</div>
 					</div>
-				</div>
-				<div class="subsection1">
-                  <h3 id="ospf-cost-metric">d. OSPF Cost Metric</h3>
+				</div><!--c. OSPF DR/BDR Election END -->
+				<div class="subsection1"><!--d. OSPF Cost Metric BEGIN -->
+					<h3 id="ospf-cost-metric">d. OSPF Cost Metric</h3>
 					<div class="real-world">
-					   <strong>OSPF Cost Metric: Real-World Examples</strong>
-					   <ol>
+						<strong>OSPF Cost Metric: Real-World Examples</strong>
+						<ol>
 						  <li>
 							 <p><strong>Scenario 1 – Choosing High-Speed Links</strong></p>
 							 <p>Topology: Two paths from R1 to R5:</p>
@@ -3537,7 +3519,7 @@
 							 <p>Observation: OSPF selects R2 → R4 → R3 despite longer physical path because it has lower total cost.</p>
 							 <p><em>Use Case:</em> Cost manipulation prevents traffic over poor-performing links, improving overall network efficiency.</p>
 						  </li>
-					   </ol>
+						</ol>
 					</div>
 					<div class="interview">
 						<div class="question">Q1. What is the OSPF cost metric and how is it calculated?</div>
@@ -3550,223 +3532,200 @@
 							  <li>Can cost be manually adjusted? → Yes, to influence path selection and traffic engineering.</li>
 							</ol>
 						</div>
-
 						<div class="question">Q2. What is the default Reference Bandwidth and its limitation?</div>
 						<div class="answer">Default is 100 Mbps, resulting in equal cost 1 for all links 100 Mbps or faster, reducing path distinction.</div>
 						<div class="example">Example: Without adjustment, 1 Gbps and 10 Gbps links appear equal.</div>
 						<div class="counter-questions">
-						<ol>
-						  <li>How to change reference bandwidth? → Use the command 'auto-cost reference-bandwidth <value>' globally on the router.</li>
+							<ol>
+						  <li>How to change reference bandwidth? → Use the command 'auto-cost reference-bandwidth -c &lt;value&gt;' globally on the router.</li>
 						  <li>When should it be changed? → When using high-speed links (>100 Mbps) to differentiate link costs.</li>
 						  <li>What happens if it differs between routers? → Routing inconsistencies or suboptimal paths may occur.</li>
 						</ol>
 						</div>
-
 						<div class="question">Q3. How do you manually set OSPF interface cost?</div>
 						<div class="answer">OSPF cost can be manually set on an interface using the command <code>ip ospf cost &lt;value&gt;</code> in interface configuration mode. This overrides the default cost calculation.</div>
 						<div class="example">Example: Setting cost to 10 to prefer a backup path less than the primary.</div>
 						<div class="counter-questions">
-						<ol>
+							<ol>
 						  <li>Why manually set cost? → To influence path selection or optimize routing.</li>
 						  <li>What’s the valid cost range? → Typically 1 to 65535.</li>
 						  <li>Can costs cause routing loops? → Yes, if misconfigured or inconsistent across routers.</li>
 						</ol>
 						</div>
-
 						<div class="question">Q4. How does OSPF cost behave in multi-area OSPF?</div>
 						<div class="answer">Each area uses the same cost metric for internal paths. Cost values are preserved across areas but external routes (Type 5 LSAs) can have different metrics. ABR summarizes routes but does not modify interface cost.</div>
 						<div class="example">Example: Cost on internal link remains the same when advertised to another area.</div>
 						<div class="counter-questions">
-						<ol>
+							<ol>
 						  <li>Can costs differ in different areas? → Costs are per interface; area assignment does not change them.</li>
 						  <li>Does ABR modify costs? → Typically no, unless route types or metrics are manually manipulated.</li>
 						  <li>What about SPF calculation per area? → SPF runs independently in each area using local link costs.</li>
 						</ol>
 						</div>
-
 						<div class="question">Q5. How does OSPF cost interact with traffic engineering?</div>
 						<div class="answer">OSPF cost is used in path calculation. Traffic engineering can adjust costs to steer traffic over desired links. MPLS-TE overlays may augment OSPF but cost tuning remains a basic control mechanism.</div>
 						<div class="example">Example: Increasing cost on congested link diverts traffic to alternate paths.</div>
 						<div class="counter-questions">
-						<ol>
+							<ol>
 						  <li>Can cost alone guarantee optimal traffic distribution? → No, complex TE requires additional protocols like MPLS-TE or PBR.</li>
 						  <li>Does cost influence load balancing? → Yes, it affects equal-cost multipath routing.</li>
 						  <li>Can OSPF support unequal cost load balancing? → Not natively; only equal-cost paths are used by default.</li>
 						</ol>
 						</div>
-
 						<div class="question">Q6. What are common cost tuning strategies?</div>
 						<div class="answer">Strategies include increasing cost on congested links, lowering cost on preferred paths, adjusting reference bandwidth to reflect real link speeds, and aligning cost across devices for consistent routing.</div>
 						<div class="example">Example: Lowering cost on high-capacity backbone links to ensure traffic prefers them.</div>
 						<div class="counter-questions">
-						<ol>
+							<ol>
 						  <li>Should cost always match bandwidth exactly? → Ideally yes, but practical scenarios may differ due to traffic patterns.</li>
 						  <li>Can inconsistent cost cause routing loops? → Yes, if different routers calculate different path preferences.</li>
 						  <li>Is it good to lower cost on backup links? → No, this can cause suboptimal routing and congestion.</li>
 						</ol>
 						</div>
-
 						<div class="question">Q7. How to troubleshoot routing issues caused by cost misconfiguration?</div>
 						<div class="answer">Check interface costs via <code>show ip ospf interface</code>, verify reference bandwidth, examine routing tables and SPF calculations, and confirm path selection aligns with intended costs.</div>
 						<div class="example">Example: Correcting misconfigured interface cost resolves suboptimal routing.</div>
 						<div class="counter-questions">
-						<ol>
+							<ol>
 						  <li>Can incorrect cost cause suboptimal routing? → Yes, traffic may take longer paths.</li>
 						  <li>How to detect cost issues? → Compare actual path taken vs. expected path based on costs.</li>
 						  <li>Does OSPF provide logging for cost mismatches? → No, manual inspection is required.</li>
 						</ol>
 						</div>
-
 						<div class="question">Q8. Can setting cost influence OSPF network convergence?</div>
 						<div class="answer">Improper cost changes can trigger SPF recalculations, causing topology changes and convergence delays. Proper tuning minimizes unnecessary SPF runs.</div>
 						<div class="example">Example: Frequent cost changes on multiple links may cause repeated SPF recalculations.</div>
 						<div class="counter-questions">
-						<ol>
+							<ol>
 						  <li>Can rapid cost changes destabilize routing? → Yes, frequent SPF recalculations may lead to temporary routing loops or flaps.</li>
 						  <li>Are cost updates propagated immediately? → Yes, via LSA flooding.</li>
 						  <li>Should cost changes be coordinated network-wide? → Yes, to maintain stability and consistent path selection.</li>
 						</ol>
 						</div>
-
 						<div class="question">Q9. What is the effect of reference bandwidth on cost calculation?</div>
 						<div class="answer">Reference bandwidth sets the baseline for cost calculation. Higher reference bandwidth allows differentiation of high-speed links; default 100 Mbps causes links ≥100 Mbps to have minimum cost 1.</div>
 						<div class="example">Example: Setting reference bandwidth to 10000 Mbps distinguishes 1 Gbps, 10 Gbps, and 100 Gbps links.</div>
 						<div class="counter-questions">
-						<ol>
+							<ol>
 						  <li>What happens if reference bandwidth is set higher than any interface? → All links get minimum cost 1, losing granularity.</li>
 						  <li>Can inconsistent reference bandwidth cause routing loops? → Yes, if routers disagree on link costs.</li>
 						  <li>Is reference bandwidth global or per interface? → Configured globally per router.</li>
 						</ol>
 						</div>
-
 						<div class="question">Q10. How does OSPF treat external routes with respect to cost?</div>
 						<div class="answer">External routes (Type 5 LSAs) have a separate external cost metric which can be configured for route preference. Internal cost is combined with external cost for routing decisions.</div>
 						<div class="example">Example: External route redistributed from BGP can have a higher cost to make internal paths preferred.</div>
 						<div class="counter-questions">
-						<ol>
+							<ol>
 						  <li>Can external cost override internal cost? → Yes, depending on external type (E1/E2) and metric configuration.</li>
 						  <li>Are external routes affected by interface cost? → No, interface cost only affects internal routing.</li>
 						  <li>How to manipulate external route cost? → Configure metric during redistribution.</li>
 						</ol>
 						</div>
-
 						<div class="question">Q11. How do cost changes affect OSPF ECMP behavior?</div>
 						<div class="answer">OSPF performs equal-cost multipath routing based on total path cost. Changing costs can add or remove equal-cost paths, affecting load balancing.</div>
 						<div class="example">Example: Increasing cost on one path removes it from ECMP, concentrating traffic on remaining paths.</div>
 						<div class="counter-questions">
-						<ol>
+							<ol>
 						  <li>Can unequal cost paths be used? → Not natively; OSPF ECMP only uses equal-cost paths.</li>
 						  <li>How many paths does OSPF support for ECMP? → Typically up to 4 or 16, depending on router vendor and configuration.</li>
 						  <li>Will cost changes cause traffic shifts immediately? → Yes, after SPF recalculation and LSA propagation.</li>
 						</ol>
 						</div>
-
 						<div class="question">Q12. Is it better to tune cost or use other methods for traffic engineering?</div>
 						<div class="answer">Cost tuning is basic and static. Advanced methods include MPLS Traffic Engineering, Policy-Based Routing, or Segment Routing for more granular and dynamic control.</div>
 						<div class="example">Example: MPLS-TE can direct traffic over specific paths regardless of OSPF cost.</div>
 						<div class="counter-questions">
-						<ol>
+							<ol>
 						  <li>Is cost tuning complex in large networks? → Yes, manual adjustments can be error-prone.</li>
 						  <li>Does cost tuning scale well? → Not ideal for very large or dynamic networks; more advanced TE methods are preferred.</li>
 						  <li>Should cost tuning be first approach? → Yes, as the simplest mechanism to influence path selection.</li>
 						</ol>
 						</div>
-
 						<div class="question">Q13. How do different OSPF implementations handle cost differently?</div>
 						<div class="answer">Most vendors follow RFC standards, but defaults like reference bandwidth vary (e.g., Cisco default 100 Mbps). Some allow more granular cost tuning or different metric types.</div>
 						<div class="example">Example: Cisco vs Juniper may calculate default costs differently for 1 Gbps links.</div>
 						<div class="counter-questions">
-						<ol>
+							<ol>
 						  <li>Can vendor differences cause routing issues? → Yes, if reference bandwidth or cost calculation differs between devices.</li>
 						  <li>How to ensure interoperability? → Standardize reference bandwidth and manually adjust costs where needed.</li>
 						  <li>Are there tools for cost audit? → Yes, network management and monitoring tools provide visibility of costs across devices.</li>
 						</ol>
 						</div>
-
 						<div class="question">Q14. Can cost misconfiguration cause routing loops or blackholing?</div>
 						<div class="answer">Yes, incorrect cost can lead to suboptimal routing loops or traffic blackholes if path calculations diverge or preferred paths are miscalculated.</div>
 						<div class="example">Example: Misconfigured low cost on backup link causes traffic to loop between routers.</div>
 						<div class="counter-questions">
-						<ol>
+							<ol>
 						  <li>How to identify loops caused by cost? → Use packet captures and check routing tables against expected paths.</li>
 						  <li>Are loops always caused by cost? → Usually, they result from cost plus other misconfigurations like duplicate routes.</li>
 						  <li>Can STP or routing protocols detect cost problems? → Not automatically; manual verification is required.</li>
 						</ol>
 						</div>
-
 						<div class="question">Q15. How do ABRs handle cost summarization between OSPF areas?</div>
 						<div class="answer">ABRs summarize routes between areas using Summary LSAs, but interface costs remain per area and original interface. Summarized LSAs carry aggregated metrics.</div>
 						<div class="example">Example: ABR advertises 10.0.0.0/8 to another area as a summary route with cost based on the most preferred internal path.</div>
 						<div class="counter-questions">
-						<ol>
+							<ol>
 						  <li>Can summarized routes have inaccurate costs? → Yes, if summarization does not account for highest path cost.</li>
 						  <li>Does summarization reduce SPF load? → Yes, fewer LSAs reduce SPF calculation complexity.</li>
 						  <li>How to configure cost on summarized routes? → Adjust metrics during ABR summary LSA configuration.</li>
 						</ol>
 						</div>
-
 						<div class="question">Q16. What are best practices for OSPF cost configuration?</div>
 						<div class="answer">Use consistent reference bandwidth, set manual costs only when necessary, avoid drastic changes, coordinate changes network-wide, and monitor SPF behavior regularly.</div>
 						<div class="example">Example: Network-wide cost adjustments prevent inconsistent routing decisions.</div>
 						<div class="counter-questions">
-						<ol>
+							<ol>
 						  <li>Is default cost sufficient for small networks? → Usually yes, if links are uniform and low-speed.</li>
 						  <li>Can cost tuning fix bandwidth issues? → Partially; QoS or TE mechanisms are needed for traffic management.</li>
 						  <li>Should cost match physical bandwidth? → Ideally yes, but consider overall network design and path preference.</li>
 						</ol>
 						</div>
-
 						<div class="question">Q17. How does OSPF cost affect route selection in complex topologies?</div>
 						<div class="answer">OSPF chooses paths with minimum total cost summing link costs. Accurate cost prevents suboptimal routing and improves reliability.</div>
 						<div class="example">Example: Correct link costs ensure traffic uses backbone links instead of slower alternate paths.</div>
 						<div class="counter-questions">
-						<ol>
+							<ol>
 						  <li>Can cost errors cause suboptimal routing? → Yes, a common cause of traffic taking longer paths.</li>
 						  <li>Is there a limit to path complexity OSPF can handle? → SPF algorithm scales, but excessive complexity may impact performance.</li>
 						  <li>Do cost changes trigger SPF floods? → Yes, frequent changes lead to repeated SPF recalculation and LSA updates.</li>
 						</ol>
 						</div>
-
 						<div class="question">Q18. How to audit and verify OSPF cost settings across a network?</div>
 						<div class="answer">Collect <code>show ip ospf interface</code> and routing tables from all routers, compare costs and reference bandwidth, verify consistency, and validate path selection.</div>
 						<div class="example">Example: Audit shows mismatched costs on redundant links, corrected to align paths.</div>
 						<div class="counter-questions">
-						<ol>
+							<ol>
 						  <li>Are there automated tools? → Yes, network management systems and monitoring software.</li>
 						  <li>Should audits be done regularly? → Yes, for stable and predictable routing behavior.</li>
 						  <li>What if inconsistencies are found? → Plan coordinated fixes carefully across routers.</li>
 						</ol>
 						</div>
-
 						<div class="question">Q19. What impact do OSPF cost misconfigurations have on network troubleshooting?</div>
 						<div class="answer">Misconfigurations can cause traffic blackholes, unexpected path changes, routing loops, and increased latency, complicating root cause analysis.</div>
 						<div class="example">Example: Incorrect cost led to traffic avoiding the primary backbone and congesting alternate links.</div>
 						<div class="counter-questions">
-						<ol>
+							<ol>
 						  <li>Can cost issues appear as intermittent failures? → Yes, especially if ECMP paths frequently change.</li>
 						  <li>Does cost affect routing protocol convergence time? → Indirectly, because it triggers SPF recalculations.</li>
 						  <li>How to isolate cost-related problems? → Compare intended paths vs. actual paths and adjust interface costs for testing.</li>
 						</ol>
 						</div>
-
 						<div class="question">Q20. How do cost adjustments interact with OSPF load balancing?</div>
 						<div class="answer">Adjusting cost enables creation or removal of equal-cost paths, dynamically affecting load balancing. Proper tuning optimizes bandwidth usage and prevents congestion.</div>
 						<div class="example">Example: Raising cost on one path removes it from ECMP, concentrating traffic on remaining links.</div>
 						<div class="counter-questions">
-						<ol>
+							<ol>
 						  <li>Does OSPF support unequal cost load balancing? → Not natively; only equal-cost paths are considered.</li>
 						  <li>Can cost changes cause transient traffic shifts? → Yes, during SPF recalculation after cost change.</li>
 						  <li>Should load balancing be planned with cost strategy? → Yes, to ensure predictable performance and avoid congestion.</li>
 						</ol>
 						</div>
 					</div>
-
-               </div>
-            </div>
-			
-            <h3>2. BGP concepts (Path attributes, eBGP vs iBGP, Route selection process)</h3>
-            <div class="subsection1">
-				<div class="subsection1">
+				</div><!--d. OSPF Cost Metric END -->
+				<h3>2. BGP concepts (Path attributes, eBGP vs iBGP, Route selection process)</h3>
+				<div class="subsection1"><!--a. BGP Path Attributes BEGIN -->
 					<h3 id="bgp-path">a. BGP Path Attributes</h3>
 					<div class="real-world">
 						<strong>BGP Attributes: Real-World Scenarios</strong>
@@ -4043,8 +4002,8 @@
 							</ol>
 						</div>
 					</div>
-				</div>
-				<div class="subsection1">
+				</div><!--a. BGP Path Attributes END -->
+				<div class="subsection1"><!--b. eBGP vs iBGP BEGIN -->
 					<h3 id="bgp-ebgp">b. eBGP vs iBGP</h3>
 					<div class="real-world">
 						<strong>Real-World Scenario Examples</strong>
@@ -4284,9 +4243,9 @@
 						</ol>
 						</div>
 					</div>
-				</div>
-				<div class="subsection1">
-                  <h3 id="bgp-route-selection">c. BGP Route Selection Process</h3>
+				</div><!--b. eBGP vs iBGP END -->
+				<div class="subsection1"><!--c. BGP Route Selection BEGIN -->
+					<h3 id="bgp-route-selection">c. BGP Route Selection Process</h3>
 					<div class="real-world">
 						<strong>Real-World Scenario Examples</strong>
 						<ol>
@@ -4520,11 +4479,9 @@
 						</ol>
 						</div>
 					</div>
-				</div>
-            </div>			
-            <h3 id="cli-commands">3. Practice Configuration basics (CLI commands for OSPF & BGP)</h3>
-            <div class="subsection1">
-				<div class="subsection1">
+				</div><!--c. BGP Route Selection END -->
+				<h3 id="cli-commands">3. Practice Configuration basics (CLI commands for OSPF & BGP)</h3>
+				<div class="subsection1"><!--OSPF Configuration Tasks BEGIN -->
 					<div class="real-world">
 						<h3 id="ospf">OSPF Configuration Tasks: Real-World Scenarios</h3>
 						<ol>
@@ -4672,8 +4629,8 @@
 							</li>
 						</ol>
 					</div>
-				</div>
-				<div class="subsection1">
+				</div><!--OSPF Configuration Tasks END -->
+				<div class="subsection1"><!--BGP Configuration Tasks BEGIN -->
 					<div class="real-world">
 						<h3 id="bgp">Practice BGP Configurations: Real-World Scenarios</h3>
 						<ol>
@@ -4811,11 +4768,9 @@
 						  </li>
 						</ol>
 					</div>
-				</div>
-            </div>			
-            <h3 id="use-cases">4. Use cases &amp; Troubleshooting Steps</h3>
-            <div class="subsection1">
-				<div class="subsection1">
+				</div><!--BGP Configuration Tasks END -->
+				<h3 id="use-cases">4. Use cases &amp; Troubleshooting Steps</h3>
+				<div class="subsection1"><!--a. OSPF – Use Cases BEGIN -->
 					<h3 id="ospf-uc-ts">a. OSPF – Use Cases &amp; Troubleshooting Steps</h3>
 					<div class="real-world">
 						<strong>Use Case 1: Multi-Area Enterprise Networks</strong>
@@ -4937,8 +4892,8 @@
 							</li>
 						</ol>
 					</div>
-				</div>
-				<div class="subsection1">
+				</div><!--a. OSPF – Use Cases END -->
+				<div class="subsection1"><!--b. BGP – Use Cases BEGIN -->
 					<h3 id="bgp-uc-ts">b. BGP – Use Cases &amp; Troubleshooting Steps</h3>
 					<div class="real-world">
 						<strong>Use Case 1: Multi-Homed Enterprise</strong>
@@ -5030,7 +4985,7 @@
 					</div>
 					<p>Routing Protocols Overview – Mechanics, Use Cases, Configuration, and Troubleshooting</p>
 					<div style="overflow-x:auto;">
-					<table border="1" cellspacing="0" cellpadding="5" overflow="auto">
+						<table border="1" cellspacing="0" cellpadding="5" overflow="auto">
 						<tr>
 							<th>Protocol</th>
 							<th>Type</th>
@@ -5125,173 +5080,148 @@
 							<li><strong>BGP Session Down</strong> — Verify reachability (ping/traceroute), ensure TCP/179 allowed, check AS numbers.</li>
 							<li>
 							   <strong>Routes Not Advertised/Received</strong> — Verify network statements, check prefix-lists/route-maps, use 
-							   <code>
+							   <span class="highlight-text">
 								  show ip bgp neighbors 
-								  <ip>
+								  -c &lt;ip&gt;
 								  advertised-routes
-							   </code>                           .
+							   </span>                           .
 							</li>
 							<li><strong>Suboptimal Routing</strong> — Adjust Local Pref, use AS-path prepending or MED.</li>
 						</ol>
 					</div>
-				</div>
-			</div>			
-            <h2 id="network-troubleshooting-section" class="section-title">3. Network Troubleshootings</h2>
+				</div><!--b. BGP – Use Cases END -->		
+            </div><!--2. Routing Protocols END -->
+			<h2 id="network-troubleshooting-section" class="section-title">3. Network Troubleshootings</h2>
             <a href="#features-overview" class="back-to-top-btn">↑ Back to Features</a>
-			<div class="subsection">
+			<div class="subsection"><!--3. Network Troubleshootings BEGIN -->
 				<h2 id="network-diaognistics" class="section-title">1. Diaognising a network issue from start to finish</h2>
-				<a href="#features-overview" class="back-to-top-btn">↑ Back to Features</a>
-				<div class="subsection1">
-					<h3>Step 1: Identify the Problem</h3>
-					<p><strong>Goal:</strong> Understand the scope and symptoms of the network issue.</p>
-
-					<p><strong>Actions:</strong></p>
+				<h3>Step 1: Identify the Problem</h3>
+				<p><strong>Goal:</strong> Understand the scope and symptoms of the network issue.</p>
+				<p><strong>Actions:</strong></p>
+				<ul>
+				  <li><strong>Ask affected users for details:</strong>
 					<ul>
-					  <li><strong>Ask affected users for details:</strong>
-						<ul>
-						  <li>Who, What, When, Where, How</li>
-						  <li>Is it affecting a single device, a subnet, or the entire network?</li>
-						  <li>Is it intermittent or persistent?</li>
-						</ul>
-					  </li>
-					  <li><strong>Check for recent changes:</strong>
-						<ul>
-						  <li>Firmware updates, configuration changes, cabling, or hardware replacements</li>
-						</ul>
-					  </li>
+					  <li>Who, What, When, Where, How</li>
+					  <li>Is it affecting a single device, a subnet, or the entire network?</li>
+					  <li>Is it intermittent or persistent?</li>
 					</ul>
-
-					<h3>Step 2: Gather Information</h3>
-					<p><strong>Goal:</strong> Collect relevant data before making changes.</p>
-
-					<p><strong>Actions:</strong></p>
+				  </li>
+				  <li><strong>Check for recent changes:</strong>
 					<ul>
-					  <li><strong>Check device IP configuration:</strong>
-						<ul>
-						  <li>Windows: <span class="highlight-text">ipconfig /all</span></li>
-						  <li>Linux/Mac: <span class="highlight-text">ifconfig</span> or <span class="highlight-text">ip addr</span></li>
-						</ul>
-					  </li>
-					  <li><strong>Verify network topology:</strong>
-						<ul>
-						  <li>Identify routers, switches, firewalls, VLANs, etc.</li>
-						</ul>
-					  </li>
-					  <li><strong>Document observed errors, logs, or alerts.</strong></li>
+					  <li>Firmware updates, configuration changes, cabling, or hardware replacements</li>
 					</ul>
-					<h3>Step 3: Layered Troubleshooting Approach (OSI Model)</h3>
-					<p>Use the OSI model (<strong>Physical → Data Link → Network → Transport → Application</strong>) to systematically isolate the problem.</p>
-
-
-					<strong>A. Physical Layer</strong>
+				  </li>
+				</ul>
+				<h3>Step 2: Gather Information</h3>
+				<p><strong>Goal:</strong> Collect relevant data before making changes.</p>
+				<p><strong>Actions:</strong></p>
+				<ul>
+				  <li><strong>Check device IP configuration:</strong>
 					<ul>
-					  <li>Check cables, connectors, and hardware LEDs.</li>
-					  <li>Replace suspected faulty cables.</li>
-					  <li>Ensure devices are powered on.</li>
+					  <li>Windows: <span class="highlight-text">ipconfig /all</span></li>
+					  <li>Linux/Mac: <span class="highlight-text">ifconfig</span> or <span class="highlight-text">ip addr</span></li>
 					</ul>
-
-					<strong>B. Data Link Layer</strong>
+				  </li>
+				  <li><strong>Verify network topology:</strong>
 					<ul>
-					  <li>Verify switch port status: <span class="highlight-text">show interface status</span></li>
-					  <li>Check VLAN assignment.</li>
-					  <li>Ensure no duplex or speed mismatches.</li>
+					  <li>Identify routers, switches, firewalls, VLANs, etc.</li>
 					</ul>
-
-
-					<strong>C. Network Layer</strong>
+				  </li>
+				  <li><strong>Document observed errors, logs, or alerts.</strong></li>
+				</ul>
+				<h3>Step 3: Layered Troubleshooting Approach (OSI Model)</h3>
+				<p>Use the OSI model (<strong>Physical → Data Link → Network → Transport → Application</strong>) to systematically isolate the problem.</p>
+				<strong>A. Physical Layer</strong>
+				<ul>
+				  <li>Check cables, connectors, and hardware LEDs.</li>
+				  <li>Replace suspected faulty cables.</li>
+				  <li>Ensure devices are powered on.</li>
+				</ul>
+				<strong>B. Data Link Layer</strong>
+				<ul>
+				  <li>Verify switch port status: <span class="highlight-text">show interface status</span></li>
+				  <li>Check VLAN assignment.</li>
+				  <li>Ensure no duplex or speed mismatches.</li>
+				</ul>
+				<strong>C. Network Layer</strong>
+				<ul>
+				  <li>Test connectivity with <span class="highlight-text">ping</span> to:
 					<ul>
-					  <li>Test connectivity with <span class="highlight-text">ping</span> to:
-						<ul>
-						  <li>Local host (127.0.0.1) → verifies TCP/IP stack</li>
-						  <li>Default gateway → verifies L2/L3 connectivity</li>
-						  <li>Remote host → verifies routing</li>
-						</ul>
-					  </li>
-					  <li>Use <span class="highlight-text">traceroute</span>/<span class="highlight-text">tracert</span> to identify where the path breaks.</li>
-					  <li>Verify IP addressing and subnet mask.</li>
+					  <li>Local host (127.0.0.1) → verifies TCP/IP stack</li>
+					  <li>Default gateway → verifies L2/L3 connectivity</li>
+					  <li>Remote host → verifies routing</li>
 					</ul>
-
-					<strong>D. Transport Layer</strong>
-					<ul>
-					  <li>Use <span class="highlight-text">telnet</span> or <span class="highlight-text">nc</span> (netcat) to test specific TCP/UDP ports.</li>
-					  <li>Check for firewall rules blocking traffic.</li>
-					</ul>
-
-					<strong>E. Application Layer</strong>
-					<ul>
-					  <li>Test applications directly (HTTP, FTP, DNS).</li>
-					  <li>Verify service availability and correct server configuration.</li>
-					</ul>
-
-
-					<h3>Step 4: Check Logs and Monitoring</h3>
-					<ul>
-					  <li>Router/switch logs: <span class="highlight-text">show log</span> or <span class="highlight-text">show logging</span></li>
-					  <li>Syslogs on servers or firewalls.</li>
-					  <li>Network monitoring tools (e.g., Nagios, PRTG, SolarWinds) for anomalies.</li>
-					</ul>
-
-					<h3>Step 5: Identify Recent Changes</h3>
-					<p>Correlate network issues with recent:</p>
-					<ul>
-					  <li>Device upgrades</li>
-					  <li>Configuration changes</li>
-					  <li>Security policies or ACL updates</li>
-					  <li>Software/firmware updates</li>
-					</ul>
-
-					<h3>Step 6: Isolate and Test</h3>
-					<p>Segment the network to isolate the problem:</p>
-					<ul>
-					  <li>Test connectivity from multiple points (local device, another subnet).</li>
-					  <li>Swap devices (NIC, switch port, cable) to rule out hardware failure.</li>
-					  <li>Disable suspect firewalls temporarily (if safe).</li>
-					</ul>
-
-					<h3>Step 7: Apply Fix</h3>
-					<p>After isolating root cause:</p>
-					<ul>
-					  <li>Correct misconfigurations (IP, VLAN, ACL, routing).</li>
-					  <li>Replace faulty hardware.</li>
-					  <li>Update firmware/software if needed.</li>
-					</ul>
-
-					<h3>Step 8: Verify</h3>
-					<p>Test end-to-end connectivity:</p>
-					<ul>
-					  <li>Ping, traceroute, application access.</li>
-					  <li>Verify user reports confirm issue is resolved.</li>
-					</ul>
-
-					<h3>Step 9: Document and Prevent</h3>
-					<p>Record:</p>
-					<ul>
-					  <li>Cause of the issue</li>
-					  <li>Actions taken</li>
-					  <li>Lessons learned</li>
-					</ul>
-
-					<p>Implement preventive measures:</p>
-					<ul>
-					  <li>Monitoring</li>
-					  <li>Redundancy</li>
-					  <li>Change control procedures</li>
-					</ul>
-					<h3>Proactive Tips</h3>
-					<ul>
-					  <li>Always start from <strong>Layer 1 (Physical)</strong> and move upward.</li>
-					  <li>Use the <em>“divide and conquer”</em> method: isolate the affected segment.</li>
-					  <li>Maintain baseline configurations and network diagrams.</li>
-					  <li>Monitor trends instead of only reacting to incidents.</li>
-					</ul>						
-				</div>
-
-				<h2 id="pkt-tracing" class="section-title">2. Trace a packet path - Tools - Different layers of OSI model</h2>
-				<a href="#features-overview" class="back-to-top-btn">↑ Back to Features</a>
-				<div class="subsection1">
-					<h2 id="pkt-tracing-overview" class="section-title">a. Overview - OSI Layers</h2>
-					<a href="#features-overview" class="back-to-top-btn">↑ Back to Features</a>				
-					<div class="subsection1">
+				  </li>
+				  <li>Use <span class="highlight-text">traceroute</span>/<span class="highlight-text">tracert</span> to identify where the path breaks.</li>
+				  <li>Verify IP addressing and subnet mask.</li>
+				</ul>
+				<strong>D. Transport Layer</strong>
+				<ul>
+				  <li>Use <span class="highlight-text">telnet</span> or <span class="highlight-text">nc</span> (netcat) to test specific TCP/UDP ports.</li>
+				  <li>Check for firewall rules blocking traffic.</li>
+				</ul>
+				<strong>E. Application Layer</strong>
+				<ul>
+				  <li>Test applications directly (HTTP, FTP, DNS).</li>
+				  <li>Verify service availability and correct server configuration.</li>
+				</ul>
+				<h3>Step 4: Check Logs and Monitoring</h3>
+				<ul>
+				  <li>Router/switch logs: <span class="highlight-text">show log</span> or <span class="highlight-text">show logging</span></li>
+				  <li>Syslogs on servers or firewalls.</li>
+				  <li>Network monitoring tools (e.g., Nagios, PRTG, SolarWinds) for anomalies.</li>
+				</ul>
+				<h3>Step 5: Identify Recent Changes</h3>
+				<p>Correlate network issues with recent:</p>
+				<ul>
+				  <li>Device upgrades</li>
+				  <li>Configuration changes</li>
+				  <li>Security policies or ACL updates</li>
+				  <li>Software/firmware updates</li>
+				</ul>
+				<h3>Step 6: Isolate and Test</h3>
+				<p>Segment the network to isolate the problem:</p>
+				<ul>
+				  <li>Test connectivity from multiple points (local device, another subnet).</li>
+				  <li>Swap devices (NIC, switch port, cable) to rule out hardware failure.</li>
+				  <li>Disable suspect firewalls temporarily (if safe).</li>
+				</ul>
+				<h3>Step 7: Apply Fix</h3>
+				<p>After isolating root cause:</p>
+				<ul>
+				  <li>Correct misconfigurations (IP, VLAN, ACL, routing).</li>
+				  <li>Replace faulty hardware.</li>
+				  <li>Update firmware/software if needed.</li>
+				</ul>
+				<h3>Step 8: Verify</h3>
+				<p>Test end-to-end connectivity:</p>
+				<ul>
+				  <li>Ping, traceroute, application access.</li>
+				  <li>Verify user reports confirm issue is resolved.</li>
+				</ul>
+				<h3>Step 9: Document and Prevent</h3>
+				<p>Record:</p>
+				<ul>
+				  <li>Cause of the issue</li>
+				  <li>Actions taken</li>
+				  <li>Lessons learned</li>
+				</ul>
+				<p>Implement preventive measures:</p>
+				<ul>
+				  <li>Monitoring</li>
+				  <li>Redundancy</li>
+				  <li>Change control procedures</li>
+				</ul>
+				<h3>Proactive Tips</h3>
+				<ul>
+				  <li>Always start from <strong>Layer 1 (Physical)</strong> and move upward.</li>
+				  <li>Use the <em>“divide and conquer”</em> method: isolate the affected segment.</li>
+				  <li>Maintain baseline configurations and network diagrams.</li>
+				  <li>Monitor trends instead of only reacting to incidents.</li>
+				</ul><br>						
+				<h3>2. Trace a packet path - Tools - Different layers of OSI model</h3>
+				<div class="subsection1"><!--a. Overview - OSI Layers BEGIN -->
+						<h3 id="pkt-tracing-overview">a. Overview - OSI Layers</h3>
 						<h3>1. Physical Layer (Layer 1)</h3>
 						<p><strong>Goal:</strong> Verify the actual physical connection and media.</p>
 
@@ -5302,30 +5232,124 @@
 						  <li>Slow or failed link negotiation</li>
 						</ul>
 
-						<p><strong>Steps &amp; Tools:</strong></p>
-						<ol>
-						  <li><strong>Check cabling and hardware</strong>
-							<ul>
-							  <li>Inspect cables (Ethernet, fiber, copper) for damage.</li>
-							  <li>Ensure connectors are properly seated.</li>
-							</ul>
-						  </li>
-						  <li><strong>Check link lights on NICs/switch ports</strong>
-							<ul>
-							  <li>LEDs indicate link/activity.</li>
-							</ul>
-						  </li>
-						  <li><strong>Use tools<span class="highlight-text">ethtool</span> (Linux)/NIC diagnostics (Windows)</strong>
-							<ul>
-							  <li>Check interface status, speed, duplex mismatch.</li>
-							</ul>
-						  </li>
-						  <li><strong>Loopback test (optional)</strong>
-							<ul>
-							  <li>Test if the NIC can transmit/receive locally.</li>
-							</ul>
-						  </li>
-						</ol>
+						<p class="subsection2">1. No link light on switch/port</p>
+						<div class="steps">
+						  <p><strong>Steps & Tools:</strong></p>
+						  <ul>
+							<li>Check cable seating on both ends.</li>
+							<li>Swap with a known good Ethernet/fiber cable.</li>
+							<li>Inspect switch port LEDs (link/activity).</li>
+							<li>Use CLI commands on switch, <code>ethtool</code> on Linux, or NIC diagnostics on Windows.</li>
+						  </ul>
+						</div>
+						<div class="check">
+						  <p><strong>Check:</strong></p>
+						  <ul>
+							<li>Check port status:
+							  <div style="margin-left: 2em;" class="code-block">show interface status</div>
+							</li>
+							<li>Check if port is shutdown:
+							  <div style="margin-left: 2em;" class="code-block">show running-config | include shutdown</div>
+							</li>
+							<li>On Linux:
+							  <div style="margin-left: 2em;" class="code-block">ip link show<br>ethtool eth0</div>
+							</li>
+							<li>On Windows:
+							  <div style="margin-left: 2em;" class="code-block">netsh interface show interface<br>Get-NetAdapter</div>
+							</li>
+						  </ul>
+						</div>
+						<div class="resolution">
+						  <p><strong>Resolution:</strong></p>
+						  <ul>
+							<li>Enable switch port:
+							  <div style="margin-left: 2em;" class="code-block">configure terminal<br>interface Gi0/1<br>no shutdown</div>
+							</li>
+							<li>Replace faulty/damaged cable.</li>
+							<li>Replace defective NIC or switch port if needed.</li>
+						  </ul>
+						</div>
+
+						<h3 class="symptom">2. Intermittent connectivity</h3>
+						<div class="steps">
+						  <p><strong>Steps & Tools:</strong></p>
+						  <ul>
+							<li>Inspect cable for damage or loose connectors.</li>
+							<li>Run switch-side cable diagnostics (TDR).</li>
+							<li>Monitor interface counters for CRC/input errors.</li>
+							<li>Use <code>ping</code> for packet loss testing.</li>
+							<li>Use <code>ethtool -S</code> on Linux or Windows NIC counters.</li>
+						  </ul>
+						</div>
+						<div class="check">
+						  <p><strong>Check:</strong></p>
+						  <ul>
+							<li>Run cable diagnostics:
+							  <div style="margin-left: 2em;" class="code-block">test cable-diagnostics tdr interface Gi0/1<br>show cable-diagnostics tdr interface Gi0/1</div>
+							</li>
+							<li>Check interface counters:
+							  <div style="margin-left: 2em;" class="code-block">show interface Gi0/1</div>
+							</li>
+							<li>Ping test:
+							  <div style="margin-left: 2em;" class="code-block">ping -t 8.8.8.8   (Windows)<br>ping 8.8.8.8      (Linux)</div>
+							</li>
+							<li>Linux NIC stats:
+							  <div style="margin-left: 2em;" class="code-block">ethtool -S eth0</div>
+							</li>
+						  </ul>
+						</div>
+						<div class="resolution">
+						  <p><strong>Resolution:</strong></p>
+						  <ul>
+							<li>Replace damaged cable or connectors.</li>
+							<li>Fix duplex mismatch:
+							  <div style="margin-left: 2em;" class="code-block">show running-config | include duplex<br>configure terminal<br>interface Gi0/1<br>duplex auto<br>speed auto</div>
+							</li>
+							<li>Replace faulty NIC or switch port if errors persist.</li>
+						  </ul>
+						</div>
+
+						<h3 class="symptom">3. Slow or failed link negotiation</h3>
+						<div class="steps">
+						  <p><strong>Steps & Tools:</strong></p>
+						  <ul>
+							<li>Check negotiated speed/duplex on both ends.</li>
+							<li>Verify switch and host NIC settings.</li>
+							<li>Use <code>ethtool</code> (Linux) or <code>Get-NetAdapter</code> (Windows).</li>
+							<li>Confirm cable category supports desired speed (Cat5/5e/6).</li>
+						  </ul>
+						</div>
+						<div class="check">
+						  <p><strong>Check:</strong></p>
+						  <ul>
+							<li>Switch interface status:
+							  <div style="margin-left: 2em;" class="code-block">show interface Gi0/1 status</div>
+							</li>
+							<li>Verify running config:
+							  <div style="margin-left: 2em;" class="code-block">show running-config | include speed<br>show running-config | include duplex</div>
+							</li>
+							<li>Linux NIC:
+							  <div style="margin-left: 2em;" class="code-block">ethtool eth0</div>
+							</li>
+							<li>Windows NIC:
+							  <div style="margin-left: 2em;" class="code-block">Get-NetAdapter</div>
+							</li>
+						  </ul>
+						</div>
+						<div class="resolution">
+						  <p><strong>Resolution:</strong></p>
+						  <ul>
+							<li>Enable auto-negotiation:
+							  <div style="margin-left: 2em;" class="code-block">configure terminal<br>interface Gi0/1<br>speed auto<br>duplex auto</div>
+							</li>
+							<li>Set manual speed/duplex if auto fails:
+							  <div style="margin-left: 2em;" class="code-block">configure terminal<br>interface Gi0/1<br>speed 1000<br>duplex full</div>
+							</li>
+							<li>Upgrade cabling if speed unsupported (use Cat6/6a for Gigabit/10G).</li>
+							<li>Replace faulty NIC/SFP/switch port if negotiation fails.</li>
+						  </ul>
+						</div>
+						
 
 						<h3>2. Data Link Layer (Layer 2)</h3>
 						<p><strong>Goal:</strong> Verify that MAC addresses and local switching are correct.</p>
@@ -5571,51 +5595,50 @@
 							</tr>
 						  </table>
 						</div>
-					</div>
-					<h2 id="pkt-tracing-issues" class="section-title">b. Common day-to-day issues for each OSI layer</h2>
-					<a href="#features-overview" class="back-to-top-btn">↑ Back to Features</a>				
-					<div class="subsection1">
+					</div><!--a. Overview - OSI Layers END -->
+				<div class="subsection1"><!--b. Common day-to-day issues BEGIN -->
+						<h3 id="pkt-tracing-issues">b. Common day-to-day issues for each OSI layer</h3>
 						<h3>Layer 1 — Physical (5 Common Issues)</h3>
 
 						<h4>Issue 1 — Cable unplugged / port down</h4>
 						<div style="margin-left: 2em;">
-						<p><strong>Symptoms:</strong> No link, no traffic, interface shows DOWN, no LEDs.</p>
-						<p><strong>Counter questions:</strong> Has anyone touched the rack? Any recent moves? Was there a power outage?</p>
+							<p><strong>Symptoms:</strong> No link, no traffic, interface shows DOWN, no LEDs.</p>
+							<p><strong>Counter questions:</strong> Has anyone touched the rack? Any recent moves? Was there a power outage?</p>
 
-						<p><strong>Troubleshooting (commands &amp; checks):</strong></p>
-						<ol>
-						  <li><strong>Check NIC / switch port status:</strong>
-							<ul>
-							  <li>Linux: <span class="highlight-text">ip link show eth0</span> → look for <span class="highlight-text">state DOWN</span> or <span class="highlight-text">state UP</span></li>
-							  <li>Windows (PowerShell): <span class="highlight-text">Get-NetAdapter</span> → <span class="highlight-text">Status</span> column</li>
-							  <li>Cisco: <span class="highlight-text">show interfaces GigabitEthernet1/0/1 status</span></li>
-							</ul>
-						  </li>
-						  <li><strong>Check physical:</strong> LEDs on NIC/switch, cable seated, RMM/console photos.</li>
-						  <li><strong>Check <span class="highlight-text">dmesg</span> for link events:</strong>
-							<ul>
-							  <li>Linux: <span class="highlight-text">dmesg | tail -n 50 | grep -i eth0</span></li>
-							</ul>
-						  </li>
-						  <li><strong>If fiber SFP:</strong> inspect SFP seated and transceiver type:
-							<ul>
-							  <li>Cisco: <span class="highlight-text">show interfaces transceiver detail</span> or <span class="highlight-text">show inventory</span></li>
-							</ul>
-						  </li>
-						</ol>
+							<p><strong>Troubleshooting (commands &amp; checks):</strong></p>
+							<ol>
+							  <li><strong>Check NIC / switch port status:</strong>
+								<ul>
+								  <li>Linux: <span class="highlight-text">ip link show eth0</span> → look for <span class="highlight-text">state DOWN</span> or <span class="highlight-text">state UP</span></li>
+								  <li>Windows (PowerShell): <span class="highlight-text">Get-NetAdapter</span> → <span class="highlight-text">Status</span> column</li>
+								  <li>Cisco: <span class="highlight-text">show interfaces GigabitEthernet1/0/1 status</span></li>
+								</ul>
+							  </li>
+							  <li><strong>Check physical:</strong> LEDs on NIC/switch, cable seated, RMM/console photos.</li>
+							  <li><strong>Check <span class="highlight-text">dmesg</span> for link events:</strong>
+								<ul>
+								  <li>Linux: <span class="highlight-text">dmesg | tail -n 50 | grep -i eth0</span></li>
+								</ul>
+							  </li>
+							  <li><strong>If fiber SFP:</strong> inspect SFP seated and transceiver type:
+								<ul>
+								  <li>Cisco: <span class="highlight-text">show interfaces transceiver detail</span> or <span class="highlight-text">show inventory</span></li>
+								</ul>
+							  </li>
+							</ol>
 
-						<h4>Resolution:</h4>
-						<ol>
-						  <li>Reseat cable and transceiver.</li>
-						  <li>Replace patch cable with known-good cable.</li>
-						  <li>On Cisco: <span class="highlight-text">shutdown</span> → <span class="highlight-text">no shutdown</span> on interface to bounce port.</li>
-						  <li>Verify link up:
-							<ul>
-							  <li>Linux: <span class="highlight-text">ip link show eth0</span> → <span class="highlight-text">state UP</span>; <span class="highlight-text">ethtool eth0</span> shows speed/duplex.</li>
-							  <li>Cisco: <span class="highlight-text">show interfaces Gi1/0/1 status</span> → connected.</li>
-							</ul>
-						  </li>
-						</ol>
+							<h4>Resolution:</h4>
+							<ol>
+							  <li>Reseat cable and transceiver.</li>
+							  <li>Replace patch cable with known-good cable.</li>
+							  <li>On Cisco: <span class="highlight-text">shutdown</span> → <span class="highlight-text">no shutdown</span> on interface to bounce port.</li>
+							  <li>Verify link up:
+								<ul>
+								  <li>Linux: <span class="highlight-text">ip link show eth0</span> → <span class="highlight-text">state UP</span>; <span class="highlight-text">ethtool eth0</span> shows speed/duplex.</li>
+								  <li>Cisco: <span class="highlight-text">show interfaces Gi1/0/1 status</span> → connected.</li>
+								</ul>
+							  </li>
+							</ol>
 						</div>
 						<h4>Issue 2 — Broken/failed patch panel or RJ-45 connector</h4>
 						<div style="margin-left: 2em;">
@@ -6219,8 +6242,8 @@
 						  <ol>
 							<li>Fix underlying packet loss (bad link, MTU).</li>
 							<li>Tune TCP window scaling if necessary.</li>
-							<li>If on WAN, consider QoS shaping or increase buffer sizes.
-							<li>Verify improved throughput with <span class="highlight-text">iperf3 -c <server></span>.</li>
+							<li>If on WAN, consider QoS shaping or increase buffer sizes.</li>
+							<li>Verify improved throughput with <span class="highlight-text">iperf3 -c &lt;server&gt;</span>.</li>
 						  </ol>
 						</div>	
 						<h3>Layer 5 — Session (5 Common Issues)</h3>
@@ -6610,12 +6633,10 @@
 							<li>Restart service and validate behavior</li>
 						  </ol>
 						</div>
-					</div>	
-					<h2 id="realtime-pkt-toubleshoot" class="section-title">c. Real-Time Troubleshooting Transcripts</h2>
-					<a href="#features-overview" class="back-to-top-btn">↑ Back to Features</a>				
-					<div class="subsection1">
+					</div><!--b. Common day-to-day issues END -->	
+				<div class="subsection1"><!--c. Real-Time Troubleshooting BEGIN -->
+						<h3 id="realtime-pkt-toubleshoot">c. Real-Time Troubleshooting Transcripts</h3>
 						<h3>OSI Layer 1 (Physical) – Troubleshooting Scenarios</h3>
-
 						<h4>Issue 1 — User’s PC Cannot Connect (Bad Cable)</h4>
 						<div style="margin-left: 2em;">
 							<p><strong>Scenario:</strong> A user reports no network access.</p>
@@ -6740,7 +6761,6 @@
 							<li>Verified uplink is operational.</li>
 						  </ol>
 						</div>
-
 						<h4>Issue 4 — Intermittent Connectivity (Loose Patch Panel)</h4>
 						<div style="margin-left: 2em;">
 						  <p><strong>Scenario:</strong> User randomly loses connectivity.</p>
@@ -6777,7 +6797,6 @@
 							<li>Verified interface error counters cleared.</li>
 						  </ol>
 						</div>
-
 						<h4>Issue 5 — Power Issue (Device Not Booting)</h4>
 						<div style="margin-left: 2em;">
 						  <p><strong>Scenario:</strong> Access switch not powering on.</p>
@@ -6804,7 +6823,6 @@
 							<li>Switch successfully powered on and restored service.</li>
 						  </ol>
 						</div>
-
 						<h3>Summary for Layer 1</h3>
 						<div style="margin-left: 2em;">
 						  <ul>
@@ -6816,7 +6834,6 @@
 						  </ul>
 						</div>
 						<h3>OSI Layer 2 (Data Link Layer) – Troubleshooting Scenarios</h3>
-
 						<h4>Issue 1 — VLAN Misconfiguration</h4>
 						<div style="margin-left: 2em;">
 						  <p><strong>Scenario:</strong> A user in VLAN 20 cannot reach others in the same VLAN.</p>
@@ -6864,7 +6881,6 @@
 							<li>Verified communication successful.</li>
 						  </ol>
 						</div>
-
 						<h4>Issue 2 — Trunk Port Not Passing VLANs</h4>
 						<div style="margin-left: 2em;">
 						  <p><strong>Scenario:</strong> Hosts in VLAN 30 on different switches cannot communicate.</p>
@@ -6909,7 +6925,6 @@
 							<li>Verified inter-switch VLAN connectivity restored.</li>
 						  </ol>
 						</div>
-
 						<h4>Issue 3 — MAC Address Flapping (Loop/Redundant Link)</h4>
 						<div style="margin-left: 2em;">
 						  <p><strong>Scenario:</strong> Network shows instability, logs reveal MAC flapping.</p>
@@ -6955,7 +6970,6 @@
 							<li>MAC flapping resolved, network stable.</li>
 						  </ol>
 						</div>
-
 						<h4>Issue 4 — ARP Table Issue (Stale MAC)</h4>
 						<div style="margin-left: 2em;">
 						  <p><strong>Scenario:</strong> User cannot reach gateway.</p>
@@ -7000,7 +7014,6 @@
 							<li>Verified user can reach gateway.</li>
 						  </ol>
 						</div>
-
 						<h4>Issue 5 — STP Blocking Unexpectedly</h4>
 						<div style="margin-left: 2em;">
 						  <p><strong>Scenario:</strong> User in VLAN 50 cannot access servers across trunk.</p>
@@ -7046,7 +7059,6 @@
 							<li>Port unblocked, VLAN 50 traffic restored.</li>
 						  </ol>
 						</div>
-
 						<h3>Summary for Layer 2</h3>
 						<div style="margin-left: 2em;">
 						  <ul>
@@ -7057,9 +7069,7 @@
 							<li><strong>Issue 5:</strong> STP blocking → adjusted bridge priority</li>
 						  </ul>
 						</div>
-					
 						<h3>OSI Layer 3 (Network) – Troubleshooting Scenarios</h3>
-
 						<h4>Issue 1 — Wrong IP / Subnet on Host (Cannot reach gateway or remote subnets)</h4>
 						<div style="margin-left: 2em;">
 						  <p><strong>Scenario:</strong> User reports they can’t reach the internet or other subnets; local coworkers reachable.</p>
@@ -7110,7 +7120,6 @@
 						  <p>Persist action (example for Debian netplan): edit file and <code>sudo netplan apply</code>.<br>
 							 If DHCP used, fix DHCP scope or reservation.</p>
 						</div>
-
 						<h4>Issue 2 — Missing Static Route (Certain subnet unreachable)</h4>
 						<div style="margin-left: 2em;">
 						  <p><strong>Scenario:</strong> Application server cannot reach a partner network 172.20.10.0/24; traceroute shows it stops at the default gateway.</p>
@@ -7158,7 +7167,6 @@
 						  <p><strong>Resolution:</strong> Added static route pointing to partner/next-hop.</p>
 						  <p>For permanent fix, update routing protocol (announce prefix via BGP/OSPF) or add to network documentation and persist config.</p>
 						</div>
-
 						<h4>Issue 3 — OSPF Adjacency Not Forming (neighbor stuck in INIT/2WAY)</h4>
 						<div style="margin-left: 2em;">
 						  <p><strong>Scenario:</strong> New router added to area 0 but OSPF neighbor is stuck in INIT stage; routes not exchanged.</p>
@@ -7219,7 +7227,6 @@
 						  </div>
 						  <p><strong>Resolution:</strong> OSPF adjacency came to FULL after aligning authentication. Persist keys in config management.</p>
 						</div>
-
 						<h4>Issue 4 — BGP Neighbor Down (TCP session not established)</h4>
 						<div style="margin-left: 2em;">
 						  <p><strong>Scenario:</strong> BGP session with ISP is down, routes not received.</p>
@@ -7265,7 +7272,6 @@
 						  </div>
 						  <p><strong>Resolution:</strong> ACL corrected, BGP established, routes received. Persist ACL change and monitor.</p>
 						</div>
-
 						<h4>Issue 5 — MTU / Path MTU Blackhole (Large transfers hang)</h4>
 						<div style="margin-left: 2em;">
 						  <p><strong>Scenario:</strong> Users able to open web pages but large downloads/time-consuming requests hang or time out. FTP/HTTPS large file transfers fail.</p>
@@ -7322,19 +7328,17 @@
 						  </div>
 						  <p><strong>Resolution:</strong> Allowed ICMP Fragmentation Needed through firewall (preferred) and/or clamped MSS at edge as immediate mitigation. Document change and monitor transfers.</p>
 						</div>
-						
 						<h3>Quick Layer-3 Tools &amp; Commands Recap</h3>
 						<div style="margin-left: 2em;">
 							<ul>
 							  <li><strong>Host checks:</strong> <span class="highlight-text">ip addr, ip route, ping, traceroute, tracepath</span></li>
 							  <li><strong>Router checks (Cisco):</strong> <span class="highlight-text"> show ip route, show ip ospf neighbor, show ip bgp summary, show ip interface brief, show running-config</span></li>
-							  <li><strong>Packet inspection:</strong> <span class="highlight-text"> tcpdump -i eth0 host <ip> and icmp, tcpdump -i eth0 -w /tmp/capture.pcap</span></li>
-							  <li><strong>MTU tests:</strong> <span class="highlight-text"> ping -M do -s <size>, tracepath <host></span></li>
+							  <li><strong>Packet inspection:</strong> <span class="highlight-text"> tcpdump -i eth0 host -c &lt;ip&gt; and icmp, tcpdump -i eth0 -w /tmp/capture.pcap</span></li>
+							  <li><strong>MTU tests:</strong> <span class="highlight-text"> ping -M do -s -c &lt;size&gt;, tracepath -c &lt;host&gt;</span></li>
 							  <li><strong>Fixing:</strong> <span class="highlight-text"> ip route add, router ospf config changes, ip tcp adjust-mss, iptables TCPMSS clamp</span></li>
 							</ul>
 						</div>						
 						<h3>OSI Layer 4 (Transport) – Troubleshooting Scenarios</h3>
-
 						<h4>Issue 1 — TCP Port Blocked by Firewall</h4>
 						<div style="margin-left: 2em;">
 						  <p><strong>Scenario:</strong> Web application is unreachable.</p>
@@ -7354,7 +7358,6 @@
 						  </div>
 						  <p><strong>Resolution:</strong> HTTPS traffic working again.</p>
 						</div>
-
 						<h4>Issue 2 — TCP Handshake Failure (SYN Flood Suspicion)</h4>
 						<div style="margin-left: 2em;">
 						  <p><strong>Scenario:</strong> Users complain web page is loading slowly.</p>
@@ -7371,7 +7374,6 @@
 						  </div>
 						  <p><strong>Verification:</strong> Connections stabilized. Handshake now completing.</p>
 						</div>
-
 						<h4>Issue 3 — UDP DNS Query Failure</h4>
 						<div style="margin-left: 2em;">
 						  <p><strong>Scenario:</strong> Clients cannot resolve domain names.</p>
@@ -7397,7 +7399,6 @@
 						  </div>
 						  <p><strong>Resolution:</strong> DNS working.</p>
 						</div>
-
 						<h4>Issue 4 — High Retransmissions (TCP Window Issue)</h4>
 						<div style="margin-left: 2em;">
 						  <p><strong>Scenario:</strong> File transfer (FTP) is very slow.</p>
@@ -7413,7 +7414,6 @@
 						  </div>
 						  <p><strong>Verification:</strong> FTP transfer speed increased. Window scaling fixed throughput.</p>
 						</div>
-
 						<h4>Issue 5 — Wrong Application Port Config</h4>
 						<div style="margin-left: 2em;">
 						  <p><strong>Scenario:</strong> Database client fails to connect to DB server.</p>
@@ -7434,7 +7434,6 @@
 						  </div>
 						  <p><strong>Resolution:</strong> DB connection established.</p>
 						</div>
-
 						<h3>Summary for Layer 4</h3>
 						<div style="margin-left: 2em;">
 						  <ul>
@@ -7446,7 +7445,6 @@
 						  </ul>
 						</div>
 						<h3>OSI Layer 5 (Session Layer) – Troubleshooting Scenarios</h3>
-
 						<h4>Issue 1 — SSH Session Timeout</h4>
 						<div style="margin-left: 2em;">
 						  <p><strong>Scenario:</strong> SSH disconnects after 60 seconds of inactivity.</p>
@@ -7472,7 +7470,6 @@
 						  </div>
 						  <p><strong>Verification:</strong> Session stays active even after 5 minutes idle. SSH session stabilized.</p>
 						</div>
-
 						<h4>Issue 2 — RDP Session Disconnect</h4>
 						<div style="margin-left: 2em;">
 						  <p><strong>Scenario:</strong> Remote Desktop session closes after 10 mins.</p>
@@ -7488,7 +7485,6 @@
 						  <p><strong>Resolution:</strong> Increased idle timeout to 2 hours.</p>
 						  <p><strong>Verification:</strong> RDP session now persists. RDP stable.</p>
 						</div>
-
 						<h4>Issue 3 — Database Connection Pool Exhaustion</h4>
 						<div style="margin-left: 2em;">
 						  <p><strong>Scenario:</strong> Web app failing with DB session errors.</p>
@@ -7513,7 +7509,6 @@
 						  </div>
 						  <p><strong>Resolution:</strong> DB sessions restored.</p>
 						</div>
-
 						<h4>Issue 4 — VoIP SIP Call Drop</h4>
 						<div style="margin-left: 2em;">
 						  <p><strong>Scenario:</strong> SIP phone calls drop after 30 seconds.</p>
@@ -7531,7 +7526,6 @@
 						  </div>
 						  <p><strong>Verification:</strong> Calls stay active beyond 30 seconds. VoIP stable.</p>
 						</div>
-
 						<h4>Issue 5 — SMB File Share Session Issues</h4>
 						<div style="margin-left: 2em;">
 						  <p><strong>Scenario:</strong> Windows users get disconnected from network share randomly.</p>
@@ -7554,7 +7548,6 @@
 						  </div>
 						  <p><strong>Verification:</strong> Users stay connected. SMB sessions stable.</p>
 						</div>
-
 						<h3>Summary for Layer 5</h3>
 						<div style="margin-left: 2em;">
 						  <ul>
@@ -7566,7 +7559,6 @@
 						  </ul>
 						</div>
 						<h3>OSI Layer 6 (Presentation Layer) – Troubleshooting Scenarios</h3>
-
 						<h4>Issue 1 — HTTPS TLS Handshake Failure</h4>
 						<div style="margin-left: 2em;">
 						  <p><strong>Scenario:</strong> User can’t access a secure site.</p>
@@ -7592,7 +7584,6 @@
 						  </div>
 						  <p><strong>Result:</strong> HTTPS works.</p>
 						</div>
-
 						<h4>Issue 2 — Certificate Expired</h4>
 						<div style="margin-left: 2em;">
 						  <p><strong>Scenario:</strong> API calls failing with SSL error.</p>
@@ -7619,7 +7610,6 @@
 						  </div>
 						  <p><strong>Result:</strong> Certificate updated.</p>
 						</div>
-
 						<h4>Issue 3 — Wrong Character Encoding (UTF-8 vs ISO-8859-1)</h4>
 						<div style="margin-left: 2em;">
 						  <p><strong>Scenario:</strong> Special characters (é, ñ, ü) showing as garbage in web app.</p>
@@ -7641,7 +7631,6 @@
 						  </div>
 						  <p><strong>Verification:</strong> Reload page → characters display correctly. Encoding fixed.</p>
 						</div>
-
 						<h4>Issue 4 — JSON Serialization Mismatch</h4>
 						<div style="margin-left: 2em;">
 						  <p><strong>Scenario:</strong> Backend rejects API request with decoding error.</p>
@@ -7672,7 +7661,6 @@
 						  </div>
 						  <p><strong>Result:</strong> JSON parsing fixed.</p>
 						</div>
-
 						<h4>Issue 5 — Encrypted File Transfer Failure</h4>
 						<div style="margin-left: 2em;">
 						  <p><strong>Scenario:</strong> SFTP client fails to decrypt file.</p>
@@ -7703,7 +7691,6 @@
 						  </div>
 						  <p><strong>Result:</strong> File decrypted.</p>
 						</div>
-
 						<h3>Summary for Layer 6</h3>
 						<div style="margin-left: 2em;">
 						  <ul>
@@ -7715,7 +7702,6 @@
 						  </ul>
 						</div>
 						<h3>OSI Layer 7 (Application Layer) – Troubleshooting Scenarios</h3>
-
 						<h4>Issue 1 — DNS Resolution Failure</h4>
 						<div style="margin-left: 2em;">
 						  <p><strong>Scenario:</strong> User can’t reach <code>app.example.com</code>.</p>
@@ -7748,7 +7734,6 @@
 						  </div>
 						  <p><strong>Resolution:</strong> DNS fixed.</p>
 						</div>
-
 						<h4>Issue 2 — HTTP 500 Internal Server Error</h4>
 						<div style="margin-left: 2em;">
 						  <p><strong>Scenario:</strong> User reports web app throws HTTP 500.</p>
@@ -7777,7 +7762,6 @@
 						  </div>
 						  <p><strong>Resolution:</strong> Application works.</p>
 						</div>
-
 						<h4>Issue 3 — Mail Delivery Failure (SMTP)</h4>
 						<div style="margin-left: 2em;">
 						  <p><strong>Scenario:</strong> Emails not reaching external users.</p>
@@ -7809,7 +7793,6 @@
 						  </div>
 						  <p><strong>Resolution:</strong> Mail delivered.</p>
 						</div>
-
 						<h4>Issue 4 — Web App Login Failure (Auth Issue)</h4>
 						<div style="margin-left: 2em;">
 						  <p><strong>Scenario:</strong> Users can’t log into app.</p>
@@ -7835,7 +7818,6 @@
 						  </div>
 						  <p><strong>Resolution:</strong> Login works.</p>
 						</div>
-
 						<h4>Issue 5 — API Rate Limit Exceeded</h4>
 						<div style="margin-left: 2em;">
 						  <p><strong>Scenario:</strong> Client app gets 429 errors.</p>
@@ -7864,7 +7846,6 @@
 						  </div>
 						  <p><strong>Verification:</strong> Client requests succeed without 429. API access restored.</p>
 						</div>
-
 						<h3>Summary for Layer 7</h3>
 						<div style="margin-left: 2em;">
 						  <ul>
@@ -7875,13 +7856,11 @@
 							<li>Rate limiting → API gateway configs, client retry logic.</li>
 						  </ul>
 						</div>						
-					</div>						
-				</div>
-			</div> 		
-
+					</div><!--c. Real-Time Troubleshooting END -->						
+			</div><!--3. Network Troubleshootings END --> 		
 			<h2 id="problem-solving-section" class="section-title">4. Problem Solving</h2>
 			<a href="#features-overview" class="back-to-top-btn">↑ Back to Features</a>			
-			<div class="subsection">
+			<div class="subsection"><!--4. Problem Solving BEGIN -->
 				<h2 id="overview" class="section-title">1. How topological changes are handled</h2>
 				<a href="#features-overview" class="back-to-top-btn">↑ Back to Features</a>
 				<div class="subsection1">
@@ -7899,7 +7878,6 @@
 								STP must react to these events to prevent loops and maintain a loop-free network.
 							</div>
 						</div>
-
 						<div class="interview">
 							<div class="question">
 								How STP Detects a Topology Change?
@@ -7964,7 +7942,6 @@
 								</ol>
 							</div>
 						</div>
-
 						<div class="interview">
 							<div class="question">
 								<h3>Key Points</h3>
@@ -7979,7 +7956,6 @@
 							</div>
 						</div>
 					</div>
-
 				<h2 id="real-time-troubleshoot" class="section-title">2. Real time troubleshooting - STP</h2>
 				<a href="#features-overview" class="back-to-top-btn">↑ Back to Features</a>
 				<div class="subsection1">
@@ -8211,7 +8187,6 @@
 							<li>Document normal topology and root bridge for faster troubleshooting next time.</li>
 						</ul>
 					</div>
-
 				<h2 id="ts-rs" class="section-title">3. STP Troubleshooting Counter Questions & Scenarios</h2>
 				<a href="#features-overview" class="back-to-top-btn">↑ Back to Features</a>
 				<div class="subsection1">
@@ -8806,14 +8781,14 @@
 							<li>Use this table as a <strong>quick-reference guide</strong> during interviews or hands-on troubleshooting.</li>
 						</ul>
 					</div>
-			</div> 		
-		</div>
+			</div><!--4. Problem Solving END --> 		
+		</div><!--Content Section END -->
            
         <footer>
             <p>Networking Documentation | Comprehensive Guide to STP, Routing Protocols, and Troubleshooting</p>
             <p>Includes core concepts: Spanning Tree Protocol (STP), Routing Protocols, OSI Model, Packet Tracing, Common Tools, and Systematic Troubleshooting.</p>
         </footer>
-    </div>
+    </div><!--Container Section END -->
     
     <a href="#" class="back-to-top">↑</a>
 
