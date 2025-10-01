@@ -1,1 +1,1 @@
-Java Tech Stack
+Tech Stack
